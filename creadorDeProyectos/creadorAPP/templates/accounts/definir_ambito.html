@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Definir Ámbito del Proyecto</title>
+</head>
+<body>
+    <h1>Definir Ámbito del Proyecto</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <label for="id_descripcion_ambito">Descripción del Ámbito:</label><br>
+        <textarea id="id_descripcion_ambito" name="descripcion_ambito" rows="4" cols="50">{{ form.descripcion_ambito.value }}</textarea><br><br>
+
+        <label for="id_caracteristicas_principales">Características Principales:</label><br>
+        <textarea id="id_caracteristicas_principales" name="caracteristicas_principales" rows="4" cols="50">{{ form.caracteristicas_principales.value }}</textarea><br><br>
+
+        <label for="id_limitaciones">Limitaciones:</label><br>
+        <textarea id="id_limitaciones" name="limitaciones" rows="4" cols="50">{{ form.limitaciones.value }}</textarea><br><br>
+
+        <button type="submit">Guardar Ámbito del Proyecto</button>
+    </form>
+
+    <p><a href="{% url 'ver_ambito_proyecto' %}">Ver Ámbito del Proyecto</a></p>
+</body>
+</html>

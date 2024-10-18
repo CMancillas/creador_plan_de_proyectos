@@ -1,5 +1,5 @@
 # To handle views and redirects
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 # To Import auth functions from Django
 from django.contrib.auth import authenticate, login, logout
 # The login_required decorator to protect views
@@ -12,6 +12,11 @@ from django.views import View
 from django.contrib.auth.models import User
 # Import the RegisterForm from forms.py
 from .forms import RegisterForm
+from .models import AmbitoProyecto
+from .forms import AmbitoProyectoForm
+from django.contrib import messages
+# from .models import Proyecto  # Asumiendo que el modelo del proyecto es 'Proyecto'
+
 
 # Create your views here.
 def register_view(request):
@@ -64,4 +69,45 @@ class ProtectedView(LoginRequiredMixin, View):
 
     def get(self, request):
         return render(request, 'registration/protected.html')
-    
+
+@login_required
+def definir_ambito_proyecto(request):
+    try:
+        ambito_proyecto = AmbitoProyecto.objects.get(id=1)
+    except AmbitoProyecto.DoesNotExist:
+        ambito_proyecto = None
+
+    if request.method == 'POST':
+        form = AmbitoProyectoForm(request.POST, instance=ambito_proyecto)
+        if form.is_valid():
+            form.save()
+            return redirect('ver_ambito_proyecto')
+        else:
+            return render(request, 'definir_ambito.html', {'form': form})
+    else:
+        form = AmbitoProyectoForm(instance=ambito_proyecto)
+
+    return render(request, 'accounts/definir_ambito.html', {'form': form})
+
+@login_required
+def ver_ambito_proyecto(request):
+    try:
+        ambito_proyecto = AmbitoProyecto.objects.get(id=1)
+    except AmbitoProyecto.DoesNotExist:
+        ambito_proyecto = None
+
+    return render(request, 'accounts/ver_ambito.html', {'ambito_proyecto': ambito_proyecto})
+
+'''
+# Para cuando esté el proyecto a eliminar
+@login_required
+def eliminar_proyecto(request, proyecto_id):
+    proyecto = get_object_or_404(Proyecto, id=proyecto_id)
+
+    if request.method == 'POST':
+        proyecto.delete()
+        messages.success(request, "El proyecto ha sido eliminado exitosamente.")
+        return redirect('lista_proyectos')  # Redirigir a una lista de proyectos u otra página
+
+    return render(request, 'accounts/eliminar_proyecto.html', {'proyecto': proyecto})
+'''
