@@ -15,6 +15,8 @@ from .forms import RegisterForm
 from .models import AmbitoProyecto
 from .forms import AmbitoProyectoForm
 from django.contrib import messages
+from .forms import ProjectPlan
+from .forms import ProjectPlanForm
 # from .models import Proyecto  # Asumiendo que el modelo del proyecto es 'Proyecto'
 
 
@@ -97,6 +99,40 @@ def ver_ambito_proyecto(request):
         ambito_proyecto = None
 
     return render(request, 'accounts/ver_ambito.html', {'ambito_proyecto': ambito_proyecto})
+
+
+
+@login_required
+def define_project_plan(request):
+    try:
+        project_plan = ProjectPlan.objects.get(id=1)  # Cambia '1' por el id o criterio que necesites
+    except ProjectPlan.DoesNotExist:
+        project_plan = None
+
+    if request.method == 'POST':
+        form = ProjectPlanForm(request.POST, instance=project_plan)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "El plan de proyecto ha sido definido exitosamente.")
+            return redirect('view_project_plan')
+        else:
+            return render(request, 'projects/define_project_plan.html', {'form': form})
+    else:
+        form = ProjectPlanForm(instance=project_plan)
+
+    return render(request, 'projects/define_project_plan.html', {'form': form})
+
+
+
+@login_required
+def view_project_plan(request):
+    try:
+        project_plan = ProjectPlan.objects.get(id=1)  # Cambia '1' por el id o criterio que necesites
+    except ProjectPlan.DoesNotExist:
+        project_plan = None
+
+    return render(request, 'projects/view_project_plan.html', {'project_plan': project_plan})
+
 
 '''
 # Para cuando esté el proyecto a eliminar

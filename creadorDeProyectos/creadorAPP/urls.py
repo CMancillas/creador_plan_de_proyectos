@@ -9,5 +9,7 @@ urlpatterns = [
     path('protected/', views.ProtectedView.as_view(), name='protected'),
     path('definir-ambito/', views.definir_ambito_proyecto, name='definir_ambito_proyecto'),
     path('ver-ambito/', views.ver_ambito_proyecto, name='ver_ambito_proyecto'),
+    path('define-project-plan/', views.define_project_plan, name='define_project_plan'),
+    path('view-project-plan/', views.view_project_plan, name='view_project_plan'),
     # path('proyecto/eliminar/<int:proyecto_id>/', views.eliminar_proyecto, name='eliminar_proyecto'),
 ]

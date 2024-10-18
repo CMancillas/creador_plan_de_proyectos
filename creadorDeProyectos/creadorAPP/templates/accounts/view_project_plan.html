@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Plan de Proyecto</title>
+</head>
+<body>
+    <h1>Plan de Proyecto</h1>
+
+    {% if project_plan %}
+        <h3>Título del Proyecto</h3>
+        <p>{{ project_plan.title }}</p>
+
+        <h3>Descripción del Proyecto</h3>
+        <p>{{ project_plan.description }}</p>
+
+        <h3>Objetivo del Proyecto</h3>
+        <p>{{ project_plan.objetive }}</p>
+
+        <h3>Nombre del Cliente</h3>
+        <p>{{ project_plan.clientName }}</p>
+
+        <h3>Nombre del Empleado</h3>
+        <p>{{ project_plan.employeeName }}</p>
+
+        <h3>Rol del Empleado</h3>
+        <p>{{ project_plan.employeeRole }}</p>
+
+        <h3>Fecha de Inicio</h3>
+        <p>{{ project_plan.startDate|date:"d M Y" }}</p>
+
+        <h3>Fecha de Fin</h3>
+        <p>{{ project_plan.endDate|date:"d M Y" }}</p>
+
+        <p><a href="{% url 'define_project_plan' %}">Editar Plan de Proyecto</a></p>
+    {% else %}
+        <p>No se ha definido el plan de proyecto aún.</p>
+    {% endif %}
+</body>
+</html>

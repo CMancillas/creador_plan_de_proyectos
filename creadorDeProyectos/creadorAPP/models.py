@@ -9,3 +9,28 @@ class AmbitoProyecto(models.Model):
 
     def __str__(self):
         return f"Ámbito definido"
+    
+
+
+class ProjectPlan(models.Model):
+
+    title = models.CharField(max_length=100)
+
+    description = models.TextField()
+
+    objetive = models.TextField()
+
+    clientName = models.CharField(max_length=50)
+
+    employeeName = models.CharField(max_length=50)
+
+    employeeRole = models.CharField(max_length=50)
+    
+    startDate = models.DateField()
+
+    endDate = models.DateField()
+
+
+
+    def _str_(self):
+        return f"Plan de proyecto almacenado exitosamente."
