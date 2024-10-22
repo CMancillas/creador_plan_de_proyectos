@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de tareas</title>
+</head>
+<body>
+    <h1>Mis tareas</h1>
+    <ul>
+        {% for task in tasks %}
+            <li>{{ task.name }}</li>
+        {% endfor %}  <!-- El bloque for debe cerrarse con endfor -->
+    </ul>
+</body>
+</html>
