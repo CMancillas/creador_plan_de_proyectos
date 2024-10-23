@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import AmbitoProyecto
+from .models import ProjectPlan
+from .models import Task
 
 class RegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -48,3 +50,42 @@ class AmbitoProyectoForm(forms.ModelForm):
         
         if not limitaciones:
             self.add_error('limitaciones', "Este campo es obligatorio.")
+
+
+
+class ProjectPlanForm(forms.ModelForm):
+    class Meta:
+        model = ProjectPlan
+        fields = ['title', 'description', 'objetive', 'clientName', 'employeeName', 'employeeRole', 'startDate', 'endDate']
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Descripción del proyecto...'}),
+            'objetive': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Objetivo del proyecto...'}),
+            'startDate': forms.DateInput(attrs={'type': 'date'}),
+            'endDate': forms.DateInput(attrs={'type': 'date'}),
+        }
+        labels = {
+            'title': 'Título del Proyecto',
+            'description': 'Descripción',
+            'objetive': 'Objetivo',
+            'clientName': 'Nombre del Cliente',
+            'employeeName': 'Nombre del Empleado',
+            'employeeRole': 'Rol del Empleado',
+            'startDate': 'Fecha de Inicio',
+            'endDate': 'Fecha de Fin',
+        }
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        startDate = cleaned_data.get('startDate')
+        endDate = cleaned_data.get('endDate')
+
+        if startDate and endDate and startDate > endDate:
+            self.add_error('endDate', "La fecha de fin no puede ser anterior a la fecha de inicio.")
+
+        return cleaned_data
+    
+           
+class TaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ['name', 'estimated_duration', 'project']        

@@ -10,4 +10,12 @@ urlpatterns = [
     path('definir-ambito/', views.definir_ambito_proyecto, name='definir_ambito_proyecto'),
     path('ver-ambito/', views.ver_ambito_proyecto, name='ver_ambito_proyecto'),
     # path('proyecto/eliminar/<int:proyecto_id>/', views.eliminar_proyecto, name='eliminar_proyecto'),
+    path('define-project-plan/', views.define_project_plan, name='define_project_plan'),
+    path('view-project-plan/', views.view_project_plan, name='view_project_plan'),
+    path('tasks/add/', views.add_task, name='add_task'),
+    path('tasks/edit/<int:task_id>/', views.edit_task, name='edit_task'),
+    path('tasks/delete/<int:task_id>/', views.delete_task, name='delete_task'),
+    path('projects/recent/', views.recent_projects, name='recent_projects'), 
+    path('tasks/', views.task_list, name='task_list'),  # Define la URL con el nombre 'task_list'
+
 ]

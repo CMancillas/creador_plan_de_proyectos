@@ -11,9 +11,8 @@ from django.views import View
 # Import the User class (model)
 from django.contrib.auth.models import User
 # Import the RegisterForm from forms.py
-from .forms import RegisterForm
-from .models import AmbitoProyecto
-from .forms import AmbitoProyectoForm
+from .forms import RegisterForm, AmbitoProyectoForm, ProjectPlanForm, TaskForm
+from .models import AmbitoProyecto, Task, ProjectPlan
 from django.contrib import messages
 # from .models import Proyecto  # Asumiendo que el modelo del proyecto es 'Proyecto'
 
@@ -111,3 +110,77 @@ def eliminar_proyecto(request, proyecto_id):
 
     return render(request, 'accounts/eliminar_proyecto.html', {'proyecto': proyecto})
 '''
+
+@login_required
+def define_project_plan(request):
+    try:
+        project_plan = ProjectPlan.objects.get(id=1)  # Cambia '1' por el id o criterio que necesites
+    except ProjectPlan.DoesNotExist:
+        project_plan = None
+
+    if request.method == 'POST':
+        form = ProjectPlanForm(request.POST, instance=project_plan)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "El plan de proyecto ha sido definido exitosamente.")
+            return redirect('view_project_plan')
+        else:
+            return render(request, 'projects/define_project_plan.html', {'form': form})
+    else:
+        form = ProjectPlanForm(instance=project_plan)
+
+    return render(request, 'projects/define_project_plan.html', {'form': form})
+
+
+
+@login_required
+def view_project_plan(request):
+    try:
+        project_plan = ProjectPlan.objects.get(id=1)  # Cambia '1' por el id o criterio que necesites
+    except ProjectPlan.DoesNotExist:
+        project_plan = None
+
+    return render(request, 'projects/view_project_plan.html', {'project_plan': project_plan})
+
+
+@login_required
+def recent_projects(request):
+    # Proyectos más recientes del usuario
+    recent_projects = ProjectPlan.objects.filter(employeeName=request.user.username).order_by('-startDate')[:5]
+    
+    return render(request, 'projects/recent_projects.html', {'recent_projects': recent_projects})
+@login_required
+def add_task(request):
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('task_list')  # Redirigir a la lista de tareas, por ejemplo
+    else:
+        form = TaskForm()
+    
+    return render(request, 'tasks/add_task.html', {'form': form})    
+@login_required
+def edit_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    if request.method == 'POST':
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return redirect('task_list')
+    else:
+        form = TaskForm(instance=task)
+    
+    return render(request, 'tasks/edit_task.html', {'form': form, 'task': task})
+@login_required
+def delete_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    if request.method == 'POST':
+        task.delete()
+        return redirect('task_list')  # Redirigir a la lista de tareas
+    return render(request, 'tasks/delete_task.html', {'task': task})
+
+@login_required
+def task_list(request):
+    tasks = Task.objects.all()  # Consulta todas las tareas en la base de datos
+    return render(request, 'tasks/task_list.html', {'tasks': tasks})  # Renderiza la plantilla 'task_list.html'
