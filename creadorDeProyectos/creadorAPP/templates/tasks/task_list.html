@@ -8,7 +8,13 @@
     <ul>
         {% for task in tasks %}
             <li>{{ task.name }}</li>
+            <!-- Enlace para editar la tarea (PRUEBA) -->
+            <a href="{% url 'edit_task' %}">Editar</a>
+            <!-- Enlace para eliminar la tarea(PRUEBA) -->
+            <a href="{% url 'delete_task' %}">Eliminar</a>
         {% endfor %}  <!-- El bloque for debe cerrarse con endfor -->
     </ul>
+        <!---Enlace para volver a la pagina de incio (PRUEBA)-->
+        <p><a href="{% url 'home' %}">Volver a la página de incio</a></p>
 </body>
 </html>

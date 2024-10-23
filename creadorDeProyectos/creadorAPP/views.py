@@ -142,6 +142,11 @@ def view_project_plan(request):
 
     return render(request, 'projects/view_project_plan.html', {'project_plan': project_plan})
 
+# Prueba, creacion indice!!!!!!!!!!!!!!!!!!###############################
+@login_required
+def indice(request):
+    return render(request, 'projects/indice.html')
+#########################################
 
 @login_required
 def recent_projects(request):
