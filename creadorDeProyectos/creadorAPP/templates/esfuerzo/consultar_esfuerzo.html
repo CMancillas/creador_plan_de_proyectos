@@ -1,0 +1,25 @@
+<!-- creadorAPP/templates/esfuerzo/consultar_esfuerzo.html -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Esfuerzo del Proyecto</title>
+</head>
+<body>
+    <h1>Esfuerzo del Proyecto: {{ proyecto.nombre }}</h1>
+    <p><strong>Esfuerzo Estimado:</strong> {{ esfuerzo_proyecto.esfuerzo_estimado }} horas</p>
+    <p><strong>Esfuerzo Real:</strong> {{ esfuerzo_proyecto.esfuerzo_real }} horas</p>
+    <p><strong>Diferencia:</strong> {{ diferencia }} horas</p>
+
+    {% if diferencia > 0 %}
+        <p>El equipo tiene margen para completar el proyecto dentro del esfuerzo estimado.</p>
+    {% elif diferencia < 0 %}
+        <p>El equipo ha excedido el esfuerzo estimado.</p>
+    {% else %}
+        <p>El equipo ha alcanzado exactamente el esfuerzo estimado.</p>
+    {% endif %}
+
+    <a href="{% url 'agregar_evento' %}">Actualizar Esfuerzo</a>
+</body>
+</html>

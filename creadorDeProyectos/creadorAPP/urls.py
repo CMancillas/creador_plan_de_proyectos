@@ -20,5 +20,10 @@ urlpatterns = [
     path('tasks/delete/<int:task_id>/', views.delete_task, name='delete_task'),
     path('projects/recent/', views.recent_projects, name='recent_projects'), 
     path('tasks/', views.task_list, name='task_list'),  # Define la URL con el nombre 'task_list'
+    #de hoy
+    path('cronograma/', views.ver_cronograma, name='ver_cronograma'),
+    path('cronograma/agregar/', views.agregar_evento, name='agregar_evento'),
+    path('proyecto/<int:proyecto_id>/esfuerzo/', views.consultar_esfuerzo, name='consultar_esfuerzo'),
+    path('consultar_costo/<int:proyecto_id>/', views.consultar_costo, name='consultar_costo'),
 
 ]

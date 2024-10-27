@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Cronograma del Proyecto</title>
+</head>
+<body>
+    <h1>Cronograma del Proyecto</h1>
+    <table>
+        <tr>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Tipo</th>
+        </tr>
+        {% for evento in eventos %}
+        <tr>
+            <td>{{ evento.titulo }}</td>
+            <td>{{ evento.descripcion }}</td>
+            <td>{{ evento.fecha_inicio }}</td>
+            <td>{{ evento.fecha_fin }}</td>
+            <td>{{ evento.tipo_evento }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{% url 'agregar_evento' %}">Añadir nuevo evento</a>
+</body>
+</html>

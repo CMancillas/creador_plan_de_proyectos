@@ -11,8 +11,8 @@ from django.views import View
 # Import the User class (model)
 from django.contrib.auth.models import User
 # Import the RegisterForm from forms.py
-from .forms import RegisterForm, AmbitoProyectoForm, ProjectPlanForm, TaskForm
-from .models import AmbitoProyecto, Task, ProjectPlan
+from .forms import RegisterForm, AmbitoProyectoForm, ProjectPlanForm, TaskForm, EventoCronogramaForm, EsfuerzoProyecto
+from .models import AmbitoProyecto, Task, ProjectPlan, EventoCronograma, EsfuerzoProyecto
 from django.contrib import messages
 # from .models import Proyecto  # Asumiendo que el modelo del proyecto es 'Proyecto'
 
@@ -189,3 +189,42 @@ def delete_task(request, task_id):
 def task_list(request):
     tasks = Task.objects.all()  # Consulta todas las tareas en la base de datos
     return render(request, 'tasks/task_list.html', {'tasks': tasks})  # Renderiza la plantilla 'task_list.html'
+
+
+#edit de hoy
+def ver_cronograma(request):
+    eventos = EventoCronograma.objects.all().order_by('fecha_inicio')
+    return render(request, 'cronograma/ver_cronograma.html', {'eventos': eventos})
+
+def agregar_evento(request):
+    if request.method == "POST":
+        form = EventoCronogramaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('ver_cronograma')
+    else:
+        form = EventoCronogramaForm()
+    return render(request, 'cronograma/agregar_evento.html', {'form': form})
+# Vista para consultar el esfuerzo
+def consultar_esfuerzo(request, proyecto_id):
+    proyecto = get_object_or_404(Proyecto, id=proyecto_id)
+    esfuerzo_proyecto = EsfuerzoProyecto.objects.filter(proyecto=proyecto).first()
+
+    if not esfuerzo_proyecto:
+        esfuerzo_proyecto = EsfuerzoProyecto(proyecto=proyecto, esfuerzo_estimado=0, esfuerzo_real=0)
+        esfuerzo_proyecto.save()
+
+    return render(request, 'esfuerzo/consultar_esfuerzo.html', {
+        'proyecto': proyecto,
+        'esfuerzo_proyecto': esfuerzo_proyecto,
+        'diferencia': esfuerzo_proyecto.diferencia_esfuerzo()
+    })
+
+def consultar_costo(request, proyecto_id):
+    proyecto = get_object_or_404(Proyecto, id=proyecto_id)
+    contexto = {
+        'nombre': proyecto.nombre,
+        'costo': proyecto.costo,
+        'presupuesto': proyecto.presupuesto,
+    }
+    return render(request, 'costo/consultar_costo.html', contexto)

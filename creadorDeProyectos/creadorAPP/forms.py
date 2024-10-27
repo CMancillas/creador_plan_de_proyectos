@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import AmbitoProyecto
+from .models import AmbitoProyecto, EventoCronograma, EsfuerzoProyecto
 from .models import ProjectPlan
 from .models import Task
 
@@ -89,3 +89,13 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ['name', 'estimated_duration', 'project']        
+
+class EventoCronogramaForm(forms.ModelForm):
+    class Meta:
+        model = EventoCronograma
+        fields = ['titulo', 'descripcion', 'fecha_inicio', 'fecha_fin', 'tipo_evento']
+
+class EsfuerzoProyectoForm(forms.ModelForm):
+    class Meta:
+        model = EsfuerzoProyecto
+        fields = ['esfuerzo_estimado', 'esfuerzo_real']
