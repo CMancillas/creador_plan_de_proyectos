@@ -10,8 +10,9 @@ urlpatterns = [
     path('definir-ambito/', views.definir_ambito_proyecto, name='definir_ambito_proyecto'),
     path('ver-ambito/', views.ver_ambito_proyecto, name='ver_ambito_proyecto'),
     # path('proyecto/eliminar/<int:proyecto_id>/', views.eliminar_proyecto, name='eliminar_proyecto'),
-    path('define-project-plan/', views.define_project_plan, name='define_project_plan'),
-    path('view-project-plan/', views.view_project_plan, name='view_project_plan'),
+    path('define-project-plan/', views.define_project_plan, name='define_project_plan'), # Para crear un nuevo rpoyecto
+    path('define-project-plan/<int:project_id>/', views.define_project_plan, name='define_project_plan'), # Para editar un proyecto especifico 
+    path('view-project-plan/<int:project_id>/', views.view_project_plan, name='view_project_plan'),
     #### Prueba
     path('indice/', views.indice, name='indice'),
     #######

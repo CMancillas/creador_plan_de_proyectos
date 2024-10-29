@@ -112,33 +112,34 @@ def eliminar_proyecto(request, proyecto_id):
 '''
 
 @login_required
-def define_project_plan(request):
-    try:
-        project_plan = ProjectPlan.objects.get(id=1)  # Cambia '1' por el id o criterio que necesites
-    except ProjectPlan.DoesNotExist:
-        project_plan = None
+def define_project_plan(request, project_id=None):
+    # Buscar el proyecto por su ID o crear uno nuevo si no existe
+    project_plan = get_object_or_404(ProjectPlan, id=project_id) if project_id else None
 
     if request.method == 'POST':
         form = ProjectPlanForm(request.POST, instance=project_plan)
         if form.is_valid():
-            form.save()
+            project = form.save()
             messages.success(request, "El plan de proyecto ha sido definido exitosamente.")
-            return redirect('view_project_plan')
-        else:
-            return render(request, 'projects/define_project_plan.html', {'form': form})
+            return redirect('view_project_plan', project_id = project.id)
+        # Haciendo pruebas de mejoramiento al codigo
+        """else:
+            return render(request, 'projects/define_project_plan.html', {'form': form})"""
     else:
         form = ProjectPlanForm(instance=project_plan)
 
-    return render(request, 'projects/define_project_plan.html', {'form': form})
+    return render(request, 'projects/define_project_plan.html', {'form': form, 'project_plan':project_plan})
 
 
 
 @login_required
-def view_project_plan(request):
-    try:
+def view_project_plan(request, project_id):
+    # Haciendo pruebas de mejoramiento al codigo
+    """try:
         project_plan = ProjectPlan.objects.get(id=1)  # Cambia '1' por el id o criterio que necesites
     except ProjectPlan.DoesNotExist:
-        project_plan = None
+        project_plan = None"""
+    project_plan = get_object_or_404(ProjectPlan, id=project_id)
 
     return render(request, 'projects/view_project_plan.html', {'project_plan': project_plan})
 

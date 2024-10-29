@@ -35,10 +35,17 @@
         <label for="id_endDate">Fecha de Fin:</label><br>
         <input type="date" id="id_endDate" name="endDate" value="{{ form.endDate.value }}"><br><br>
 
+        <label for="id_presupuestoTotal">Presupuesto Total (USD):</label><br>
+<input type="number" id="id_presupuestoTotal" name="presupuestoTotal" step="0.01" value="{{ form.presupuestoTotal.value }}"><br><br>
+
         <button type="submit">Guardar Plan de Proyecto</button>
     </form>
 
-    <p><a href="{% url 'view_project_plan' %}">Ver Plan de Proyecto</a></p>
+   
+    <!-- El enlace "Ver Plan de Proyecto" solo se mostrará cuando el proyecto exista y tenga un ID válido.-->
+    {% if project_plan and project_plan.id %}
+    <p><a href="{% url 'view_project_plan' project_plan.id %}">Ver Plan de Proyecto</a></p>
+    {% endif %}
       
     <!---Enlace para volver a la pagina de incio (PRUEBA)-->
     <p><a href="{% url 'home' %}">Volver a la página de incio</a></p>

@@ -81,10 +81,16 @@
         <h3>Fecha de Fin</h3>
         <p>{{ project_plan.endDate|date:"d M Y" }}</p>
 
-        <p><a href="{% url 'define_project_plan' %}">Editar Plan de Proyecto</a></p>
+        <h3>Presupuesto Total</h3>
+        <p>{{ project_plan.presupuestoTotal }}</p>
+
+        <!-- Enlace para editar el proyecto actual usando project_id -->
+        <p><a href="{% url 'define_project_plan' project_plan.id %}">Editar Plan de Proyecto</a></p>
     {% else %}
         <p>No se ha definido el plan de proyecto aún.</p>
     {% endif %}
+    
+    <hr>
     <!----PRUEBA (INDICE)-->
     <p><a href="{% url 'indice' %}">Añadir información del proyecto</a></p>
     <!---Enlace para volver a la pagina de incio (PRUEBA)-->

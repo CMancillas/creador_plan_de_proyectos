@@ -31,7 +31,14 @@ class ProjectPlan(models.Model):
 
     endDate = models.DateField()
 
-
+    # Campo para el presupuesto total
+    presupuestoTotal = models.DecimalField(
+        max_digits=12, 
+        decimal_places=2, 
+        null=True,
+        blank=True,
+        help_text="Presupuesto total del proyecto en USD."
+        )
 
     def _str_(self):
         return f"Plan de proyecto almacenado exitosamente."

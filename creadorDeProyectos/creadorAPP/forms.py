@@ -56,12 +56,13 @@ class AmbitoProyectoForm(forms.ModelForm):
 class ProjectPlanForm(forms.ModelForm):
     class Meta:
         model = ProjectPlan
-        fields = ['title', 'description', 'objetive', 'clientName', 'employeeName', 'employeeRole', 'startDate', 'endDate']
+        fields = ['title', 'description', 'objetive', 'clientName', 'employeeName', 'employeeRole', 'startDate', 'endDate', 'presupuestoTotal']
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Descripción del proyecto...'}),
             'objetive': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Objetivo del proyecto...'}),
             'startDate': forms.DateInput(attrs={'type': 'date'}),
             'endDate': forms.DateInput(attrs={'type': 'date'}),
+            'presupuestoTotal': forms.NumberInput(attrs={'placeholder': 'Presupuesto en USD'}),
         }
         labels = {
             'title': 'Título del Proyecto',
@@ -72,16 +73,22 @@ class ProjectPlanForm(forms.ModelForm):
             'employeeRole': 'Rol del Empleado',
             'startDate': 'Fecha de Inicio',
             'endDate': 'Fecha de Fin',
+            'presupuestoTotal': 'Prespuesto Total (USD)',
         }
     
     def clean(self):
         cleaned_data = super().clean()
         startDate = cleaned_data.get('startDate')
         endDate = cleaned_data.get('endDate')
+        presupuestoTotal = cleaned_data.get('presupuestoTotal')
 
         if startDate and endDate and startDate > endDate:
             self.add_error('endDate', "La fecha de fin no puede ser anterior a la fecha de inicio.")
 
+        # Validacion de presupuesto positivo
+        if presupuestoTotal is not None and presupuestoTotal < 0:
+            self.add_error('presupuestoTotal', "El presupuesto debe de ser un valor positivo.")
+        
         return cleaned_data
     
            
