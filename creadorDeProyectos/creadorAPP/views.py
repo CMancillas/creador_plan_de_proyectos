@@ -15,7 +15,12 @@ from .forms import RegisterForm, AmbitoProyectoForm, ProjectPlanForm, TaskForm, 
 from .models import AmbitoProyecto, Task, ProjectPlan
 from django.contrib import messages
 # from .models import Proyecto  # Asumiendo que el modelo del proyecto es 'Proyecto'
-
+# Importa HttpResponse de Django para enviar una respuesta HTTP al navegador.
+from django.http import HttpResponse
+# Importa render_to_string para convertir una plantilla HTML en una cadena de texto.
+from django.template.loader import render_to_string
+# Importa HTML de WeasyPrint, que convierte el HTML en un PDF.
+from weasyprint import HTML
 
 # Create your views here.
 def register_view(request):
@@ -217,3 +222,54 @@ def agregar_restriccion(request, project_id):
         form = RestriccionForm()
     # Renderizar la plantilla de agregar restricción
     return render(request, 'projects/agregar_restriccion.html', {'form': form, 'proyecto': proyecto})
+
+@login_required
+def resumen_proyecto(request,project_id):
+    # Se obtiene el objeto ProjectPlan con su id correspondiente.
+    # Si no existe, se devuelve una pagina de error 404.
+    proyecto = get_object_or_404(ProjectPlan, id=project_id)
+    
+    # Se obtiene todas las restricciones asociadas al proyecto.
+    restricciones = proyecto.restricciones.all()
+    
+    # Se obtiene todas las tareas asociadas al proyecto.
+    tareas = proyecto.tasks.all()
+
+    # Se renderiza la plantilla 'resumen_proyecto.html', pasando como contexto:
+    # el proyecto, las restricciones y las tareas, para su visualizacion en el HTML.
+    return render(request, 'projects/resumen_proyecto.html', {
+        'proyecto': proyecto,
+        'restricciones': restricciones,
+        'tareas': tareas,
+    })
+
+@login_required
+def descargar_resumen_pdf(request, project_id):
+    # Se obtiene el objeto ProjectPlan con su id correspondiente.
+    # Si no existe, se devuelve una pagina de error 404.
+    proyecto = get_object_or_404(ProjectPlan, id=project_id)
+    
+    # Se obtiene todas las restricciones asociadas al proyecto.
+    restricciones = proyecto.restricciones.all()
+    
+    # Se obtiene todas las tareas asociadas al proyecto.
+    tareas = proyecto.tasks.all()    
+
+    # Renderiza la plantilla HTML en una cadena de texto.
+    html_string = render_to_string('projects/resumen_proyecto.html', {
+        'proyecto': proyecto,
+        'restricciones': restricciones,
+        'tareas': tareas,
+    })
+
+    # Crea la respuesta HTTP como un archivo PDF.
+    response = HttpResponse(content_type='application/pdf')
+    
+    # Configura la respuesta para que el PDF se descargue con un nombre de archivo basado en el titulo del proyecto.
+    response['Content-Disposition'] = f'attachment; filename="Resumen_Proyecto_{proyecto.title}.pdf"'
+
+    # Usa WeasyPrint para convertir el HTML en un PDF y escribirlo en la respuesta.
+    HTML(string=html_string).write_pdf(response)
+
+    # Retorna la respuesta con el PDF, permitiendo que el navegador descargue el archivo.
+    return response

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumen del Proyecto</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        h1, h2 { color: #333; }
+        .section { margin-bottom: 20px; }
+        .btn-download { margin-top: 20px; padding: 10px 20px; background-color: #28a745; color: #fff; border: none; cursor: pointer; }
+        
+        /* Ocultar el botón al generar el PDF */ 
+        .no-print { display: none; }
+
+        /* Mostrar el botón solo en pantalla */
+        @media screen {
+            .no-print { display: inline; }
+        }
+    
+    </style>
+</head>
+<body>
+    <h1>Resumen del Proyecto "{{ proyecto.title }}"</h1>
+
+    <div class="section">
+        <h2>Información General</h2>
+        <p><strong>Descripción:</strong> {{ proyecto.description }}</p>
+        <p><strong>Objetivo:</strong> {{ proyecto.objetive }}</p>
+        <p><strong>Cliente:</strong> {{ proyecto.clientName }}</p>
+        <p><strong>Empleado:</strong> {{ proyecto.employeeName }} - {{ proyecto.employeeRole }}</p>
+        <p><strong>Fecha de Inicio:</strong> {{ proyecto.startDate|date:"d M Y" }}</p>
+        <p><strong>Fecha de Fin:</strong> {{ proyecto.endDate|date:"d M Y" }}</p>
+        <p><strong>Presupuesto Total:</strong> {{ proyecto.presupuestoTotal }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Restricciones</h2>
+        {% if restricciones %}
+            <ul>
+                {% for restriccion in restricciones %}
+                    <li><strong>Descripción:</strong> {{ restriccion.descripcion }} (Riesgo: {{ restriccion.riesgo_identificado }})</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No se han registrado restricciones para este proyecto.</p>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h2>Tareas</h2>
+        {% if tareas %}
+            <ul>
+                {% for tarea in tareas %}
+                    <li>{{ tarea.name }} - {{ tarea.estimated_duration }} horas</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No se han registrado tareas para este proyecto.</p>
+        {% endif %}
+    </div>
+
+      <!-- Botón para descargar el PDF, solo visible en pantalla -->
+      <a href="{% url 'descargar_resumen_pdf' proyecto.id %}" class="btn-download no-print">Descargar Resumen en PDF</a>
+</body>
+</html>

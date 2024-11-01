@@ -22,5 +22,7 @@ urlpatterns = [
     path('projects/recent/', views.recent_projects, name='recent_projects'), 
     path('tasks/', views.task_list, name='task_list'),
     path('agregar-restriccion/<int:project_id>/', views.agregar_restriccion, name='agregar_restriccion'),  
+    path('resumen-proyecto/<int:project_id>/', views.resumen_proyecto, name='resumen_proyecto'),
+    path('descargar-resumen/<int:project_id>/', views.descargar_resumen_pdf, name='descargar_resumen_pdf')
 
 ]
