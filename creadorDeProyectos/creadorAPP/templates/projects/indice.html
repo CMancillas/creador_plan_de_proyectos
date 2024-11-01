@@ -1,4 +1,4 @@
-<!----Pagina indice de prueba-->
+<!--Pagina indice de prueba-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,9 +11,13 @@
     <ul>
         <li><a href="{% url 'definir_ambito_proyecto' %}">Definir Ámbito del Proyecto</a></li>
         <li><a href="{% url 'add_task' %}">Definir Nueva Tarea del Proyecto</a></li>
-        <li><a href="{% url 'view_project_plan' %}">Ver Plan del Proyecto</a></li>
+        {% if proyecto_actual %}
+            <li><a href="{% url 'view_project_plan' proyecto_actual.id %}">Ver Plan del Proyecto</a></li>
+        {% else %}
+            <li>No hay un proyecto actual disponible para ver.</li>
+        {% endif %}
         <!-- Agrega más enlaces a otras vistas -->
     </ul>
 </body>
 </html>
-<!-------------->
+<!---->

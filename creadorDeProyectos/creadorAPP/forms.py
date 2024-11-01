@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from .models import AmbitoProyecto
 from .models import ProjectPlan
 from .models import Task
+from .models import Restriccion
 
 class RegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -96,3 +97,16 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ['name', 'estimated_duration', 'project']        
+
+class RestriccionForm(forms.ModelForm):
+    class Meta: 
+        model = Restriccion
+        fields = ['descripcion', 'riesgo_identificado']
+        labels = {
+            'descripcion': 'Descripción de la Restricción',
+            'riesgo_identificado': 'Riesgo Identificado',
+        }
+        widgets = {
+            'descripcion': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Describe la restricción...'}),
+            'riesgo_identificado': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Describe el riesgo asociado...'}),
+        }

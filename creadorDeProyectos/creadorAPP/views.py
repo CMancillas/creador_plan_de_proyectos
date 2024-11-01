@@ -11,7 +11,7 @@ from django.views import View
 # Import the User class (model)
 from django.contrib.auth.models import User
 # Import the RegisterForm from forms.py
-from .forms import RegisterForm, AmbitoProyectoForm, ProjectPlanForm, TaskForm
+from .forms import RegisterForm, AmbitoProyectoForm, ProjectPlanForm, TaskForm, RestriccionForm
 from .models import AmbitoProyecto, Task, ProjectPlan
 from django.contrib import messages
 # from .models import Proyecto  # Asumiendo que el modelo del proyecto es 'Proyecto'
@@ -146,7 +146,9 @@ def view_project_plan(request, project_id):
 # Prueba, creacion indice!!!!!!!!!!!!!!!!!!###############################
 @login_required
 def indice(request):
-    return render(request, 'projects/indice.html')
+    proyecto_actual = ProjectPlan.objects.order_by('-startDate').first()  # Selecciona el proyecto más reciente o ajusta el criterio
+    return render(request, 'projects/indice.html', {'proyecto_actual': proyecto_actual})
+
 #########################################
 
 @login_required
@@ -190,3 +192,28 @@ def delete_task(request, task_id):
 def task_list(request):
     tasks = Task.objects.all()  # Consulta todas las tareas en la base de datos
     return render(request, 'tasks/task_list.html', {'tasks': tasks})  # Renderiza la plantilla 'task_list.html'
+
+@login_required
+def agregar_restriccion(request, project_id):
+    # Obtener el proyecto o lanzar error 404 si no existe
+    proyecto = get_object_or_404(ProjectPlan, id=project_id)
+    
+    # Manejo de solicitud POST para guardar la restricción
+    if request.method == 'POST':
+        form = RestriccionForm(request.POST)
+        if form.is_valid():
+            # Crear la instancia de Restriccion sin guardarla aún
+            restriccion = form.save(commit=False)
+            # Asignar el proyecto a la restricción
+            restriccion.proyecto = proyecto
+            # Guardar la restricción en la base de datos
+            restriccion.save()
+            # Mensaje de éxito para el administrador
+            messages.success(request, "La restricción ha sido agregada exitosamente.")
+            # Redirigir a la vista del proyecto para revisar la restricción
+            return redirect('view_project_plan', project_id=proyecto.id)
+    else: 
+        #  Inicializar el formulario vacío si la solicitud no es POST
+        form = RestriccionForm()
+    # Renderizar la plantilla de agregar restricción
+    return render(request, 'projects/agregar_restriccion.html', {'form': form, 'proyecto': proyecto})

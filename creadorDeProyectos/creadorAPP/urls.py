@@ -20,6 +20,7 @@ urlpatterns = [
     path('tasks/edit/<int:task_id>/', views.edit_task, name='edit_task'),
     path('tasks/delete/<int:task_id>/', views.delete_task, name='delete_task'),
     path('projects/recent/', views.recent_projects, name='recent_projects'), 
-    path('tasks/', views.task_list, name='task_list'),  # Define la URL con el nombre 'task_list'
+    path('tasks/', views.task_list, name='task_list'),
+    path('agregar-restriccion/<int:project_id>/', views.agregar_restriccion, name='agregar_restriccion'),  
 
 ]
