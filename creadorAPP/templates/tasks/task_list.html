@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tareas del proyecto</title>
+</head>
+<body>
+    <h1>Lista de tareas</h1>
+    <ul>
+        {% for task in tasks %}
+            <li>{{ task.name }} Duracion: {{task.estimated_duration}}</li>
+          
+            
+        {% endfor %}  <!-- El bloque for debe cerrarse con endfor -->
+    </ul>
+        <!---Enlace para volver a la pagina de incio (PRUEBA)-->
+        <p><a href="{% url 'home' %}">Volver a la página de incio</a></p>
+</body>
+</html>
