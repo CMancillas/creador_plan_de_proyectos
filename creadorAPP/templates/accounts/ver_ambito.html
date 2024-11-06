@@ -20,7 +20,7 @@
 
         <p>Última actualización: {{ ambito_proyecto.ultima_actualizacion|date:"d M Y H:i" }}</p>
 
-        <p><a href="{% url 'definir_ambito_proyecto' %}">Editar Ámbito del Proyecto</a></p>
+        <p><a href="{% url 'definir_ambito_proyecto' project_plan.id %}">Editar Ámbito del Proyecto</a></p>
     {% else %}
         <p>No se ha definido el ámbito del proyecto aún.</p>
     {% endif %}

@@ -13,7 +13,7 @@
         <button type="submit">Guardar</button>
     </form>
     <!----PRUEBA-->
-    <p><a href="{% url 'task_list' %}">Lista de Tareas</a></p>
+    <p><a href="{% url 'task_list' project.id %}">Lista de Tareas</a></p>
     <!---Enlace para volver a la pagina de incio (PRUEBA)-->
     <p><a href="{% url 'home' %}">Volver a la página de incio</a></p>
     <!----->

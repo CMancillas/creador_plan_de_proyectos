@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from .models import AmbitoProyecto
 from .models import ProjectPlan
 from .models import Task
+from .models import Resource
+from .models import ProjectRisks
 
 class RegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -88,10 +90,36 @@ class ProjectPlanForm(forms.ModelForm):
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ['name', 'estimated_duration', 'project']    
+        fields = ['name', 'estimated_duration', 'start_date', 'end_date']
+        widgets = {
+            'start_date': forms.DateInput(attrs={'type': 'date'}),
+            'end_date': forms.DateInput(attrs={'type': 'date'}),
+        }   
 
            
 class DeleteTaskForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ['name', 'estimated_duration', 'project']              
+
+
+class ResourceForm(forms.ModelForm):
+    class Meta:
+        model = Resource
+        fields = ['resource_type', 'name', 'description', 'quantity_estimated', 'cost_estimated']
+        labels = {
+            'resource_type': 'Tipo de Recurso',
+            'name': 'Nombre del Recurso',
+            'description': 'Descripción',
+            'quantity_estimated': 'Cantidad Estimada',
+            'cost_estimated': 'Costo Estimado',
+        }
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 4, 'cols': 40}),
+        }
+
+
+class ProjectRisksForm(forms.ModelForm):
+    class Meta:
+        model = ProjectRisks
+        fields = ['risk_identifier', 'description', 'risk_type', 'severity_level', 'project_plan']
