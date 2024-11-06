@@ -21,12 +21,6 @@
     <h3>Nombre del Cliente</h3>
     <p>{{ project_plan.clientName }}</p>
 
-    <h3>Nombre del Empleado</h3>
-    <p>{{ project_plan.employeeName }}</p>
-
-    <h3>Rol del Empleado</h3>
-    <p>{{ project_plan.employeeRole }}</p>
-
     <h3>Fecha de Inicio</h3>
     <p>{{ project_plan.startDate|date:"d M Y" }}</p>
 
@@ -53,6 +47,7 @@
     {% else %}
     <p>No se ha definido el plan de proyecto aún.</p>
     {% endif %}
+    <p><a href="{% url 'ver_ambito_proyecto' project_id=project_plan.id %}">Ver Ámbito del Proyecto</a></p>
     <p><a href="{% url 'task_list' project_id=project_plan.id %}">Lista de tareas</a></p>
     <p><a href="{% url 'indice' project_id=project_plan.id %}">Añadir información del proyecto</a></p>
     <p><a href="{% url 'home' %}">Volver a la página de inicio</a></p>

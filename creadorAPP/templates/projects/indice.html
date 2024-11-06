@@ -10,17 +10,15 @@
     <h1>Índice de Páginas</h1>
     <ul>
       <li>
-        <a href="{% url 'definir_ambito_proyecto' project_id=project_plan.id %}"
-          >Definir Ámbito del Proyecto</a
-        >
+        <a href="{% url 'ver_ambito_proyecto' project_id=project_plan.id %}"
+          >Definir Ámbito del Proyecto</a>
       </li>
       <li>
         <a href="{% url 'add_task' project_id=project_plan.id %}">Definir Nueva Tarea del Proyecto</a>
       </li>
       <li>
-        <a href="{% url 'view_project_plan' project_id=project_plan.id }"
-          >Ver Plan del Proyecto</a
-        >
+        <a href="{% url 'view_project_plan' project_id=project_plan.id %}"
+           >Ver Plan del Proyecto</a>
       </li>
       <!-- Agrega más enlaces a otras vistas -->
     </ul>

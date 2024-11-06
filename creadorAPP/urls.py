@@ -21,5 +21,9 @@ urlpatterns = [
     path('tasks/delete/<int:task_id>/', views.delete_task, name='delete_task'),
     path('view-project-plan/<int:project_id>/tasks/', views.task_list, name='task_list'),
     path('delete/project/<int:project_id>/', views.delete_project_plan, name='delete_project_plan'),
-    
+    path('work_team/<int:project_id>/team/', views.define_work_team, name='define_work_team'),
+    path('work_team/<int:project_id>/team/view/', views.view_work_team, name='view_work_team'),
+    path('work_team/<int:project_id>/team/edit/<int:member_id>/', views.edit_work_team_member, name='edit_work_team_member'),
+    path('work_team/<int:project_id>/team/delete/<int:member_id>/', views.delete_work_team_member, name='delete_work_team_member'),
+
 ]

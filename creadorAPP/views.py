@@ -11,8 +11,8 @@ from django.views import View
 # Import the User class (model)
 from django.contrib.auth.models import User
 # Import the RegisterForm from forms.py
-from .forms import RegisterForm, AmbitoProyectoForm, ProjectPlanForm, TaskForm, ResourceForm, ProjectRisksForm
-from .models import AmbitoProyecto, Task, ProjectPlan, Resource, ProjectRisks
+from .forms import RegisterForm, AmbitoProyectoForm, ProjectPlanForm, TaskForm, ResourceForm, ProjectRisksForm, WorkTeamMemberForm
+from .models import AmbitoProyecto, Task, ProjectPlan, Resource, ProjectRisks, WorkTeamMember
 from django.contrib import messages
 # from .models import Proyecto  # Asumiendo que el modelo del proyecto es 'Proyecto'
 
@@ -89,7 +89,7 @@ def definir_ambito_proyecto(request, project_id):
 @login_required
 def ver_ambito_proyecto(request, project_id):
     project_plan = get_object_or_404(ProjectPlan, id=project_id)
-    ambito_proyecto = AmbitoProyecto.objects.filter(project = project_id)
+    ambito_proyecto = AmbitoProyecto.objects.filter(project=project_id).first()
     #context = {'ambito_proyecto': ambito_proyecto, 'project_plan': project_plan}
     return render(request, 'accounts/ver_ambito.html',{'ambito_proyecto': ambito_proyecto,'project_plan': project_plan})
 @login_required
@@ -155,16 +155,10 @@ def edit_project_plan(request, project_id):
     return render(request, 'projects/edit_project_plan.html', {'form': form, 'project': project})
 
 
-
-# Prueba, creacion indice!!!!!!!!!!!!!!!!!!###############################
 @login_required
 def indice(request, project_id):
-    try:
-        project_plan = ProjectPlan.objects.get(id=project_id)  # Obtiene el proyecto por su ID
-    except ProjectPlan.DoesNotExist:
-        project_plan = None
+    project_plan = ProjectPlan.objects.get(id=project_id)  # Obtiene el proyecto por su ID
     return render(request, 'projects/indice.html', {'project_plan': project_plan})
-#########################################
 
 @login_required
 def recent_projects(request):
@@ -260,4 +254,58 @@ def define_risks(request, project_id):
         form = ProjectRisksForm()
 
     return render(request, 'projects/define_risks.html', {'form': form, 'project_plan': project_plan})
+
+@login_required
+def define_work_team(request, project_id):
+    project = get_object_or_404(ProjectPlan, id=project_id)
+    team_members = project.team_members.all()
+    if request.method == 'POST':
+        form = WorkTeamMemberForm(request.POST)
+        if form.is_valid():
+            team_member = form.save(commit=False)
+            team_member.project = project
+            team_member.save()
+            messages.success(request, "El miembro del equipo ha sido añadido exitosamente.")
+            return redirect('view_work_team', project_id=project.id)
+        else:
+            messages.error(request, "Error al añadir el miembro del equipo. Por favor, corrige los errores.")
+    else:
+        form = WorkTeamMemberForm()
+
+    return render(request, 'work_team/define_work_team.html', {'form': form, 'project': project, 'team_members': team_members})
+
+
+@login_required
+def edit_work_team_member(request, project_id, member_id):
+    project_plan = get_object_or_404(ProjectPlan, id=project_id)
+    team_member = get_object_or_404(WorkTeamMember, id=member_id)
+
+    if request.method == 'POST':
+        form = WorkTeamMemberForm(request.POST, instance=team_member)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "El rol del miembro ha sido actualizado.")
+            return redirect('view_work_team', project_id=project_id)
+    else:
+        form = WorkTeamMemberForm(instance=team_member)
+    
+    return render(request, 'work_team/edit_work_team_member.html', {'form': form, 'project_plan': project_plan, 'team_member': team_member})
+
+
+@login_required
+def delete_work_team_member(request, project_id, member_id):
+    team_member = get_object_or_404(WorkTeamMember, id=member_id)
+    team_member.delete()
+
+    messages.success(request, "El miembro del equipo ha sido eliminado.")
+
+    return redirect('view_work_team', project_id=project_id)
+
+
+@login_required
+def view_work_team(request, project_id):
+    project_plan = get_object_or_404(ProjectPlan, id=project_id)
+    team_members = project_plan.team_members.all()
+
+    return render(request, 'work_team/view_work_team.html', {'project_plan': project_plan, 'team_members': team_members})
 

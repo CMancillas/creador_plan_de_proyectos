@@ -5,6 +5,7 @@ from .models import ProjectPlan
 from .models import Task
 from .models import Resource
 from .models import ProjectRisks
+from .models import WorkTeamMember
 
 class RegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -58,7 +59,7 @@ class AmbitoProyectoForm(forms.ModelForm):
 class ProjectPlanForm(forms.ModelForm):
     class Meta:
         model = ProjectPlan
-        fields = ['title', 'description', 'objetive', 'clientName', 'employeeName', 'employeeRole', 'startDate', 'endDate']
+        fields = ['title', 'description', 'objetive', 'clientName', 'startDate', 'endDate']
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Descripción del proyecto...'}),
             'objetive': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Objetivo del proyecto...'}),
@@ -70,8 +71,6 @@ class ProjectPlanForm(forms.ModelForm):
             'description': 'Descripción',
             'objetive': 'Objetivo',
             'clientName': 'Nombre del Cliente',
-            'employeeName': 'Nombre del Empleado',
-            'employeeRole': 'Rol del Empleado',
             'startDate': 'Fecha de Inicio',
             'endDate': 'Fecha de Fin',
         }
@@ -123,3 +122,13 @@ class ProjectRisksForm(forms.ModelForm):
     class Meta:
         model = ProjectRisks
         fields = ['risk_identifier', 'description', 'risk_type', 'severity_level', 'project_plan']
+
+class WorkTeamMemberForm(forms.ModelForm):
+    class Meta:
+        model = WorkTeamMember
+        fields = ['name', 'role']
+        labels = {
+            'name': 'Nombre del miembro del equipo',
+            'role': 'Rol del miembro del equipo',
+        }
+

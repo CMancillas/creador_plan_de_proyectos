@@ -10,10 +10,6 @@ class ProjectPlan(models.Model):
 
     clientName = models.CharField(max_length=50)
 
-    employeeName = models.CharField(max_length=50)
-
-    employeeRole = models.CharField(max_length=50)
-    
     startDate = models.DateField()
 
     endDate = models.DateField()
@@ -89,3 +85,21 @@ class AmbitoProyecto(models.Model):
     def __str__(self):
         return f"Alcance del Proyecto: {self.project.title}"
     
+
+class WorkTeamMember(models.Model):
+    ROLE_CHOICES = [
+        ('manager', 'Gestor del proyecto'),
+        ('developer', 'Desarrollador'),
+        ('analyst', 'Analista'),
+        ('tester', 'QA Tester'),
+        ('other', 'Otro'),
+    ]
+
+    project = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE, related_name = 'team_members')
+    name = models.CharField(max_length=200, verbose_name="Nombre del miembro del equipo")
+    role = models.CharField(max_length=75, choices=ROLE_CHOICES, verbose_name="Rol del miembro del equipo")
+
+    def __str__(self):
+        return f"{self.name} - {self.get_role_display()}"
+
+
