@@ -1,30 +1,6 @@
-<!--{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-     <link rel="stylesheet" type="text/css" href="{% static 'styles/styles.css' %}">
-</head>
-<body>
-    <div class="container">
-        <h2>Home</h2>
-        <p>Welcome, {{request.user.username}}!</p>
-        <a href="{% url 'protected' %}">Go To Your Protected Page!</a>
-        <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-        </form>
-    </div>
-</body> 
-</html>-->
-
-<!----Version de prueba-->
-<!---- Version en la cual estoy incorporando recent_projects a home-->
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,15 +11,17 @@
     <div class="container">
         <h2>Home</h2>
         <p>Welcome, {{request.user.username}}!</p>
-        <h3>Proyectos Recientes</h3>
         <ul>
             {% for project in recent_projects %}
-                <li>{{ project.name }} - Creado el: {{ project.created_at }}</li>
+                <li>{{ project.title }} - Creado el: {{ project.startDate }}</li>
+                <a href="{% url 'view_project_plan' project.id %}">Ver detalles</a>
             {% empty %}
                 <li>No tienes proyectos recientes.</li>
             {% endfor %}
-            <a href="{% url 'define_project_plan' %}">Define un nuevo plan de proyecto</a>
         </ul>
+        
+            <a href="{% url 'define_project_plan' %}">Define un nuevo plan de proyecto</a>
+        
         <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}
             <button type="submit">Logout</button>

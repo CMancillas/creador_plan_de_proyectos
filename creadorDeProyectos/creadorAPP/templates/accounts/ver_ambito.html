@@ -20,10 +20,12 @@
 
         <p>Última actualización: {{ ambito_proyecto.ultima_actualizacion|date:"d M Y H:i" }}</p>
 
-        <p><a href="{% url 'definir_ambito_proyecto' %}">Editar Ámbito del Proyecto</a></p>
+        
     {% else %}
         <p>No se ha definido el ámbito del proyecto aún.</p>
+        <p><a href="{% url 'definir_ambito_proyecto' project_id=project_plan.id %}">Definir el ámbito</a></p>
     {% endif %}
+
     <!---Enlace para volver a la pagina de incio (PRUEBA)-->
     <p><a href="{% url 'home' %}">Volver a la página de incio</a></p>
 </body>

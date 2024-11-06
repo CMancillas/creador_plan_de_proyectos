@@ -11,8 +11,8 @@ from django.views import View
 # Import the User class (model)
 from django.contrib.auth.models import User
 # Import the RegisterForm from forms.py
-from .forms import RegisterForm, AmbitoProyectoForm, ProjectPlanForm, TaskForm, RestriccionForm
-from .models import AmbitoProyecto, Task, ProjectPlan
+from .forms import RegisterForm, AmbitoProyectoForm, ProjectPlanForm, TaskForm, RestriccionForm,  ResourceForm, ProjectRisksForm, WorkTeamMemberForm
+from .models import AmbitoProyecto, Task, ProjectPlan, Resource, ProjectRisks, WorkTeamMember
 from django.contrib import messages
 # from .models import Proyecto  # Asumiendo que el modelo del proyecto es 'Proyecto'
 # Importa HttpResponse de Django para enviar una respuesta HTTP al navegador.
@@ -59,12 +59,6 @@ def logout_view(request):
     else:
         return redirect('home')
     
-# Home View
-# Using the decorator
-@login_required
-def home_view(request):
-    return render(request, 'home/home.html')
-
 # Protected View
 class ProtectedView(LoginRequiredMixin, View):
     login_url = '/login/'
@@ -75,104 +69,92 @@ class ProtectedView(LoginRequiredMixin, View):
         return render(request, 'registration/protected.html')
 
 @login_required
-def definir_ambito_proyecto(request):
-    try:
-        ambito_proyecto = AmbitoProyecto.objects.get(id=1)
-    except AmbitoProyecto.DoesNotExist:
-        ambito_proyecto = None
+def definir_ambito_proyecto(request, project_id):
+    project_plan = get_object_or_404(ProjectPlan, id=project_id)
+    form = AmbitoProyectoForm(request.POST or None)
+
+    if form.is_valid():
+        ambito = form.save(commit=False)
+        ambito.project = project_plan
+        ambito.save()
+        return redirect('ver_ambito_proyecto', project_id=project_plan.id)
+
+    return render(request, 'accounts/definir_ambito.html', {'form': form, 'project_plan': project_plan})
+
+@login_required
+def ver_ambito_proyecto(request, project_id):
+    project_plan = get_object_or_404(ProjectPlan, id=project_id)
+    ambito_proyecto = AmbitoProyecto.objects.filter(project=project_id).first()
+    #context = {'ambito_proyecto': ambito_proyecto, 'project_plan': project_plan}
+    return render(request, 'accounts/ver_ambito.html',{'ambito_proyecto': ambito_proyecto,'project_plan': project_plan})
+
+@login_required
+def define_project_plan(request):
+    project_plan = None
 
     if request.method == 'POST':
-        form = AmbitoProyectoForm(request.POST, instance=ambito_proyecto)
+        form = ProjectPlanForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('ver_ambito_proyecto')
-        else:
-            return render(request, 'definir_ambito.html', {'form': form})
-    else:
-        form = AmbitoProyectoForm(instance=ambito_proyecto)
-
-    return render(request, 'accounts/definir_ambito.html', {'form': form})
-
-@login_required
-def ver_ambito_proyecto(request):
-    try:
-        ambito_proyecto = AmbitoProyecto.objects.get(id=1)
-    except AmbitoProyecto.DoesNotExist:
-        ambito_proyecto = None
-
-    return render(request, 'accounts/ver_ambito.html', {'ambito_proyecto': ambito_proyecto})
-
-'''
-# Para cuando esté el proyecto a eliminar
-@login_required
-def eliminar_proyecto(request, proyecto_id):
-    proyecto = get_object_or_404(Proyecto, id=proyecto_id)
-
-    if request.method == 'POST':
-        proyecto.delete()
-        messages.success(request, "El proyecto ha sido eliminado exitosamente.")
-        return redirect('lista_proyectos')  # Redirigir a una lista de proyectos u otra página
-
-    return render(request, 'accounts/eliminar_proyecto.html', {'proyecto': proyecto})
-'''
-
-@login_required
-def define_project_plan(request, project_id=None):
-    # Buscar el proyecto por su ID o crear uno nuevo si no existe
-    project_plan = get_object_or_404(ProjectPlan, id=project_id) if project_id else None
-
-    if request.method == 'POST':
-        form = ProjectPlanForm(request.POST, instance=project_plan)
-        if form.is_valid():
-            project = form.save()
+            project_plan = form.save()  # Guarda el nuevo proyecto y obtén la instancia
             messages.success(request, "El plan de proyecto ha sido definido exitosamente.")
-            return redirect('view_project_plan', project_id = project.id)
-        # Haciendo pruebas de mejoramiento al codigo
-        """else:
-            return render(request, 'projects/define_project_plan.html', {'form': form})"""
+            return redirect('view_project_plan', project_id=project_plan.id)  # Redirige al nuevo proyecto
+        else:
+            return render(request, 'projects/define_project_plan.html', {'form': form})
     else:
-        form = ProjectPlanForm(instance=project_plan)
+        form = ProjectPlanForm()
 
-    return render(request, 'projects/define_project_plan.html', {'form': form, 'project_plan':project_plan})
-
-
+    return render(request, 'projects/define_project_plan.html', {'form': form})
 
 @login_required
 def view_project_plan(request, project_id):
-    # Haciendo pruebas de mejoramiento al codigo
-    """try:
-        project_plan = ProjectPlan.objects.get(id=1)  # Cambia '1' por el id o criterio que necesites
+    try:
+        project_plan = ProjectPlan.objects.get(id=project_id)  # Obtiene el proyecto por su ID
     except ProjectPlan.DoesNotExist:
-        project_plan = None"""
-    project_plan = get_object_or_404(ProjectPlan, id=project_id)
+        project_plan = None
 
     return render(request, 'projects/view_project_plan.html', {'project_plan': project_plan})
 
-# Prueba, creacion indice!!!!!!!!!!!!!!!!!!###############################
-@login_required
-def indice(request):
-    proyecto_actual = ProjectPlan.objects.order_by('-startDate').first()  # Selecciona el proyecto más reciente o ajusta el criterio
-    return render(request, 'projects/indice.html', {'proyecto_actual': proyecto_actual})
+def edit_project_plan(request, project_id):
+    project = get_object_or_404(ProjectPlan, id=project_id)
+    
+    if request.method == 'POST':
+        form = ProjectPlanForm(request.POST, instance=project)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "El proyecto ha sido actualizado exitosamente.")
+            # Redirige a la vista de detalle del proyecto usando el nombre de la URL y pasando el project_id
+            return redirect('view_project_plan', project_id=project.id)
+    else:
+        form = ProjectPlanForm(instance=project)
+    
+    return render(request, 'projects/edit_project_plan.html', {'form': form, 'project': project})
 
-#########################################
+@login_required
+def indice(request, project_id):
+    project_plan = ProjectPlan.objects.get(id=project_id)  # Obtiene el proyecto por su ID
+    return render(request, 'projects/indice.html', {'project_plan': project_plan})
+
 
 @login_required
 def recent_projects(request):
     # Proyectos más recientes del usuario
-    recent_projects = ProjectPlan.objects.filter(employeeName=request.user.username).order_by('-startDate')[:5]
-    
-    return render(request, 'projects/recent_projects.html', {'recent_projects': recent_projects})
+    recent_projects = ProjectPlan.objects.all()
+    context = {'recent_projects': recent_projects}
+    return render(request, 'home/home.html', context)
+
 @login_required
-def add_task(request):
-    if request.method == 'POST':
-        form = TaskForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('task_list')  # Redirigir a la lista de tareas, por ejemplo
-    else:
-        form = TaskForm()
-    
-    return render(request, 'tasks/add_task.html', {'form': form})    
+def add_task(request, project_id):
+    project = get_object_or_404(ProjectPlan, id=project_id)
+    form = TaskForm(request.POST or None)
+
+    if form.is_valid():
+            task = form.save(commit=False)
+            task.project = project  # Associate the task with the project
+            task.save()
+            return redirect('task_list', project_id=project.id)
+
+    return render(request, 'tasks/add_task.html', {'form': form, 'project': project})  
+
 @login_required
 def edit_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
@@ -194,8 +176,9 @@ def delete_task(request, task_id):
     return render(request, 'tasks/delete_task.html', {'task': task})
 
 @login_required
-def task_list(request):
-    tasks = Task.objects.all()  # Consulta todas las tareas en la base de datos
+def task_list(request, project_id):
+    
+    tasks = Task.objects.filter(project = project_id)  # Consulta todas las tareas en la base de datos
     return render(request, 'tasks/task_list.html', {'tasks': tasks})  # Renderiza la plantilla 'task_list.html'
 
 @login_required
@@ -273,3 +256,109 @@ def descargar_resumen_pdf(request, project_id):
 
     # Retorna la respuesta con el PDF, permitiendo que el navegador descargue el archivo.
     return response
+
+
+@login_required
+def define_resources(request, project_id):
+    project = get_object_or_404(ProjectPlan, id=project_id)  # Obtén el proyecto al que se están agregando recursos
+
+    if request.method == 'POST':
+        form = ResourceForm(request.POST)  # Cambia a tu formulario de recursos
+        if form.is_valid():
+            resource = form.save(commit=False)  # No guardes aún, asigna el proyecto
+            resource.project = project  # Asigna el proyecto
+            resource.save()  # Guarda el recurso
+
+            messages.success(request, "El recurso ha sido agregado exitosamente.")
+            return redirect('define_resources', project_id=project.id)  # Redirige a la misma URL
+
+    else:
+        form = ResourceForm()
+
+    return render(request, 'projects/define_resources.html', {'form': form, 'project_id': project_id})
+
+
+@login_required
+def view_resources(request, project_id):
+    project_plan = get_object_or_404(ProjectPlan, id=project_id)
+
+    resources = project_plan.resources.all()
+
+    return render(request, 'projects/view_resources.html', {
+        'project_plan': project_plan,
+        'resources': resources
+    })
+
+
+def define_risks(request, project_id):
+    project_plan = get_object_or_404(ProjectPlan, id=project_id)
+
+    if request.method == 'POST':
+        form = ProjectRisksForm(request.POST)
+        if form.is_valid():
+            risk = form.save(commit=False)
+            risk.project_plan = project_plan  # Asocia el riesgo con el proyecto actual
+            risk.save()
+            messages.success(request, "El riesgo ha sido registrado exitosamente.")
+            return redirect('define_risks', project_id=project_id)  # Redirige a la misma URL para seguir añadiendo riesgos
+        else:
+            return render(request, 'projects/define_risks.html', {'form': form, 'project_plan': project_plan})
+    else:
+        form = ProjectRisksForm()
+
+    return render(request, 'projects/define_risks.html', {'form': form, 'project_plan': project_plan})
+
+@login_required
+def define_work_team(request, project_id):
+    project = get_object_or_404(ProjectPlan, id=project_id)
+    team_members = project.team_members.all()
+    if request.method == 'POST':
+        form = WorkTeamMemberForm(request.POST)
+        if form.is_valid():
+            team_member = form.save(commit=False)
+            team_member.project = project
+            team_member.save()
+            messages.success(request, "El miembro del equipo ha sido añadido exitosamente.")
+            return redirect('view_work_team', project_id=project.id)
+        else:
+            messages.error(request, "Error al añadir el miembro del equipo. Por favor, corrige los errores.")
+    else:
+        form = WorkTeamMemberForm()
+
+    return render(request, 'work_team/define_work_team.html', {'form': form, 'project': project, 'team_members': team_members})
+
+
+@login_required
+def edit_work_team_member(request, project_id, member_id):
+    project_plan = get_object_or_404(ProjectPlan, id=project_id)
+    team_member = get_object_or_404(WorkTeamMember, id=member_id)
+
+    if request.method == 'POST':
+        form = WorkTeamMemberForm(request.POST, instance=team_member)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "El rol del miembro ha sido actualizado.")
+            return redirect('view_work_team', project_id=project_id)
+    else:
+        form = WorkTeamMemberForm(instance=team_member)
+    
+    return render(request, 'work_team/edit_work_team_member.html', {'form': form, 'project_plan': project_plan, 'team_member': team_member})
+
+
+@login_required
+def delete_work_team_member(request, project_id, member_id):
+    team_member = get_object_or_404(WorkTeamMember, id=member_id)
+    team_member.delete()
+
+    messages.success(request, "El miembro del equipo ha sido eliminado.")
+
+    return redirect('view_work_team', project_id=project_id)
+
+
+@login_required
+def view_work_team(request, project_id):
+    project_plan = get_object_or_404(ProjectPlan, id=project_id)
+    team_members = project_plan.team_members.all()
+
+    return render(request, 'work_team/view_work_team.html', {'project_plan': project_plan, 'team_members': team_members})
+

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eliminar Proyecto</title>
+  </head>
+  <body>
+    <h1>Eliminar Proyecto</h1>
+
+    <p>
+      ¿Estás seguro de que deseas eliminar el proyecto "<strong
+        >{{ project_plan.title }}</strong
+      >"?
+    </p>
+
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit">Eliminar</button>
+      <a href="{% url 'view_project_plan' project_id=project_plan.id %}"
+        >Cancelar</a
+      >
+    </form>
+  </body>
+</html>

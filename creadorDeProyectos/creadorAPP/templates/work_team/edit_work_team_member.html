@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Miembro</title>
+</head>
+<body>
+    <h1>Editar Rol de {{ team_member.name }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Guardar Cambios</button>
+    </form>
+
+    <a href="{% url 'view_work_team' project_id=project_plan.id %}">Regresar a la Vista del Equipo</a>
+</body>
+</html>
+

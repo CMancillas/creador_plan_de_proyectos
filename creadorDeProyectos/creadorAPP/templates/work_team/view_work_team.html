@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Equipo de Trabajo - {{ project_plan.title }}</title>
+</head>
+<body>
+    <h1>Equipo de Trabajo para el Proyecto: {{ project_plan.title }}</h1>
+
+    <h2>Miembros del Equipo</h2>
+    <ul>
+        {% for member in team_members %}
+            <li>{{ member.name }} - {{ member.get_role_display }}</li>
+        {% empty %}
+            <p>No hay miembros en el equipo actualmente.</p>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'define_work_team' project_id=project_plan.id %}">Añadir o Editar Miembros</a>
+</body>
+</html>

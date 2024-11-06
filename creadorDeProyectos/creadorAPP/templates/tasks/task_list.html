@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Lista de tareas</title>
+    <title>Tareas del proyecto</title>
 </head>
 <body>
-    <h1>Mis tareas</h1>
+    <h1>Lista de tareas</h1>
     <ul>
         {% for task in tasks %}
-            <li>{{ task.name }}</li>
-            <!-- Enlace para editar la tarea (PRUEBA) -->
-            <a href="{% url 'edit_task' %}">Editar</a>
-            <!-- Enlace para eliminar la tarea(PRUEBA) -->
-            <a href="{% url 'delete_task' %}">Eliminar</a>
+            <li>{{ task.name }} Duracion: {{task.estimated_duration}}</li>
+          
+            
         {% endfor %}  <!-- El bloque for debe cerrarse con endfor -->
     </ul>
         <!---Enlace para volver a la pagina de incio (PRUEBA)-->
