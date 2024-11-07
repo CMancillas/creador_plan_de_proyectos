@@ -35,23 +35,10 @@
             >Editar Plan de Proyecto</a
           ></p>
   
-    <h3>Restricciones del Proyecto</h3>
-    {% if project_plan.restricciones.exists %}
-        <ul>
-            {% for restriccion in project_plan.restricciones.all %}
-                <li>
-                    <strong>Restricción:</strong> {{ restriccion.descripcion }}<br>
-                    <strong>Riesgo:</strong> {{ restriccion.riesgo_identificado }}
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No se han registrado restricciones para este proyecto.</p>
-    {% endif %}
+    
     <p><a href="{% url 'ver_ambito_proyecto' project_id=project_plan.id %}">Ver Ámbito del Proyecto</a></p>
     <p><a href="{% url 'task_list' project_id=project_plan.id %}">Lista de tareas</a></p>    
-    <!-- Enlace para agregar una nueva restricción -->
-    <p><a href="{% url 'agregar_restriccion' project_plan.id %}">Agregar Restricción</a></p>
+   
 
     <hr>
     <!----PRUEBA (INDICE)-->
