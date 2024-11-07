@@ -20,7 +20,7 @@ from django.http import HttpResponse
 # Importa render_to_string para convertir una plantilla HTML en una cadena de texto.
 from django.template.loader import render_to_string
 # Importa HTML de WeasyPrint, que convierte el HTML en un PDF.
-from weasyprint import HTML
+#from weasyprint import HTML
 
 # Create your views here.
 def register_view(request):
@@ -362,3 +362,15 @@ def view_work_team(request, project_id):
 
     return render(request, 'work_team/view_work_team.html', {'project_plan': project_plan, 'team_members': team_members})
 
+@login_required
+def delete_project_plan(request, project_id):
+    # Obtén el proyecto o muestra una página 404 si no existe
+    project_plan = get_object_or_404(ProjectPlan, id=project_id) 
+
+    if request.method == 'POST':
+        project_plan.delete()
+        messages.success(request, "El proyecto ha sido eliminado exitosamente.")
+        return redirect('home') 
+
+    # Renderiza la página de confirmación de eliminación
+    return render(request, 'projects/delete_project_plan.html', {'project_plan': project_plan})

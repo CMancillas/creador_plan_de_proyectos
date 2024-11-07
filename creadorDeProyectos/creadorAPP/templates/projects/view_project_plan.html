@@ -34,7 +34,7 @@
         <p><a href="{% url 'edit_project_plan' project_id=project_plan.id %}"
             >Editar Plan de Proyecto</a
           ></p>
-
+  
     <h3>Restricciones del Proyecto</h3>
     {% if project_plan.restricciones.exists %}
         <ul>
@@ -48,7 +48,8 @@
     {% else %}
         <p>No se han registrado restricciones para este proyecto.</p>
     {% endif %}
-
+    <p><a href="{% url 'ver_ambito_proyecto' project_id=project_plan.id %}">Ver Ámbito del Proyecto</a></p>
+    <p><a href="{% url 'task_list' project_id=project_plan.id %}">Lista de tareas</a></p>    
     <!-- Enlace para agregar una nueva restricción -->
     <p><a href="{% url 'agregar_restriccion' project_plan.id %}">Agregar Restricción</a></p>
 
@@ -57,5 +58,9 @@
     <p><a href="{% url 'indice' project_id=project_plan.id %}">Añadir información del proyecto</a></p>
     <!---Enlace para volver a la pagina de incio (PRUEBA)-->
     <p><a href="{% url 'home' %}">Volver a la página de incio</a></p>
+
+{% else %}
+<p>No se ha definido el plan de proyecto aún.</p>
+{% endif %}    
 </body>
 </html>
