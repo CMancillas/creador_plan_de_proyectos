@@ -20,7 +20,7 @@ from django.http import HttpResponse
 # Importa render_to_string para convertir una plantilla HTML en una cadena de texto.
 from django.template.loader import render_to_string
 # Importa HTML de WeasyPrint, que convierte el HTML en un PDF.
-from weasyprint import HTML
+#from weasyprint import HTML
 
 # Create your views here.
 def register_view(request):
@@ -95,7 +95,9 @@ def define_project_plan(request):
     if request.method == 'POST':
         form = ProjectPlanForm(request.POST)
         if form.is_valid():
-            project_plan = form.save()  # Guarda el nuevo proyecto y obtén la instancia
+            project_plan = form.save(commit=False)
+            project_plan.created_by = request.user
+            project_plan.save()
             messages.success(request, "El plan de proyecto ha sido definido exitosamente.")
             return redirect('view_project_plan', project_id=project_plan.id)  # Redirige al nuevo proyecto
         else:
@@ -138,7 +140,7 @@ def indice(request, project_id):
 @login_required
 def recent_projects(request):
     # Proyectos más recientes del usuario
-    recent_projects = ProjectPlan.objects.all()
+    recent_projects = ProjectPlan.objects.filter(created_by=request.user)
     context = {'recent_projects': recent_projects}
     return render(request, 'home/home.html', context)
 

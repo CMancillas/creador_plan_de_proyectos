@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class ProjectPlan(models.Model):
+     # se guarda el usuario que crea el proyecto
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     title = models.CharField(max_length=100)
 
