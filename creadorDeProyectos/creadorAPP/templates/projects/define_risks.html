@@ -18,7 +18,6 @@
             {% for restriccion in project_plan.restricciones.all %}
                 <li>
                     <strong>Restricción:</strong> {{ restriccion.descripcion }}<br>
-                    <strong>Riesgo:</strong> {{ restriccion.riesgo_identificado }}
                 </li>
             {% endfor %}
         </ul>

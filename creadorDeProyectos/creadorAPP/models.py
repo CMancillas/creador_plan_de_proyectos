@@ -43,7 +43,7 @@ class Task(models.Model):
 class Restriccion(models.Model):
     proyecto = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE, related_name='restricciones')
     descripcion = models.TextField("""help_text="Descripcion de la restricción.""")
-    riesgo_identificado = models.TextField("""help_text="Riesgo asociado con esta restricción.""")
+    #riesgo_identificado = models.TextField("""help_text="Riesgo asociado con esta restricción.""")
     fecha_creacion=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
