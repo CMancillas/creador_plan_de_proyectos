@@ -152,6 +152,20 @@ class WorkTeamMemberForm(forms.ModelForm):
             'role': 'Rol del miembro del equipo',
         }
 
+#class EventoCronogramaForm(forms.ModelForm):
+ #   tasks = forms.ModelMultipleChoiceField(
+  #      queryset=Task.objects.all(),
+   #     required=False,
+    #    widget=forms.CheckboxSelectMultiple
+    #)
+
+    #class Meta:
+     #   model = EventoCronograma
+      #  fields = ['titulo', 'descripcion', 'fecha_inicio', 'fecha_fin', 'tipo_evento', 'tasks']
+       # widgets = {
+        #    'fecha_inicio': forms.DateInput(attrs={'type': 'date'}),
+         #   'fecha_fin': forms.DateInput(attrs={'type': 'date'}),
+        #}
 class EventoCronogramaForm(forms.ModelForm):
     tasks = forms.ModelMultipleChoiceField(
         queryset=Task.objects.all(),
@@ -161,17 +175,40 @@ class EventoCronogramaForm(forms.ModelForm):
 
     class Meta:
         model = EventoCronograma
-        fields = ['titulo', 'descripcion', 'fecha_inicio', 'fecha_fin', 'tipo_evento', 'tasks']
+        fields = ['fecha_inicio', 'fecha_fin', 'tasks']
         widgets = {
             'fecha_inicio': forms.DateInput(attrs={'type': 'date'}),
             'fecha_fin': forms.DateInput(attrs={'type': 'date'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        # Pasar el proyecto actual para validar fechas
+        self.project = kwargs.pop('project', None)
+        super().__init__(*args, **kwargs)
+
+    def clean_fecha_inicio(self):
+        fecha_inicio = self.cleaned_data.get('fecha_inicio')
+        if self.project and (fecha_inicio < self.project.startDate or fecha_inicio > self.project.endDate):
+            raise forms.ValidationError("La fecha de inicio debe estar dentro del rango del proyecto.")
+        return fecha_inicio
+
+    def clean_fecha_fin(self):
+        fecha_fin = self.cleaned_data.get('fecha_fin')
+        if self.project and (fecha_fin < self.project.startDate or fecha_fin > self.project.endDate):
+            raise forms.ValidationError("La fecha de fin debe estar dentro del rango del proyecto.")
+        return fecha_fin
+
+
+
+
+
+
 class EsfuerzoProyectoForm(forms.ModelForm):
     class Meta:
         model = EsfuerzoProyecto
         fields = ['esfuerzo_estimado', 'esfuerzo_real']
 
 
-#nuevas historias de usuario
+
 
       

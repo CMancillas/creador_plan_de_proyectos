@@ -405,10 +405,25 @@ def ver_cronograma(request, project_id):
     return render(request, 'cronograma/ver_cronograma.html', {'eventos': eventos,'project_id':project_id })
 
 
+#def agregar_evento(request, project_id):
+ #   proyecto = get_object_or_404(ProjectPlan, id=project_id)
+  #  if request.method == 'POST':
+   #     form = EventoCronogramaForm(request.POST)
+    #    if form.is_valid():
+     #       evento = form.save(commit=False)
+      #      evento.project = proyecto
+       #     evento.save()
+        #    form.save_m2m()  # Guarda la relación ManyToMany
+         #   return redirect('ver_cronograma', project_id=project_id)
+    #else:
+     #   form = EventoCronogramaForm()
+
+    #return render(request, 'cronograma/agregar_evento.html', {'form': form, 'proyecto': proyecto})
+
 def agregar_evento(request, project_id):
     proyecto = get_object_or_404(ProjectPlan, id=project_id)
     if request.method == 'POST':
-        form = EventoCronogramaForm(request.POST)
+        form = EventoCronogramaForm(request.POST, project=proyecto)  # Pasa el proyecto aquí
         if form.is_valid():
             evento = form.save(commit=False)
             evento.project = proyecto
@@ -416,9 +431,13 @@ def agregar_evento(request, project_id):
             form.save_m2m()  # Guarda la relación ManyToMany
             return redirect('ver_cronograma', project_id=project_id)
     else:
-        form = EventoCronogramaForm()
+        form = EventoCronogramaForm(project=proyecto)  # Pasa el proyecto aquí también
 
     return render(request, 'cronograma/agregar_evento.html', {'form': form, 'proyecto': proyecto})
+
+
+
+
 
 def editar_evento(request, event_id):
     evento = get_object_or_404(EventoCronograma, id=event_id)
