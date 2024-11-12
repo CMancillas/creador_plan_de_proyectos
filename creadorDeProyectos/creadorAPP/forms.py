@@ -141,7 +141,9 @@ class ResourceForm(forms.ModelForm):
 class ProjectRisksForm(forms.ModelForm):
     class Meta:
         model = ProjectRisks
-        fields = ['risk_identifier', 'description', 'risk_type', 'severity_level', 'project_plan']
+        fields = ['risk_identifier', 'description', 'risk_type', 'severity_level', 
+                  'mitigation_strategy_avoid', 'mitigation_strategy_control', 
+                  'mitigation_strategy_transfer', 'mitigation_strategy_accept']
 
 class WorkTeamMemberForm(forms.ModelForm):
     class Meta:

@@ -1,15 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Definir Riesgos</title>
-  </head>
-  <body>
+</head>
+<body>
     <h2>Definir Riesgos para el Proyecto: {{ project_plan.name }}</h2>
     <form method="post">
-      {% csrf_token %} {{ form.as_p }}
-      <button type="submit">Guardar Riesgo</button>
+        {% csrf_token %}
+        {{ form.risk_identifier.label_tag }} {{ form.risk_identifier }}<br>
+        {{ form.description.label_tag }} {{ form.description }}<br>
+        {{ form.risk_type.label_tag }} {{ form.risk_type }}<br>
+        {{ form.severity_level.label_tag }} {{ form.severity_level }}<br>
+
+        <!-- Nuevos campos para estrategias de mitigación -->
+        {{ form.mitigation_strategy_avoid.label_tag }} {{ form.mitigation_strategy_avoid }}<br>
+        {{ form.mitigation_strategy_control.label_tag }} {{ form.mitigation_strategy_control }}<br>
+        {{ form.mitigation_strategy_transfer.label_tag }} {{ form.mitigation_strategy_transfer }}<br>
+        {{ form.mitigation_strategy_accept.label_tag }} {{ form.mitigation_strategy_accept }}<br>
+
+        <button type="submit">Guardar Riesgo</button>
     </form>
 
     <h3>Restricciones del Proyecto</h3>
@@ -26,8 +37,8 @@
         <p>No se han registrado restricciones para este proyecto.</p>
     {% endif %}
 
-     <!-- Enlace para agregar una nueva restricción -->
-     <p><a href="{% url 'agregar_restriccion' project_plan.id %}">Agregar Restricción</a></p>
+    <!-- Enlace para agregar una nueva restricción -->
+    <p><a href="{% url 'agregar_restriccion' project_plan.id %}">Agregar Restricción</a></p>
     <p><a href="{% url 'indice' project_plan.id %}">Volver a la página de inicio</a></p>
-  </body>
+</body>
 </html>

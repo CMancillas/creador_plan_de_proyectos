@@ -329,6 +329,20 @@ def define_work_team(request, project_id):
 
 
 @login_required
+def view_project_risks(request, project_id):
+    project_plan = get_object_or_404(ProjectPlan, id=project_id)
+    risks = project_plan.risks.all()  # Obtener todos los riesgos asociados al proyecto
+
+    context = {
+        'project_plan': project_plan,
+        'risks': risks,
+    }
+    return render(request, 'projects/view_project_risks.html', context)
+
+
+
+
+@login_required
 def edit_work_team_member(request, project_id, member_id):
     project_plan = get_object_or_404(ProjectPlan, id=project_id)
     team_member = get_object_or_404(WorkTeamMember, id=member_id)
