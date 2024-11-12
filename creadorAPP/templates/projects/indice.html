@@ -1,0 +1,24 @@
+<!--Pagina indice de prueba-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Índice de Páginas</title>
+</head>
+<body>
+    <h1>Índice de Páginas</h1>
+    <ul>
+        <li><a href="{% url 'ver_ambito_proyecto' project_id=project_plan.id %}">Definir Ámbito del Proyecto</a></li>
+        <li><a href="{% url 'add_task' project_id=project_plan.id %}">Definir Nueva Tarea del Proyecto</a></li>
+        <li><a href="{% url 'define_risks' project_id=project_plan.id  %}">Definir Riesgos del Proyecto</a></li>
+        <li><a href="{% url 'view_project_plan' project_id=project_plan.id %}">Ver Plan del Proyecto</a></li>
+        <li><a href="{% url 'resumen_proyecto' project_id=project_plan.id  %}">Ver Resumen del Proyecto</a></li>
+        
+        
+        
+        <!-- Agrega más enlaces a otras vistas -->
+    </ul>
+</body>
+</html>
+<!---->

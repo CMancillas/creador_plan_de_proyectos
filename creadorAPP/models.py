@@ -1,0 +1,163 @@
+from django.db import models
+from django.contrib.auth.models import User
+
+class ProjectPlan(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    objetive = models.TextField()
+    clientName = models.CharField(max_length=50)
+    startDate = models.DateField()
+    endDate = models.DateField()
+    #campo para presupuesto total
+    presupuestoTotal = models.DecimalField(
+        max_digits=12, 
+        decimal_places=2, 
+        null=True,
+        blank=True,
+        help_text="Presupuesto total del proyecto en USD."
+    )
+
+    @property
+    def costo_total(self):
+        # Sumamos los gastos asociados al proyecto
+        return self.gastos.aggregate(models.Sum('monto'))['monto__sum'] or 0
+
+    def __str__(self):
+        return f"Proyecto: {self.title}"
+    
+
+    
+class Task(models.Model):
+    project = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE, related_name='tasks')
+    name = models.CharField(max_length=255)
+    estimated_duration = models.PositiveIntegerField(help_text="Duración estimada en horas")
+    created_at = models.DateTimeField(auto_now_add=True)
+    start_date = models.DateField(null=True, blank=True)  # Campo para la fecha de inicio
+    end_date = models.DateField(null=True, blank=True)    # Campo para la fecha de fin
+
+    def __str__(self):
+        return f"Tarea: {self.name} - Almacenada exitosamente."
+  
+class Restriccion(models.Model):
+    proyecto = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE, related_name='restricciones')
+    descripcion = models.TextField("""help_text="Descripcion de la restricción.""")
+    riesgo_identificado = models.TextField("""help_text="Riesgo asociado con esta restricción.""")
+    fecha_creacion=models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Restricción para el proyecto {self.proyecto.title}"
+
+
+class AmbitoProyecto(models.Model):
+    project = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE, related_name='ambiito')
+    descripcion_ambito = models.TextField(help_text="Descripción del alcance y expectativas del proyecto.")
+    caracteristicas_principales = models.TextField(help_text="Características principales del proyecto.")
+    limitaciones = models.TextField(help_text="Limitaciones del proyecto.")
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    ultima_actualizacion = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Alcance del Proyecto: {self.project.title}"
+    
+
+class WorkTeamMember(models.Model):
+    ROLE_CHOICES = [
+        ('manager', 'Gestor del proyecto'),
+        ('developer', 'Desarrollador'),
+        ('analyst', 'Analista'),
+        ('tester', 'QA Tester'),
+        ('other', 'Otro'),
+    ]
+
+    project = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE, related_name = 'team_members')
+    name = models.CharField(max_length=200, verbose_name="Nombre del miembro del equipo")
+    role = models.CharField(max_length=75, choices=ROLE_CHOICES, verbose_name="Rol del miembro del equipo")
+
+    def __str__(self):
+        return f"{self.name} - {self.get_role_display()}"
+
+
+class Resource(models.Model):
+    RESOURCE_TYPE_CHOICES = [
+        ('human', 'Recursos Humanos'),
+        ('tools', 'Herramientas y Software'),
+        ('infrastructure', 'Infraestructura y Servicios'),
+        ('budget', 'Presupuesto'),
+        ('documentation', 'Documentación y Procedimientos'),
+    ]
+
+    project = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE, related_name='resources')
+    resource_type = models.CharField(max_length=15, choices=RESOURCE_TYPE_CHOICES, verbose_name="Tipo de Recurso")
+    name = models.CharField(max_length=255, verbose_name="Nombre del Recurso")
+    description = models.TextField(blank=True, null=True, verbose_name="Descripción")
+    quantity_estimated = models.PositiveIntegerField(blank=True, null=True, verbose_name="Cantidad Estimada")
+    cost_estimated = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, verbose_name="Costo Estimado")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.get_resource_type_display()} - {self.name}"
+
+
+class ProjectRisks(models.Model):
+    RISK_TYPES = [
+        ('technical', 'Técnico'),
+        ('organizational', 'Organizativo'),
+        ('financial', 'Financiero'),
+    ]
+
+    project_plan = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE, related_name='risks')
+    risk_identifier = models.CharField(max_length=50, unique=True)
+    description = models.TextField()
+    risk_type = models.CharField(max_length=20, choices=RISK_TYPES)
+    identification_date = models.DateField(auto_now_add=True)
+    severity_level = models.CharField(max_length=10, choices=[
+        ('low', 'Bajo'),
+        ('medium', 'Medio'),
+        ('high', 'Alto'),
+    ])
+
+    def __str__(self):
+        return f"{self.risk_identifier}: {self.description}"
+    
+
+#edit de hoy
+class EventoCronograma(models.Model):
+    project = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE, related_name='cronograma')
+    titulo = models.CharField(max_length=100)
+    descripcion = models.TextField(blank=True, null=True)
+    fecha_inicio = models.DateField()
+    fecha_fin = models.DateField()
+    tipo_evento = models.CharField(
+        max_length=50, 
+        choices=[('trabajo', 'Día de trabajo'), ('entrega', 'Entrega'), ('reunión', 'Reunión')]
+    )
+    tasks = models.ManyToManyField(Task, blank=True, related_name="eventos")  # Relación ManyToMany con Task
+
+    def __str__(self):
+        return self.titulo
+    
+class EsfuerzoProyecto(models.Model):
+    proyecto = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE)  # Enlace al proyecto
+    esfuerzo_estimado = models.DecimalField(max_digits=6, decimal_places=2)  # Esfuerzo estimado en horas
+    esfuerzo_real = models.DecimalField(max_digits=6, decimal_places=2, default=0)  # Esfuerzo real en horas
+
+    def diferencia_esfuerzo(self):
+        return self.esfuerzo_estimado - self.esfuerzo_real  # Devuelve la diferencia entre estimado y real
+
+    def __str__(self):
+        return f"Esfuerzo del proyecto {self.proyecto.nombre}"
+    
+class Proyecto(models.Model):
+    nombre = models.CharField(max_length=200)
+    costo = models.DecimalField(max_digits=10, decimal_places=2)  # Campo para el costo
+    presupuesto = models.DecimalField(max_digits=10, decimal_places=2)  # Campo para el presupuesto
+
+    def __str__(self):
+        return self.nombre
+
+        
+class Gasto(models.Model):
+    proyecto = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE, related_name='gastos')
+    monto = models.DecimalField(max_digits=10, decimal_places=2)
+    descripcion = models.CharField(max_length=255)
+    fecha = models.DateField()

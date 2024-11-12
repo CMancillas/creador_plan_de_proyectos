@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar Plan de Proyecto</title>
+</head>
+<body>
+    <h1>Editar Plan de Proyecto</h1>
+
+    <!-- Mensajes de éxito o advertencia -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{% if message.tags %}alert {{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- Renderizar cada campo y mostrar errores específicos -->
+        <label for="id_title">Título del Proyecto:</label><br />
+        {{ form.title }}<br />
+        {% if form.title.errors %}
+            <div style="color: red;">{{ form.title.errors }}</div>
+        {% endif %}
+        <br /><br />
+
+        <label for="id_description">Descripción del Proyecto:</label><br />
+        {{ form.description }}<br />
+        {% if form.description.errors %}
+            <div style="color: red;">{{ form.description.errors }}</div>
+        {% endif %}
+        <br /><br />
+
+        <label for="id_objetive">Objetivo del Proyecto:</label><br />
+        {{ form.objetive }}<br />
+        {% if form.objetive.errors %}
+            <div style="color: red;">{{ form.objetive.errors }}</div>
+        {% endif %}
+        <br /><br />
+
+        <label for="id_clientName">Nombre del Cliente:</label><br />
+        {{ form.clientName }}<br />
+        {% if form.clientName.errors %}
+            <div style="color: red;">{{ form.clientName.errors }}</div>
+        {% endif %}
+        <br /><br />
+
+        <label for="id_startDate">Fecha de Inicio:</label><br />
+        {{ form.startDate }}<br />
+        {% if form.startDate.errors %}
+            <div style="color: red;">{{ form.startDate.errors }}</div>
+        {% endif %}
+        <br /><br />
+
+        <label for="id_endDate">Fecha de Fin:</label><br />
+        {{ form.endDate }}<br />
+        {% if form.endDate.errors %}
+            <div style="color: red;">{{ form.endDate.errors }}</div>
+        {% endif %}
+        <br /><br />
+
+        <label for="id_presupuestoTotal">Presupuesto Total:</label><br />
+        {{ form.presupuestoTotal }}<br />
+        {% if form.presupuestoTotal.errors %}
+            <div style="color: red;">{{ form.presupuestoTotal.errors }}</div>
+        {% endif %}
+        <br /><br />
+
+        <button type="submit">Guardar Cambios</button>
+    </form>
+
+    <!-- Enlace para volver a la vista del proyecto -->
+    <p>
+        <a href="{% url 'view_project_plan' project_id=project.id %}">Volver a la Vista del Proyecto</a>
+    </p>
+</body>
+</html>

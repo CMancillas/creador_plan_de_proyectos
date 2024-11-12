@@ -1,0 +1,19 @@
+<!-- consultar_costo.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Consulta de Costo del Proyecto</title>
+</head>
+<body>
+    <h1>Consulta del Proyecto: {{ nombre }}</h1>
+    <p><strong>Costo del Proyecto:</strong> {{ costo }}</p>
+    <p><strong>Presupuesto del Proyecto:</strong> {{ presupuesto }}</p>
+
+    {% if costo > presupuesto %}
+        <p style="color: red;">El costo excede el presupuesto.</p>
+    {% else %}
+        <p style="color: green;">El costo está dentro del presupuesto.</p>
+    {% endif %}
+</body>
+</html>

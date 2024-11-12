@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Definir Plan de Proyecto</title>
+</head>
+<body>
+    <h1>Definir Plan de Proyecto</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        <label for="id_title">Título del Proyecto:</label><br>
+        <input type="text" id="id_title" name="title" value="{{ form.title.value }}" maxlength="100"><br><br>
+        
+        <label for="id_description">Descripción del Proyecto:</label><br>
+        <textarea id="id_description" name="description" rows="4" cols="50">{{ form.description.value }}</textarea><br><br>
+
+        <label for="id_objetive">Objetivo del Proyecto:</label><br>
+        <textarea id="id_objetive" name="objetive" rows="4" cols="50">{{ form.objetive.value }}</textarea><br><br>
+
+        <label for="id_clientName">Nombre del Cliente:</label><br>
+        <input type="text" id="id_clientName" name="clientName" value="{{ form.clientName.value }}" maxlength="50"><br><br>
+        
+        <label for="id_startDate">Fecha de Inicio:</label><br>
+        <input type="date" id="id_startDate" name="startDate" value="{{ form.startDate.value }}"><br><br>
+        
+        <label for="id_endDate">Fecha de Fin:</label><br>
+        <input type="date" id="id_endDate" name="endDate" value="{{ form.endDate.value }}"><br><br>
+
+        <label for="id_presupuestoTotal">Presupuesto Total (USD):</label><br>
+<input type="number" id="id_presupuestoTotal" name="presupuestoTotal" step="0.01" value="{{ form.presupuestoTotal.value }}"><br><br>
+
+        <button type="submit">Guardar Plan de Proyecto</button>
+    </form>
+
+   
+    <!-- El enlace "Ver Plan de Proyecto" solo se mostrará cuando el proyecto exista y tenga un ID válido.-->
+    {% if project_plan and project_plan.id %}
+    <p><a href="{% url 'view_project_plan' project_plan.id %}">Ver Plan de Proyecto</a></p>
+    {% endif %}
+      
+    <!---Enlace para volver a la pagina de incio (PRUEBA)-->
+    <p><a href="{% url 'home' %}">Volver a la página de incio</a></p>
+</body>
+</html>

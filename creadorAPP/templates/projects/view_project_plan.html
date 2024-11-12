@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Plan de Proyecto</title>
+</head>
+<body>
+    <h1>Plan de Proyecto</h1>
+
+    {% if project_plan %}
+        <h3>Título del Proyecto</h3>
+        <p>{{ project_plan.title }}</p>
+
+        <h3>Descripción del Proyecto</h3>
+        <p>{{ project_plan.description }}</p>
+
+        <h3>Objetivo del Proyecto</h3>
+        <p>{{ project_plan.objetive }}</p>
+
+        <h3>Nombre del Cliente</h3>
+        <p>{{ project_plan.clientName }}</p>
+
+        <h3>Fecha de Inicio</h3>
+        <p>{{ project_plan.startDate|date:"d M Y" }}</p>
+
+        <h3>Fecha de Fin</h3>
+        <p>{{ project_plan.endDate|date:"d M Y" }}</p>
+
+        <h3>Presupuesto Total</h3>
+        <p>{{ project_plan.presupuestoTotal }}</p>
+
+        
+        <p><a href="{% url 'edit_project_plan' project_id=project_plan.id %}"
+            >Editar Plan de Proyecto</a
+          ></p>
+  
+    
+    <p><a href="{% url 'ver_ambito_proyecto' project_id=project_plan.id %}">Ver Ámbito del Proyecto</a></p>
+    <p><a href="{% url 'task_list' project_id=project_plan.id %}">Lista de tareas</a></p>    
+    
+    
+    <p><a href="{% url 'agregar_evento' project_id=project_plan.id %}">Agregar evento</a></p>
+    <p><a href="{% url 'ver_cronograma' project_id=project_plan.id %}">Ver Cronograma</a></p>
+    <p><a href="{% url 'consultar_esfuerzo' project_id=project_plan.id %}">Consultar Esfuerzo</a></p>
+    <p><a href="{% url 'agregar_esfuerzo' project_id=project_plan.id %}">Agregar Esfuerzo</a></p>
+    <p><a href="{% url 'consultar_costo' project_id=project_plan.id %}">Consultar Costo</a></p>
+    
+
+
+
+    <hr>
+    <!----PRUEBA (INDICE)-->
+    <p><a href="{% url 'indice' project_id=project_plan.id %}">Añadir información del proyecto</a></p>
+    <!---Enlace para volver a la pagina de incio (PRUEBA)-->
+    <p><a href="{% url 'home' %}">Volver a la página de incio</a></p>
+
+{% else %}
+<p>No se ha definido el plan de proyecto aún.</p>
+{% endif %}    
+</body>
+</html>

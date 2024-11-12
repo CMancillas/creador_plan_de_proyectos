@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Ámbito del Proyecto</title>
+</head>
+<body>
+    <h1>Ámbito del Proyecto</h1>
+
+    {% if ambito_proyecto %}
+        <h3>Descripción del Ámbito</h3>
+        <p>{{ ambito_proyecto.descripcion_ambito }}</p>
+
+        <h3>Características Principales</h3>
+        <p>{{ ambito_proyecto.caracteristicas_principales }}</p>
+
+        <h3>Limitaciones</h3>
+        <p>{{ ambito_proyecto.limitaciones }}</p>
+
+        <p>Última actualización: {{ ambito_proyecto.ultima_actualizacion|date:"d M Y H:i" }}</p>
+
+        
+    {% else %}
+        <p>No se ha definido el ámbito del proyecto aún.</p>
+        <p><a href="{% url 'definir_ambito_proyecto' project_id=project_plan.id %}">Definir el ámbito</a></p>
+    {% endif %}
+
+    <!---Enlace para volver a la pagina de incio (PRUEBA)-->
+    <p><a href="{% url 'home' %}">Volver a la página de incio</a></p>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Definir Equipo de Trabajo</title>
+</head>
+<body>
+    <h1>Equipo de Trabajo para el Proyecto: {{ project_plan.title }}</h1>
+
+    <h2>Añadir Nuevo Miembro</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Añadir Miembro</button>
+    </form>
+
+    <h3>Miembros Actuales</h3>
+    <ul>
+        {% for member in team_members %}
+            <li>
+                {{ member.name }} - {{ member.get_role_display }}
+                <a href="{% url 'edit_work_team_member' project_id=project.id member_id=member.id %}">Editar</a> |
+                <a href="{% url 'delete_work_team_member' project_id=project.id member_id=member.id %}">Eliminar</a>
+            </li>
+        {% empty %}
+            <p>No hay miembros en el equipo actualmente.</p>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'view_work_team' project_id=project.id %}">Ver Equipo Completo</a>
+</body>
+</html>

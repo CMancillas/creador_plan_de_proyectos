@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Cronograma del Proyecto</title>
+</head>
+<body>
+    <h1>Cronograma del Proyecto</h1>
+    <table>
+        <tr>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Tipo</th>
+        </tr>
+        {% for evento in eventos %}
+        <tr>
+            <td>{{ evento.titulo }}</td>
+            <td>{{ evento.descripcion }}</td>
+            <td>{{ evento.fecha_inicio }}</td> <! pendiente editar >
+            <td>{{ evento.fecha_fin }}</td> <! pendiente editar necesito que la fecha sea desplegable >
+            <td>{{ evento.tipo_evento }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{% url 'agregar_evento' project_id %}">Añadir nuevo evento</a> <! Aqui se le pasa el proyect_id, para encontrar el cronograma del proyecto>
+</body>
+</html>
