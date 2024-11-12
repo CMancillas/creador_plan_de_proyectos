@@ -41,9 +41,14 @@
    
 
     <hr>
-    <!----PRUEBA (INDICE)-->
+    <!--PRUEBA (INDICE)-->
     <p><a href="{% url 'indice' project_id=project_plan.id %}">Añadir información del proyecto</a></p>
-    <!---Enlace para volver a la pagina de incio (PRUEBA)-->
+   
+    <!-- Botón para descargar el PDF, solo visible en pantalla -->
+    <a href="{% url 'descargar_resumen_pdf' project_id=project_plan.id %}" class="btn-download no-print">Descargar Resumen en PDF</a>
+
+   
+    <!---Enlace para volver a la pagina de incio -->
     <p><a href="{% url 'home' %}">Volver a la página de incio</a></p>
 
 {% else %}

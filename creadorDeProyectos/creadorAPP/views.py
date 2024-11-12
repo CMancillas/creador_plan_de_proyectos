@@ -20,7 +20,7 @@ from django.http import HttpResponse
 # Importa render_to_string para convertir una plantilla HTML en una cadena de texto.
 from django.template.loader import render_to_string
 # Importa HTML de WeasyPrint, que convierte el HTML en un PDF.
-#from weasyprint import HTML
+from weasyprint import HTML
 
 # Create your views here.
 def register_view(request):
@@ -218,12 +218,16 @@ def resumen_proyecto(request,project_id):
     # Se obtiene todas las tareas asociadas al proyecto.
     tareas = proyecto.tasks.all()
 
+    # Se obtiene todos los riesgos asociados al proyecto.
+    riesgos = proyecto.risks.all()
+
     # Se renderiza la plantilla 'resumen_proyecto.html', pasando como contexto:
     # el proyecto, las restricciones y las tareas, para su visualizacion en el HTML.
     return render(request, 'projects/resumen_proyecto.html', {
         'proyecto': proyecto,
         'restricciones': restricciones,
         'tareas': tareas,
+        'riesgos':riesgos,  
     })
 
 @login_required
@@ -238,11 +242,15 @@ def descargar_resumen_pdf(request, project_id):
     # Se obtiene todas las tareas asociadas al proyecto.
     tareas = proyecto.tasks.all()    
 
+    # Se obtiene todos los riesgos asociados al proyecto.
+    riesgos = proyecto.risks.all()
+
     # Renderiza la plantilla HTML en una cadena de texto.
     html_string = render_to_string('projects/resumen_proyecto.html', {
         'proyecto': proyecto,
         'restricciones': restricciones,
         'tareas': tareas,
+        'riesgos': riesgos,
     })
 
     # Crea la respuesta HTTP como un archivo PDF.
