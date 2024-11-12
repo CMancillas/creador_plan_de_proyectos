@@ -37,7 +37,11 @@
   
     
     <p><a href="{% url 'ver_ambito_proyecto' project_id=project_plan.id %}">Ver Ámbito del Proyecto</a></p>
-    <p><a href="{% url 'task_list' project_id=project_plan.id %}">Lista de tareas</a></p>    
+    <p><a href="{% url 'task_list' project_id=project_plan.id %}">Ver tareas</a></p>
+    <p><a href="{% url 'view_work_team' project_id=project_plan.id %}">Ver equipo</a></p> 
+    <p><a href="{% url 'view_resources' project_id=project_plan.id %}">Ver recursos</a></p>
+    <p><a href="{% url 'ver_restriccion' project_id=project_plan.id %}">Ver restricciones</a></p>              
+    <p><a href="{% url 'view_risks' project_id=project_plan.id %}">Ver riesgos</a></p>     
    
 
     <hr>

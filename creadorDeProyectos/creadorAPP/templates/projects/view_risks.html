@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Riesgos del Proyecto</title>
+</head>
+<body>
+    <h1>Riesgos del Proyecto</h1>
+
+    {% if project_risks %}
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Identificador del Riesgo</th>
+                    <th>Descripción</th>
+                    <th>Tipo de Riesgo</th>
+                    <th>Impacto en el Proyecto</th>
+                
+                </tr>
+            </thead>
+            <tbody>
+                {% for risk in project_risks %}
+                    <tr>
+                        <td>{{ risk.risk_identifier }}</td>
+                        <td>{{ risk.description }}</td>
+                        <td>{{ risk.risk_type }}</td>
+                        <td>{{ risk.severity_level }}</td>
+                        
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No hay riesgos del proyecto registrados aún.</p>
+    {% endif %}
+
+    <p><a href="{% url 'define_risks' project_id %}">Agregar Nuevo Riesgo</a></p>
+    <p><a href="{% url 'view_project_plan' project_id %}">Regresar</a></p>
+</body>
+</html>

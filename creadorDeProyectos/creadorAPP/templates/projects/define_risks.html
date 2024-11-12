@@ -12,21 +12,8 @@
       <button type="submit">Guardar Riesgo</button>
     </form>
 
-    <h3>Restricciones del Proyecto</h3>
-    {% if project_plan.restricciones.exists %}
-        <ul>
-            {% for restriccion in project_plan.restricciones.all %}
-                <li>
-                    <strong>Restricción:</strong> {{ restriccion.descripcion }}<br>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No se han registrado restricciones para este proyecto.</p>
-    {% endif %}
-
-     <!-- Enlace para agregar una nueva restricción -->
-     <p><a href="{% url 'agregar_restriccion' project_plan.id %}">Agregar Restricción</a></p>
-    <p><a href="{% url 'indice' project_plan.id %}">Volver a la página de inicio</a></p>
+     
+     <p><a href="{% url 'view_risks' project_id=project_plan.id %}">Ver riesgos</a></p>     
+    <p><a href="{% url 'indice' project_plan.id %}">Regresar</a></p>
   </body>
 </html>

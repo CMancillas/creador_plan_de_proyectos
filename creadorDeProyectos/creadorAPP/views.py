@@ -12,7 +12,7 @@ from django.views import View
 from django.contrib.auth.models import User
 # Import the RegisterForm from forms.py
 from .forms import RegisterForm, AmbitoProyectoForm, ProjectPlanForm, TaskForm, RestriccionForm,  ResourceForm, ProjectRisksForm, WorkTeamMemberForm
-from .models import AmbitoProyecto, Task, ProjectPlan, Resource, ProjectRisks, WorkTeamMember
+from .models import AmbitoProyecto, Task, ProjectPlan, Resource, ProjectRisks, WorkTeamMember, Restriccion
 from django.contrib import messages
 # from .models import Proyecto  # Asumiendo que el modelo del proyecto es 'Proyecto'
 # Importa HttpResponse de Django para enviar una respuesta HTTP al navegador.
@@ -20,7 +20,7 @@ from django.http import HttpResponse
 # Importa render_to_string para convertir una plantilla HTML en una cadena de texto.
 from django.template.loader import render_to_string
 # Importa HTML de WeasyPrint, que convierte el HTML en un PDF.
-from weasyprint import HTML
+#from weasyprint import HTML
 
 # Create your views here.
 def register_view(request):
@@ -158,30 +158,30 @@ def add_task(request, project_id):
     return render(request, 'tasks/add_task.html', {'form': form, 'project': project})  
 
 @login_required
-def edit_task(request, task_id):
+def edit_task(request, task_id, project_id):
     task = get_object_or_404(Task, id=task_id)
     if request.method == 'POST':
         form = TaskForm(request.POST, instance=task)
         if form.is_valid():
             form.save()
-            return redirect('task_list')
+            return redirect('task_list', project_id)
     else:
         form = TaskForm(instance=task)
     
-    return render(request, 'tasks/edit_task.html', {'form': form, 'task': task})
+    return render(request, 'tasks/edit_task.html', {'form': form, 'task': task, 'project_id': project_id})
 @login_required
-def delete_task(request, task_id):
+def delete_task(request, task_id, project_id):
     task = get_object_or_404(Task, id=task_id)
     if request.method == 'POST':
         task.delete()
-        return redirect('task_list')  # Redirigir a la lista de tareas
-    return render(request, 'tasks/delete_task.html', {'task': task})
+        return redirect('task_list', project_id)  # Redirigir a la lista de tareas
+    return render(request, 'tasks/delete_task.html', {'task': task, 'project_id': project_id})
 
 @login_required
 def task_list(request, project_id):
     
-    tasks = Task.objects.filter(project = project_id)  # Consulta todas las tareas en la base de datos
-    return render(request, 'tasks/task_list.html', {'tasks': tasks})  # Renderiza la plantilla 'task_list.html'
+    tasks = Task.objects.filter(project = project_id)  # Consulta todas las tareas asociadas al proyecto
+    return render(request, 'tasks/task_list.html', {'tasks': tasks, 'project_id':project_id})  # Renderiza la plantilla 'task_list.html'
 
 @login_required
 def agregar_restriccion(request, project_id):
@@ -384,3 +384,11 @@ def delete_project_plan(request, project_id):
 
     # Renderiza la página de confirmación de eliminación
     return render(request, 'projects/delete_project_plan.html', {'project_plan': project_plan})
+
+def ver_restricciones(request, project_id):
+    restricciones = Restriccion.objects.filter(proyecto = project_id)
+    return render(request, 'projects/ver_restriccion.html', {'restricciones': restricciones, 'project_id': project_id})
+
+def view_risks(request, project_id):
+    project_risks = ProjectRisks.objects.filter(project_plan = project_id)
+    return render(request, 'projects/view_risks.html', {'project_risks': project_risks, 'project_id': project_id})
