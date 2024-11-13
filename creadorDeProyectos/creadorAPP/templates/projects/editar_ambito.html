@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Ámbito del Proyecto</title>
-</head>
+
+{% extends 'base.html' %}
+
+{% block title %}Editar Ámbito del Proyecto{% endblock %}
+{% block content %}
 <body>
     <h1>Editar Ámbito del Proyecto: {{ project_plan.title }}</h1>
     
@@ -16,4 +14,4 @@
 
     <p><a href="{% url 'ver_ambito_proyecto' project_id=project_plan.id %}">Cancelar</a></p>
 </body>
-</html>
+{% endblock %}

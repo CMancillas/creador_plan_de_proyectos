@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Recursos del Proyecto</title>
-  </head>
+
+{% extends 'base.html' %}
+
+{% block title %}Recursos del Proyecto{% endblock %}
+{% block content %}
   <body>
     <h1>Recursos del proyecto: {{ project_plan.title }}</h1>
 
@@ -42,4 +41,4 @@
       >Volver al Plan del Proyecto</a
     >
   </body>
-</html>
+{% endblock %}

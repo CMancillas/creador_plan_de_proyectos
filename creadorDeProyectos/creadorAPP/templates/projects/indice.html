@@ -1,13 +1,10 @@
-<!--Pagina indice de prueba-->
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Índice de Páginas</title>
-</head>
+
+{% extends 'base.html' %}
+
+{% block title %}Índice del Proyecto{% endblock %}
+{% block content %}
 <body>
-    <h1>Índice de Páginas</h1>
+    <h1>Índice del Proyecto</h1>
     <ul>
         <li><a href="{% url 'ver_ambito_proyecto' project_id=project_plan.id %}">Definir Ámbito del Proyecto</a></li>
         <li><a href="{% url 'add_task' project_id=project_plan.id %}">Definir Nueva Tarea del Proyecto</a></li>
@@ -24,5 +21,4 @@
         <!-- Agrega más enlaces a otras vistas -->
     </ul>
 </body>
-</html>
-<!---->
+{% endblock %}

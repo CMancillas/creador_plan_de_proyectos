@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Resultados de Búsqueda{% endblock %}
+{% block content %}
+<body>
+    <div class="container mt-5">
+        <h1>Resultados de Búsqueda</h1>
+        <p>Resultados para: "{{ search_query }}"</p>
+
+        {% if projects %}
+            <ul class="list-group">
+                {% for project in projects %}
+                    <li class="list-group-item">
+                        {{ project.title }}: <a href="{% url 'view_project_plan' project.id %}">Ver plan de proyecto</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No se encontraron proyectos.</p>
+        {% endif %}
+    </div>
+    <p><a href="{% url 'home' %}">Volver a la página de incio</a></p>
+</body>
+{% endblock %}

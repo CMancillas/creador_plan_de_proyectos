@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Definir Recursos</title>
-  </head>
+
+{% extends 'base.html' %}
+
+{% block title %}Definir recursos{% endblock %}
+{% block content %}
   <body>
     <h2>Definir Recursos para el Proyecto</h2>
     <form method="post">
@@ -14,4 +12,4 @@
 
     <p><a href="{% url 'indice' project_id %}">Regresar</a></p>
   </body>
-</html>
+{% endblock %}

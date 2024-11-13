@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ver Plan de Proyecto</title>
-</head>
+
+{% extends 'base.html' %}
+
+{% block title %}Ver Plan de Proyecto{% endblock %}
+{% block content %}
 <body>
     <h1>Plan de Proyecto</h1>
 
@@ -96,14 +94,7 @@
         <!-- Opciones de navegación -->
         <hr>
         <p><a href="{% url 'edit_project_plan' project_id=project_plan.id %}">Editar Información General del Plan de Proyecto</a></p>
-        <p><a href="{% url 'ver_ambito_proyecto' project_id=project_plan.id %}">Ver Ámbito del Proyecto</a></p>
-        <p><a href="{% url 'task_list' project_id=project_plan.id %}">Ver tareas</a></p>
-        <p><a href="{% url 'view_work_team' project_id=project_plan.id %}">Ver equipo</a></p> 
-        <p><a href="{% url 'view_resources' project_id=project_plan.id %}">Ver recursos</a></p>
-        <p><a href="{% url 'ver_restriccion' project_id=project_plan.id %}">Ver restricciones</a></p>              
-        <p><a href="{% url 'view_risks' project_id=project_plan.id %}">Ver riesgos</a></p>     
-   
-
+        
         <hr>
         <!--PRUEBA (INDICE)-->
         <p><a href="{% url 'indice' project_id=project_plan.id %}">Añadir información del proyecto</a></p>
@@ -114,11 +105,8 @@
         <!-- Botón para eliminar el proyecto -->
         <p><a href="{% url 'delete_project_plan' project_id=project_plan.id %}">Eliminar el proyecto</a></p>
 
-        <!---Enlace para volver a la pagina de incio -->
-        <p><a href="{% url 'home' %}">Volver a la página de incio</a></p>
-
     {% else %}
         <p>No se ha definido el plan de proyecto aún.</p>
     {% endif %}
 </body>
-</html>
+{% endblock %}

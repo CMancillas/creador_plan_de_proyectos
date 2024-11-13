@@ -458,3 +458,21 @@ def view_risks(request, project_id):
     project_risks = ProjectRisks.objects.filter(project_plan = project_id)
     restricciones = Restriccion.objects.filter(proyecto=project_id)
     return render(request, 'projects/view_risks.html', {'project_risks': project_risks, 'project_id': project_id, 'restricciones':restricciones})
+
+def search_results(request):
+    search_query = request.POST.get('search_query', '').strip()
+    user = request.user
+    projects = []
+
+    if search_query:
+        # Filtra los proyectos por el usuario autenticado y el término de búsqueda en el nombre del proyecto
+        projects = ProjectPlan.objects.filter(title__icontains=search_query, created_by=user)
+
+    context = {
+        'projects': projects,
+        'search_query': search_query,
+    }
+    return render(request, 'search/search_results.html', context)
+
+def search(request):
+    return render(request, 'search/search.html')

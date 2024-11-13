@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Lista de Riesgos del Proyecto</title>
-</head>
+
+{% extends 'base.html' %}
+
+{% block title %}Lista de riesgos{% endblock %}
+{% block content %}
 <body>
     <h1>Riesgos del Proyecto</h1>
 
@@ -62,4 +61,4 @@
 
     <p><a href="{% url 'view_project_plan' project_id %}">Regresar</a></p>
 </body>
-</html>
+{% endblock %}

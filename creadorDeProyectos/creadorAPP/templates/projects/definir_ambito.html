@@ -1,11 +1,8 @@
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Definir Ámbito del Proyecto</title>
-</head>
+{% extends 'base.html' %}
+
+{% block title %}Definir Ámbito del Proyecto{% endblock %}
+{% block content %}
 <body>
     <h1>Definir Ámbito del Proyecto</h1>
 
@@ -24,8 +21,7 @@
     </form>
 
     <p><a href="{% url 'ver_ambito_proyecto' project_id=project_plan.id %}">Ver Ámbito del Proyecto</a></p>
-    <!---Enlace para volver a la pagina de incio (PRUEBA)-->
-    <p><a href="{% url 'home' %}">Volver a la página de incio</a></p>
+   
 </body>
-</html>  
+{% endblock %}
 

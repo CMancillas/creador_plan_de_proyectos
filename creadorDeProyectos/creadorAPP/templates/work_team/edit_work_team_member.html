@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Miembro</title>
-</head>
+
+{% extends 'base.html' %}
+
+{% block title %}Editar Miembro{% endblock %}
+{% block content %}
 <body>
     <h1>Editar Rol de {{ team_member.name }}</h1>
     <form method="post">
@@ -14,5 +13,5 @@
 
     <a href="{% url 'view_work_team' project_id=project_plan.id %}">Regresar a la Vista del Equipo</a>
 </body>
-</html>
+{% endblock %}
 
