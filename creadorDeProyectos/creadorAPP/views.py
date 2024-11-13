@@ -20,7 +20,7 @@ from django.http import HttpResponse
 # Importa render_to_string para convertir una plantilla HTML en una cadena de texto.
 from django.template.loader import render_to_string
 # Importa HTML de WeasyPrint, que convierte el HTML en un PDF.
-#from weasyprint import HTML
+from weasyprint import HTML
 
 # Create your views here.
 def register_view(request):
@@ -391,4 +391,5 @@ def ver_restricciones(request, project_id):
 
 def view_risks(request, project_id):
     project_risks = ProjectRisks.objects.filter(project_plan = project_id)
-    return render(request, 'projects/view_risks.html', {'project_risks': project_risks, 'project_id': project_id})
+    restricciones = Restriccion.objects.filter(proyecto=project_id)
+    return render(request, 'projects/view_risks.html', {'project_risks': project_risks, 'project_id': project_id, 'restricciones':restricciones})

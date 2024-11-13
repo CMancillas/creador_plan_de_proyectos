@@ -12,7 +12,7 @@
             {% for restriccion in restricciones %}
                 <li>
                     <strong>Descripción:</strong> {{ restriccion.descripcion }}
-                    <!-- Add other fields here if needed -->
+                    <strong>Tipo de Riesgo:</strong> {{ restriccion.get_tipo_riesgo_display }}<br>
                 </li>
             {% endfor %}
         </ul>

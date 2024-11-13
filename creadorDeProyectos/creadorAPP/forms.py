@@ -105,14 +105,14 @@ class TaskForm(forms.ModelForm):
 class RestriccionForm(forms.ModelForm):
     class Meta: 
         model = Restriccion
-        fields = ['descripcion']#, 'riesgo_identificado']
+        fields = ['descripcion', 'tipo_riesgo']#, 'riesgo_identificado']
         labels = {
             'descripcion': 'Descripción de la Restricción',
-            #'riesgo_identificado': 'Riesgo Identificado',
+            'tipo_riesgo': 'Tipo de Riesgo',
         }
         widgets = {
             'descripcion': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Describe la restricción...'}),
-            #'riesgo_identificado': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Describe el riesgo asociado...'}),
+            'tipo_riesgo': forms.Select()
         }
 
            

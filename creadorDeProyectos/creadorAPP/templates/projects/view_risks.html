@@ -35,6 +35,31 @@
     {% endif %}
 
     <p><a href="{% url 'define_risks' project_id %}">Agregar Nuevo Riesgo</a></p>
+    
+
+    <h1>Restricciones Creadas</h1>
+
+    {% if restricciones %}
+        <ul>
+            {% for restriccion in restricciones %}
+                <li>
+                <strong>Descripción:</strong> {{ restriccion.descripcion }}<br>
+                <strong>Tipo de Riesgo:</strong> 
+                
+                {% if restriccion.tipo_riesgo %}
+                    {{ restriccion.get_tipo_riesgo_display }}
+                {% else %}
+                    <em>No especificado</em> 
+                {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No hay restricciones creadas aún.</p>
+    {% endif %}
+
+    <p><a href="{% url 'agregar_restriccion' project_id %}">Agregar Nueva Restricción</a></p>
+
     <p><a href="{% url 'view_project_plan' project_id %}">Regresar</a></p>
 </body>
 </html>
