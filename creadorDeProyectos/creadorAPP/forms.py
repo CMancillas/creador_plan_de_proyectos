@@ -141,14 +141,16 @@ class ResourceForm(forms.ModelForm):
 class ProjectRisksForm(forms.ModelForm):
     class Meta:
         model = ProjectRisks
-        fields = ['risk_identifier', 'description', 'risk_type', 'severity_level', 'project_plan']
+        fields = ['risk_identifier', 'description', 'risk_type', 'probability', 'severity_level', 'project_plan']
         labels = {
             'risk_identifier': 'Identificador del Riesgo',
             'description': 'Descripción',
             'risk_type': 'Tipo de Riesgo',
+            'probability': 'Probabilidad de ocurrencia',
             'severity_level': 'Impacto en el Proyecto',
             'project_plan': 'Plan de Proyecto',
         }
+
 class WorkTeamMemberForm(forms.ModelForm):
     class Meta:
         model = WorkTeamMember

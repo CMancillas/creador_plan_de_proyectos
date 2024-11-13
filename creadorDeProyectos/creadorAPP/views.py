@@ -79,14 +79,14 @@ def definir_ambito_proyecto(request, project_id):
         ambito.save()
         return redirect('ver_ambito_proyecto', project_id=project_plan.id)
 
-    return render(request, 'accounts/definir_ambito.html', {'form': form, 'project_plan': project_plan})
+    return render(request, 'projects/definir_ambito.html', {'form': form, 'project_plan': project_plan})
 
 @login_required
 def ver_ambito_proyecto(request, project_id):
     project_plan = get_object_or_404(ProjectPlan, id=project_id)
     ambito_proyecto = AmbitoProyecto.objects.filter(project=project_id).first()
     #context = {'ambito_proyecto': ambito_proyecto, 'project_plan': project_plan}
-    return render(request, 'accounts/ver_ambito.html',{'ambito_proyecto': ambito_proyecto,'project_plan': project_plan})
+    return render(request, 'projects/ver_ambito.html',{'ambito_proyecto': ambito_proyecto,'project_plan': project_plan})
 
 @login_required
 def define_project_plan(request):
@@ -107,6 +107,8 @@ def define_project_plan(request):
 
     return render(request, 'projects/define_project_plan.html', {'form': form})
 
+
+'''
 @login_required
 def view_project_plan(request, project_id):
     try:
@@ -115,7 +117,35 @@ def view_project_plan(request, project_id):
         project_plan = None
 
     return render(request, 'projects/view_project_plan.html', {'project_plan': project_plan})
+'''
+@login_required
+def view_project_plan(request, project_id):
+    # Obtiene el proyecto principal o devuelve un error 404 si no existe
+    project_plan = get_object_or_404(ProjectPlan, id=project_id)
+    
+    # Filtra y obtiene datos relacionados del proyecto
+    ambito = AmbitoProyecto.objects.filter(project_id=project_id)
+    tasks = Task.objects.filter(project_id=project_id)
+    team = WorkTeamMember.objects.filter(project_id=project_id)
+    resources = Resource.objects.filter(project_id=project_id)
+    restrictions = Restriccion.objects.filter(proyecto_id=project_id)
+    risks = ProjectRisks.objects.filter(project_plan_id=project_id)
 
+    # Agrega todos los datos al contexto
+    context = {
+        'project_plan': project_plan,
+        'ambito': ambito,
+        'tasks': tasks,
+        'team': team,
+        'resources': resources,
+        'restrictions': restrictions,
+        'risks': risks
+    }
+    
+    # Renderiza la plantilla con todos los datos
+    return render(request, 'projects/view_project_plan.html', context)
+
+@login_required
 def edit_project_plan(request, project_id):
     project = get_object_or_404(ProjectPlan, id=project_id)
     
@@ -299,7 +329,7 @@ def view_resources(request, project_id):
         'resources': resources
     })
 
-
+@login_required
 def define_risks(request, project_id):
     project_plan = get_object_or_404(ProjectPlan, id=project_id)
 

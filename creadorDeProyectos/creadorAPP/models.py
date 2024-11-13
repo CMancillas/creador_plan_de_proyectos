@@ -114,6 +114,11 @@ class ProjectRisks(models.Model):
     description = models.TextField()
     risk_type = models.CharField(max_length=20, choices=RISK_TYPES)
     identification_date = models.DateField(auto_now_add=True)
+    probability = models.CharField(max_length=10, choices=[
+        ('low', 'Baja'),
+        ('meduim', 'Media'),
+        ('high', 'Alta'),
+    ])
     severity_level = models.CharField(max_length=10, choices=[
         ('low', 'Bajo'),
         ('medium', 'Medio'),
