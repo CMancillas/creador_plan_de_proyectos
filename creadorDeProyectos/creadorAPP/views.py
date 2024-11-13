@@ -14,7 +14,6 @@ from django.contrib.auth.models import User
 from .forms import RegisterForm, AmbitoProyectoForm, ProjectPlanForm, TaskForm, RestriccionForm,  ResourceForm, ProjectRisksForm, WorkTeamMemberForm
 from .models import AmbitoProyecto, Task, ProjectPlan, Resource, ProjectRisks, WorkTeamMember, Restriccion
 from django.contrib import messages
-# from .models import Proyecto  # Asumiendo que el modelo del proyecto es 'Proyecto'
 # Importa HttpResponse de Django para enviar una respuesta HTTP al navegador.
 from django.http import HttpResponse
 # Importa render_to_string para convertir una plantilla HTML en una cadena de texto.
@@ -80,6 +79,20 @@ def definir_ambito_proyecto(request, project_id):
         return redirect('ver_ambito_proyecto', project_id=project_plan.id)
 
     return render(request, 'projects/definir_ambito.html', {'form': form, 'project_plan': project_plan})
+
+@login_required
+def editar_ambito_proyecto(request, project_id):
+    project_plan = get_object_or_404(ProjectPlan, id=project_id)
+    ambito_proyecto = get_object_or_404(AmbitoProyecto, project=project_plan)
+
+    # Carga el formulario con los datos del ámbito existente
+    form = AmbitoProyectoForm(request.POST or None, instance=ambito_proyecto)
+
+    if form.is_valid():
+        form.save()
+        return redirect('ver_ambito_proyecto', project_id=project_plan.id)
+
+    return render(request, 'projects/editar_ambito.html', {'form': form, 'project_plan': project_plan})
 
 @login_required
 def ver_ambito_proyecto(request, project_id):
@@ -199,6 +212,7 @@ def edit_task(request, task_id, project_id):
         form = TaskForm(instance=task)
     
     return render(request, 'tasks/edit_task.html', {'form': form, 'task': task, 'project_id': project_id})
+
 @login_required
 def delete_task(request, task_id, project_id):
     task = get_object_or_404(Task, id=task_id)
@@ -317,6 +331,26 @@ def define_resources(request, project_id):
 
     return render(request, 'projects/define_resources.html', {'form': form, 'project_id': project_id})
 
+@login_required
+def edit_resource(request, project_id, resource_id):
+    project_plan = get_object_or_404(ProjectPlan, id=project_id)
+    resource = get_object_or_404(Resource, id=resource_id, project=project_plan)
+
+    if request.method == 'POST':
+        form = ResourceForm(request.POST, instance=resource)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "El recurso ha sido actualizado exitosamente.")
+            return redirect('view_resources', project_id=project_id)
+
+    else:
+        form = ResourceForm(instance=resource)
+
+    return render(request, 'projects/edit_resource.html', {
+        'form': form,
+        'project_plan': project_plan,
+        'resource': resource
+    })
 
 @login_required
 def view_resources(request, project_id):
@@ -328,6 +362,7 @@ def view_resources(request, project_id):
         'project_plan': project_plan,
         'resources': resources
     })
+
 
 @login_required
 def define_risks(request, project_id):

@@ -28,14 +28,16 @@
           <td>{{ resource.quantity_estimated }}</td>
           <td>{{ resource.cost_estimated }}</td>
           <td>{{ resource.created_at|date:"d/m/Y H:i" }}</td>
+          <a href="{% url 'edit_resource' project_id=project_plan.id resource_id=resource.id %}">Editar</a>
         </tr>
         {% endfor %}
       </tbody>
     </table>
     {% else %}
     <p>No se han definido recursos para este proyecto.</p>
-    {% endif %}
 
+    {% endif %}
+    <p><a href="{% url 'define_resources' project_id=project_plan.id  %}">Definir Recursos</a></p>
     <a href="{% url 'view_project_plan' project_plan.id %}"
       >Volver al Plan del Proyecto</a
     >
