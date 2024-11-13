@@ -43,10 +43,23 @@ class Task(models.Model):
         return f"Tarea: {self.name} - Almacenada exitosamente."
   
 class Restriccion(models.Model):
+    RISK_TYPES = [
+        ('technical', 'Técnico'),
+        ('organizational', 'Organizativo'),
+        ('financial', 'Financiero'),
+    ]
+
     proyecto = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE, related_name='restricciones')
-    descripcion = models.TextField("""help_text="Descripcion de la restricción.""")
-    #riesgo_identificado = models.TextField("""help_text="Riesgo asociado con esta restricción.""")
-    fecha_creacion=models.DateTimeField(auto_now_add=True)
+    descripcion = models.TextField(help_text="Descripción de la restricción.")
+    tipo_riesgo = models.CharField(
+        max_length=20, 
+        choices=RISK_TYPES, 
+        verbose_name="Tipo de Riesgo",
+        null=True, 
+        blank=True,
+        help_text="Tipo de riesgo asociado con esta restricción."
+    )
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Restricción para el proyecto {self.proyecto.title}"

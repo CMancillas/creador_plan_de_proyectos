@@ -73,6 +73,10 @@
         value="{{ form.endDate.value|default_if_none:'' }}"
       /><br /><br />
 
+      <label for="id_presupuestoTotal">Presupuesto Total (USD):</label><br>
+<input type="number" id="id_presupuestoTotal" name="presupuestoTotal" step="0.01" value="{{ form.presupuestoTotal.value }}"><br><br>
+
+
       <button type="submit">Guardar Cambios</button>
     </form>
 
