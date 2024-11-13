@@ -14,7 +14,6 @@ from django.contrib.auth.models import User
 from .forms import RegisterForm, AmbitoProyectoForm, ProjectPlanForm, TaskForm, RestriccionForm,  ResourceForm, ProjectRisksForm, WorkTeamMemberForm
 from .models import AmbitoProyecto, Task, ProjectPlan, Resource, ProjectRisks, WorkTeamMember, Restriccion
 from django.contrib import messages
-# from .models import Proyecto  # Asumiendo que el modelo del proyecto es 'Proyecto'
 # Importa HttpResponse de Django para enviar una respuesta HTTP al navegador.
 from django.http import HttpResponse
 # Importa render_to_string para convertir una plantilla HTML en una cadena de texto.
@@ -79,14 +78,28 @@ def definir_ambito_proyecto(request, project_id):
         ambito.save()
         return redirect('ver_ambito_proyecto', project_id=project_plan.id)
 
-    return render(request, 'accounts/definir_ambito.html', {'form': form, 'project_plan': project_plan})
+    return render(request, 'projects/definir_ambito.html', {'form': form, 'project_plan': project_plan})
+
+@login_required
+def editar_ambito_proyecto(request, project_id):
+    project_plan = get_object_or_404(ProjectPlan, id=project_id)
+    ambito_proyecto = get_object_or_404(AmbitoProyecto, project=project_plan)
+
+    # Carga el formulario con los datos del ámbito existente
+    form = AmbitoProyectoForm(request.POST or None, instance=ambito_proyecto)
+
+    if form.is_valid():
+        form.save()
+        return redirect('ver_ambito_proyecto', project_id=project_plan.id)
+
+    return render(request, 'projects/editar_ambito.html', {'form': form, 'project_plan': project_plan})
 
 @login_required
 def ver_ambito_proyecto(request, project_id):
     project_plan = get_object_or_404(ProjectPlan, id=project_id)
     ambito_proyecto = AmbitoProyecto.objects.filter(project=project_id).first()
     #context = {'ambito_proyecto': ambito_proyecto, 'project_plan': project_plan}
-    return render(request, 'accounts/ver_ambito.html',{'ambito_proyecto': ambito_proyecto,'project_plan': project_plan})
+    return render(request, 'projects/ver_ambito.html',{'ambito_proyecto': ambito_proyecto,'project_plan': project_plan})
 
 @login_required
 def define_project_plan(request):
@@ -107,6 +120,8 @@ def define_project_plan(request):
 
     return render(request, 'projects/define_project_plan.html', {'form': form})
 
+
+'''
 @login_required
 def view_project_plan(request, project_id):
     try:
@@ -115,7 +130,35 @@ def view_project_plan(request, project_id):
         project_plan = None
 
     return render(request, 'projects/view_project_plan.html', {'project_plan': project_plan})
+'''
+@login_required
+def view_project_plan(request, project_id):
+    # Obtiene el proyecto principal o devuelve un error 404 si no existe
+    project_plan = get_object_or_404(ProjectPlan, id=project_id)
+    
+    # Filtra y obtiene datos relacionados del proyecto
+    ambito = AmbitoProyecto.objects.filter(project_id=project_id)
+    tasks = Task.objects.filter(project_id=project_id)
+    team = WorkTeamMember.objects.filter(project_id=project_id)
+    resources = Resource.objects.filter(project_id=project_id)
+    restrictions = Restriccion.objects.filter(proyecto_id=project_id)
+    risks = ProjectRisks.objects.filter(project_plan_id=project_id)
 
+    # Agrega todos los datos al contexto
+    context = {
+        'project_plan': project_plan,
+        'ambito': ambito,
+        'tasks': tasks,
+        'team': team,
+        'resources': resources,
+        'restrictions': restrictions,
+        'risks': risks
+    }
+    
+    # Renderiza la plantilla con todos los datos
+    return render(request, 'projects/view_project_plan.html', context)
+
+@login_required
 def edit_project_plan(request, project_id):
     project = get_object_or_404(ProjectPlan, id=project_id)
     
@@ -169,6 +212,7 @@ def edit_task(request, task_id, project_id):
         form = TaskForm(instance=task)
     
     return render(request, 'tasks/edit_task.html', {'form': form, 'task': task, 'project_id': project_id})
+
 @login_required
 def delete_task(request, task_id, project_id):
     task = get_object_or_404(Task, id=task_id)
@@ -287,6 +331,26 @@ def define_resources(request, project_id):
 
     return render(request, 'projects/define_resources.html', {'form': form, 'project_id': project_id})
 
+@login_required
+def edit_resource(request, project_id, resource_id):
+    project_plan = get_object_or_404(ProjectPlan, id=project_id)
+    resource = get_object_or_404(Resource, id=resource_id, project=project_plan)
+
+    if request.method == 'POST':
+        form = ResourceForm(request.POST, instance=resource)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "El recurso ha sido actualizado exitosamente.")
+            return redirect('view_resources', project_id=project_id)
+
+    else:
+        form = ResourceForm(instance=resource)
+
+    return render(request, 'projects/edit_resource.html', {
+        'form': form,
+        'project_plan': project_plan,
+        'resource': resource
+    })
 
 @login_required
 def view_resources(request, project_id):
@@ -300,6 +364,7 @@ def view_resources(request, project_id):
     })
 
 
+@login_required
 def define_risks(request, project_id):
     project_plan = get_object_or_404(ProjectPlan, id=project_id)
 
