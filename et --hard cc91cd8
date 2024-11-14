@@ -1,0 +1,46 @@
+[33m524241d[m[33m ([m[1;36mHEAD[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Actualización de .gitignore y creación de migraciones para eliminar campos de estrategia de mitigación en el modelo projectrisks
+[33mcc91cd8[m[33m ([m[1;32mmain[m[33m)[m Agregar archivo requirements.txt con dependencias necesarias, aparte se le agrego diseño al login y register
+[33mfc45f71[m Eliminación de importación no utilizada y corrección de redirección en la vista de recursos
+[33m7a714cf[m Corrección de textos y mejoras en la interfaz de recursos del proyecto.
+[33m81dc038[m Resuelto conflicto en db.sqlite3: aceptada version remota
+[33mfd5eb3f[m Haciendo commit a los cambios para poder hacer pull al main
+[33m576c2dc[m Merge remote-tracking branch 'origin/main' into ian
+[33mc5867db[m indentacion de base.html
+[33mb41f274[m Indentacion correcta de view_home.html
+[33m68cc664[m Se agregaron menus a la barra de navegacion
+[33me5050b7[m[33m ([m[1;32mcarlos[m[33m)[m Actualizacion a la base de datos
+[33m66570d4[m Se modifico el indice, agregando botones
+[33meb86877[m Modificaciones para el mejoramiento del proyecto
+[33mffc2a46[m Se creo una barra de navegacion y buscar proyectos
+[33m4a9b6a7[m Merge branch 'canda' (mostrar info en view_project_plan)
+[33mc485215[m Se implementó edición en ámbito y recursos (también las urls en htmls para acceder a la edición)
+[33m61fe549[m Merge branch 'carlos'
+[33mf04933e[m[33m ([m[1;31morigin/carlos[m[33m)[m Se agregaron modificaciones en el codigo para mejorar el back end
+[33mb84f85e[m Ajustes de codigo
+[33m5fa1924[m Se movieron html's de ambito a /projects y se ajustaron vistas con nuevas rutas. Se modificó la vista de view_project_plan para visualizar información en su html
+[33m1421239[m Se unificaron los url, conexion de modulos
+[33m26e0e31[m Se quito un comentario
+[33m49a856c[m Se agrego una conexion entre usuario y proyecto
+[33meaa9100[m Modificaciones en los Riesgos y Restricciones
+[33m923e4a5[m Implementacion para descargar archivo pdf
+[33mf011bd8[m Se agregaron las siguientes funcionalidades: define_risks.html, view_project_risks.html, projectrisks_mitigation_strategy_accept_and_more.py pero aun falta el urls.py
+[33mffafa60[m Agregue las restricciones a la plantilla define_risks
+[33m7b80f91[m Guardando cambios de db.sqlite3
+[33m7931ee5[m Se arreglaron bugs
+[33m39d1209[m Se mergearon las ramas joaquin y ian
+[33m22babea[m Actualizacion de la base de datos
+[33m14f1be5[m Se implemento la historia de usuario 17, Como administrador, quiero poder visualizar un resumen de toda la información capturada del proyecto en un solo lugar.
+[33mdacbde5[m Se creo un ambiente virtual para manejar las dependencias y evitar conflictos entre las versiones de paquetes.
+[33mda3dd5f[m Implementacion de historia de usuario 16 terminada, Como administrador quiero ingresar las restricciones del proyecto conforme a los riesgos identificados.
+[33mbf2ad32[m Implementacion de historia de usuario 15 terminada, se actualizo views, forms, models, urls y los htmls view_project_plan y define_project_plan
+[33m757d563[m Se integraron y conectaron todos los .html dandole coherencia a la aplicacion
+[33md66e95f[m Merge branch 'main' of https://github.com/CMancillas/creador_plan_de_proyectos into carlos
+[33me76e208[m Se agrego .gitignore y se eliminaron los archivos .pyc y db.sqlite3 del control de version
+[33mcb390a1[m Se agregaron las historias de joaquin y ian
+[33m22f573a[m[33m ([m[1;31morigin/canda[m[33m)[m Agregar .gitignore
+[33m25e1a43[m[33m ([m[1;31morigin/ian[m[33m)[m project record, objective, team names, and roles.
+[33m21babe6[m Merge pull request #1 from CMancillas/canda
+[33md795568[m Implementadas HU 11 y 14 (HU 07 puede ser desde /admin)
+[33mb5b5965[m[33m ([m[1;31morigin/joaquin[m[33m)[m Se implementaron las historias de usuario 10,12,13,15
+[33m6a6bc99[m Creé las paginas de login, logout y registration
+[33m6854323[m Initial commit
