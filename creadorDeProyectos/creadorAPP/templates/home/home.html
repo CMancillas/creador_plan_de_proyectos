@@ -1,31 +1,21 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-     <link rel="stylesheet" type="text/css" href="{% static 'styles/styles.css' %}">
-</head>
-<body>
+
+{% extends 'view_home.html' %}
+
+{% block title %}Home{% endblock %}
+{% block content %}
     <div class="container">
         <h2>Home</h2>
         <p>Welcome, {{request.user.username}}!</p>
         <ul>
             {% for project in recent_projects %}
-                <li>{{ project.title }} - Creado el: {{ project.startDate }}</li>
-                <a href="{% url 'view_project_plan' project.id %}">Ver detalles</a>
+                <li>{{ project.title }} - Creado el: {{ project.startDate }}
+                <a href="{% url 'view_project_plan' project.id %}">Ver más</a> 
+                <a href="{% url 'indice' project.id %}">Agregar información</a> </li>
+                </li>
             {% empty %}
                 <li>No tienes proyectos recientes.</li>
             {% endfor %}
         </ul>
-        
-            <a href="{% url 'define_project_plan' %}">Define un nuevo plan de proyecto</a>
-        
-        <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-        </form>
     </div>
 </body> 
-</html>
+{% endblock %}

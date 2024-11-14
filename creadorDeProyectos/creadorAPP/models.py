@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class ProjectPlan(models.Model):
+     # se guarda el usuario que crea el proyecto
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     title = models.CharField(max_length=100)
 
@@ -41,10 +43,23 @@ class Task(models.Model):
         return f"Tarea: {self.name} - Almacenada exitosamente."
   
 class Restriccion(models.Model):
+    RISK_TYPES = [
+        ('technical', 'Técnico'),
+        ('organizational', 'Organizativo'),
+        ('financial', 'Financiero'),
+    ]
+
     proyecto = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE, related_name='restricciones')
-    descripcion = models.TextField("""help_text="Descripcion de la restricción.""")
-    riesgo_identificado = models.TextField("""help_text="Riesgo asociado con esta restricción.""")
-    fecha_creacion=models.DateTimeField(auto_now_add=True)
+    descripcion = models.TextField(help_text="Descripción de la restricción.")
+    tipo_riesgo = models.CharField(
+        max_length=20, 
+        choices=RISK_TYPES, 
+        verbose_name="Tipo de Riesgo",
+        null=True, 
+        blank=True,
+        help_text="Tipo de riesgo asociado con esta restricción."
+    )
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Restricción para el proyecto {self.proyecto.title}"
@@ -106,31 +121,28 @@ class ProjectRisks(models.Model):
         ('organizational', 'Organizativo'),
         ('financial', 'Financiero'),
     ]
-
     MITIGATION_STRATEGIES = [
         ('avoid', 'Evitar'),
-        ('control', 'Controlar'),
+        ('Aceptar', 'Aceptar'),
         ('transfer', 'Transferir'),
-        ('accept', 'Aceptar'),
+        ('control', 'Controlar'),
     ]
-
     project_plan = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE, related_name='risks')
     risk_identifier = models.CharField(max_length=50, unique=True)
     description = models.TextField()
     risk_type = models.CharField(max_length=20, choices=RISK_TYPES)
     identification_date = models.DateField(auto_now_add=True)
+    probability = models.CharField(max_length=10, choices=[
+        ('low', 'Baja'),
+        ('meduim', 'Media'),
+        ('high', 'Alta'),
+    ])
     severity_level = models.CharField(max_length=10, choices=[
         ('low', 'Bajo'),
         ('medium', 'Medio'),
         ('high', 'Alto'),
     ])
-    
-    # Nuevos campos de mitigación
-    mitigation_strategy_avoid = models.TextField(blank=True, null=True)
-    mitigation_strategy_control = models.TextField(blank=True, null=True)
-    mitigation_strategy_transfer = models.TextField(blank=True, null=True)
-    mitigation_strategy_accept = models.TextField(blank=True, null=True)
-
+    mitigation_strategy = models.CharField(max_length=10, choices=MITIGATION_STRATEGIES)
     def __str__(self):
         return f"{self.risk_identifier}: {self.description}"
 

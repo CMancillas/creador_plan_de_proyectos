@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Equipo de Trabajo - {{ project_plan.title }}</title>
-</head>
+
+{% extends 'base.html' %}
+
+{% block title %}Equipo de trabajo{% endblock %}
+{% block content %}
 <body>
     <h1>Equipo de Trabajo para el Proyecto: {{ project_plan.title }}</h1>
 
@@ -17,5 +16,6 @@
     </ul>
 
     <a href="{% url 'define_work_team' project_id=project_plan.id %}">Añadir o Editar Miembros</a>
+    </p><a href="{% url 'view_project_plan' project_id=project_plan.id %}">Regresar a proyecto</a></p>
 </body>
-</html>
+{% endblock %}

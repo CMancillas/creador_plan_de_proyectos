@@ -1,18 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Tareas del proyecto</title>
-</head>
+
+{% extends 'base.html' %}
+
+{% block title %}Tareas del Proyecto{% endblock %}
+{% block content %}
 <body>
     <h1>Lista de tareas</h1>
     <ul>
         {% for task in tasks %}
             <li>{{ task.name }} Duracion: {{task.estimated_duration}}</li>
-          
+            <p><a href="{% url 'edit_task' project_id task.id %}">Editar Tarea</a><p></p>
+            <p><a href="{% url 'delete_task' project_id task.id %}">Eliminar Tarea</a><p></p>
             
         {% endfor %}  <!-- El bloque for debe cerrarse con endfor -->
     </ul>
-        <!---Enlace para volver a la pagina de incio (PRUEBA)-->
-        <p><a href="{% url 'home' %}">Volver a la página de incio</a></p>
+        
+        <p><a href="{% url 'add_task' project_id %}">Agregar Tarea</a><p>
+        
+        <p><a href="{% url 'view_project_plan' project_id %}">Regresar a proyecto</a></p>
 </body>
-</html>
+{% endblock %}

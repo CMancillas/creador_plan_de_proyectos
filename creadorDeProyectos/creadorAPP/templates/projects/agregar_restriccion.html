@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar Restricción</title>
-</head>
+
+{% extends 'base.html' %}
+
+{% block title %}Agregar Restricción{% endblock %}
+{% block content %}
+
 <body>
     <h1>Agregar Restricción para el Proyecto "{{ proyecto.title }}"</h1>
     
@@ -16,4 +15,4 @@
 
     <p><a href="{% url 'view_project_plan' proyecto.id %}">Volver al plan del proyecto</a></p>
 </body>
-</html>
+{% endblock %}

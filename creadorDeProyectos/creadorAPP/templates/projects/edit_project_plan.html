@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Editar Plan de Proyecto</title>
-  </head>
+
+{% extends 'base.html' %}
+
+{% block title %}Editar Plan de Proyecto{% endblock %}
+{% block content %}
   <body>
     <h1>Editar Plan de Proyecto</h1>
 
@@ -73,6 +71,10 @@
         value="{{ form.endDate.value|default_if_none:'' }}"
       /><br /><br />
 
+      <label for="id_presupuestoTotal">Presupuesto Total (USD):</label><br>
+<input type="number" id="id_presupuestoTotal" name="presupuestoTotal" step="0.01" value="{{ form.presupuestoTotal.value }}"><br><br>
+
+
       <button type="submit">Guardar Cambios</button>
     </form>
 
@@ -83,4 +85,4 @@
       >
     </p>
   </body>
-</html>
+{% endblock %}

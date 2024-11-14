@@ -105,14 +105,14 @@ class TaskForm(forms.ModelForm):
 class RestriccionForm(forms.ModelForm):
     class Meta: 
         model = Restriccion
-        fields = ['descripcion', 'riesgo_identificado']
+        fields = ['descripcion', 'tipo_riesgo']#, 'riesgo_identificado']
         labels = {
             'descripcion': 'Descripción de la Restricción',
-            'riesgo_identificado': 'Riesgo Identificado',
+            'tipo_riesgo': 'Tipo de Riesgo',
         }
         widgets = {
             'descripcion': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Describe la restricción...'}),
-            'riesgo_identificado': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Describe el riesgo asociado...'}),
+            'tipo_riesgo': forms.Select()
         }
 
            
@@ -141,9 +141,16 @@ class ResourceForm(forms.ModelForm):
 class ProjectRisksForm(forms.ModelForm):
     class Meta:
         model = ProjectRisks
-        fields = ['risk_identifier', 'description', 'risk_type', 'severity_level', 
-                  'mitigation_strategy_avoid', 'mitigation_strategy_control', 
-                  'mitigation_strategy_transfer', 'mitigation_strategy_accept']
+        fields = ['risk_identifier', 'description', 'risk_type', 'probability', 'severity_level','mitigation_strategy']
+        labels = {
+            'risk_identifier': 'Identificador del Riesgo',
+            'description': 'Descripción',
+            'risk_type': 'Tipo de Riesgo',
+            'probability': 'Probabilidad de ocurrencia',
+            'severity_level': 'Impacto en el Proyecto',
+            'mitigation_strategy': 'Estrategia de Mitigación',
+            
+        }
 
 class WorkTeamMemberForm(forms.ModelForm):
     class Meta:
