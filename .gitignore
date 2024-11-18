@@ -2,8 +2,7 @@
 *.pyc
 __pycache__/
 
-# Excluir la base de datos sqlite 
-db.sqlite3
+
 
 # Excluir los archivos .pyc dentro de las migraciones
 creadorDeProyectos/creadorApp/migrations/__pycache__/
