@@ -13,6 +13,7 @@
                     <th>Descripción</th>
                     <th>Tipo de Riesgo</th>
                     <th>Impacto en el Proyecto</th>
+                    <th>Estrategia de mitigacion</th>
                 
                 </tr>
             </thead>
@@ -23,7 +24,7 @@
                         <td>{{ risk.description }}</td>
                         <td>{{ risk.risk_type }}</td>
                         <td>{{ risk.severity_level }}</td>
-                        
+                        <td>{{ risk.mitigation_strategy }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
