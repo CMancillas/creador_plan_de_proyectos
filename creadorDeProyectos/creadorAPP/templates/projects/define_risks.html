@@ -1,31 +1,17 @@
-{% extends 'base.html' %} {% block title %}Definir Riesgos{% endblock %} {%
-block content %}
+{% extends 'base.html' %}
 
-<body>
-  <h2>Definir Riesgos para el Proyecto: {{ project_plan.name }}</h2>
-  <form method="post">
-    {% csrf_token %} {{ form.risk_identifier.label_tag }} {{
-    form.risk_identifier }}<br />
-    {{ form.description.label_tag }} {{ form.description }}<br />
-    {{ form.risk_type.label_tag }} {{ form.risk_type }}<br />
-    {{ form.severity_level.label_tag }} {{ form.severity_level }}<br />
+{% block title %}Definir Riesgos{% endblock %}
+{% block content %}
 
-    <!-- Nuevos campos para estrategias de mitigación -->
-    {{ form.mitigation_strategy_avoid.label_tag }} {{
-    form.mitigation_strategy_avoid }}<br />
-    {{ form.mitigation_strategy_control.label_tag }} {{
-    form.mitigation_strategy_control }}<br />
-    {{ form.mitigation_strategy_transfer.label_tag }} {{
-    form.mitigation_strategy_transfer }}<br />
-    {{ form.mitigation_strategy_accept.label_tag }} {{
-    form.mitigation_strategy_accept }}<br />
+  <body>
+    <h2>Definir Riesgos para el Proyecto: {{ project_plan.name }}</h2>
+    <form method="post">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit">Guardar Riesgo</button>
+    </form>
 
-    <button type="submit">Guardar Riesgo</button>
-  </form>
-
-  <p>
-    <a href="{% url 'view_risks' project_id=project_plan.id %}">Ver riesgos</a>
-  </p>
-  <p><a href="{% url 'indice' project_plan.id %}">Regresar</a></p>
-</body>
+     
+     <p><a href="{% url 'view_risks' project_id=project_plan.id %}">Ver riesgos</a></p>     
+    <p><a href="{% url 'indice' project_plan.id %}">Regresar</a></p>
+  </body>
 {% endblock %}
