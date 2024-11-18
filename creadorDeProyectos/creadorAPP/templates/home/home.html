@@ -5,7 +5,7 @@
 {% block content %}
     <div class="container">
         <h2>Home</h2>
-        <p>Welcome, {{request.user.username}}!</p>
+        <p>Bienvenido, {{request.user.username}}!</p>
         <ul>
             {% for project in recent_projects %}
                 <li>{{ project.title }} - Creado el: {{ project.startDate }}
