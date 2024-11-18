@@ -34,81 +34,76 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
+            <!-- Indice -->
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'indice' project_id %}"
-                >Indice</a
-              >
+              {% if project_id %}
+                <a class="nav-link" href="{% url 'indice' project_id %}">Indice</a>
+              {% else %}
+                <a class="nav-link disabled" href="#">Indice</a>
+              {% endif %}
             </li>
+            <!-- Ver Plan -->
             <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="{% url 'view_project_plan' project_id %}"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Ver Plan
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li>
-                  <a
-                    class="dropdown-item"
-                    href="{% url 'ver_ambito_proyecto' project_id %}"
-                    >Ver Ambito</a
-                  >
-                </li>
-                <li>
-                  <a
-                    class="dropdown-item"
-                    href="{% url 'task_list' project_id %}"
-                    >Ver Lista de Tareas</a
-                  >
-                </li>
-                <li>
-                  <a
-                    class="dropdown-item"
-                    href="{% url 'view_work_team' project_id %}"
-                    >Ver Equipo</a
-                  >
-                </li>
-                <li>
-                  <a
-                    class="dropdown-item"
-                    href="{% url 'view_resources' project_id %}"
-                    >Ver Recursos</a
-                  >
-                </li>
-                <li>
-                  <a
-                    class="dropdown-item"
-                    href="{% url 'view_risks' project_id %}"
-                    >Ver Riesgos y Restricciones</a
-                  >
-                </li>
-                <li>
-                  <a
-                    class="dropdown-item"
-                    href="{% url 'resumen_proyecto' project_id %}"
-                    >Ver Resumen</a
-                  >
-                </li>
-              </ul>
+              {% if project_id %}
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="{% url 'view_project_plan' project_id %}"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Ver Plan
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li>
+                    <a class="dropdown-item" href="{% url 'ver_ambito_proyecto' project_id %}">
+                      Ver Ambito
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'task_list' project_id %}">
+                      Ver Lista de Tareas
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'view_work_team' project_id %}">
+                      Ver Equipo
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'view_resources' project_id %}">
+                      Ver Recursos
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'view_risks' project_id %}">
+                      Ver Riesgos y Restricciones
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'resumen_proyecto' project_id %}">
+                      Ver Resumen
+                    </a>
+                  </li>
+                </ul>
+              {% else %}
+                <a class="nav-link disabled" href="#">Ver Plan</a>
+              {% endif %}
             </li>
+            <!-- Buscar Proyectos -->
             <li class="nav-item">
               <a class="nav-link" href="{% url 'search' %}">Buscar Proyectos</a>
             </li>
+            <!-- Crear Proyecto -->
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'define_project_plan' %}"
-                >Crear Proyecto</a
-              >
+              <a class="nav-link" href="{% url 'define_project_plan' %}">
+                Crear Proyecto
+              </a>
             </li>
+            <!-- Cerrar Sesión -->
             <li class="nav-item">
-              <form
-                action="{% url 'logout' %}"
-                method="POST"
-                style="display: inline"
-              >
+              <form action="{% url 'logout' %}" method="POST" style="display: inline">
                 {% csrf_token %}
                 <button
                   type="submit"
@@ -119,7 +114,6 @@
                 </button>
               </form>
             </li>
-            <!-- Agregar más enlaces según las funcionalidades que tengas -->
           </ul>
         </div>
       </div>
@@ -128,7 +122,7 @@
     <!-- Contenido específico de cada página -->
     <div class="container mt-4">
       {% block content %}
-      <!-- Aquí irá el contenido de cada plantilla hija -->
+    
       {% endblock %}
     </div>
 

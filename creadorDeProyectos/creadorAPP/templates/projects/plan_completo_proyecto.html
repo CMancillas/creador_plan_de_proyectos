@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Plan Completo del Proyecto</title>
+    <style>
+        body { 
+            font-family: 'Arial', sans-serif; 
+            line-height: 1.6; 
+            margin: 0; 
+            padding: 0; 
+            background-color: #f4f4f9; 
+            color: #333; 
+        }
+        .container { 
+            width: 80%; 
+            margin: 20px auto; 
+            background: #fff; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+        }
+        h1, h2 { 
+            color: #2c3e50; 
+        }
+        h1 { 
+            text-align: center; 
+            margin-bottom: 20px; 
+            font-size: 2.5em; 
+        }
+        h2 { 
+            border-bottom: 2px solid #3498db; 
+            padding-bottom: 5px; 
+        }
+        p, li { 
+            font-size: 1.1em; 
+            margin: 5px 0; 
+        }
+        ul { 
+            list-style-type: square; 
+            margin: 10px 0 20px 20px; 
+            padding: 0; 
+        }
+        .section { 
+            margin-bottom: 30px; 
+        }
+        .section p { 
+            margin-bottom: 10px; 
+        }
+        .section ul { 
+            padding-left: 20px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Plan Completo del Proyecto "{{ proyecto.title }}"</h1>
+
+        <div class="section">
+            <h2>Información General</h2>
+            <p><strong>Descripción:</strong> {{ proyecto.description }}</p>
+            <p><strong>Objetivo:</strong> {{ proyecto.objetive }}</p>
+            <p><strong>Cliente:</strong> {{ proyecto.clientName }}</p>
+            <p><strong>Fecha de Inicio:</strong> {{ proyecto.startDate|date:"d M Y" }}</p>
+            <p><strong>Fecha de Fin:</strong> {{ proyecto.endDate|date:"d M Y" }}</p>
+            <p><strong>Presupuesto Total:</strong> ${{ proyecto.presupuestoTotal }}</p>
+        </div>
+
+        <div class="section">
+            <h2>Ámbitos del Proyecto</h2>
+            {% if ambitos %}
+                <ul>
+                    {% for ambito in ambitos %}
+                        <li>
+                            <strong>Descripción:</strong> {{ ambito.descripcion_ambito }}<br>
+                            <strong>Características Principales:</strong> {{ ambito.caracteristicas_principales }}<br>
+                            <strong>Limitaciones:</strong> {{ ambito.limitaciones }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No se han registrado ámbitos para este proyecto.</p>
+            {% endif %}
+        </div>
+
+
+        <div class="section">
+            <h2>Tareas</h2>
+            {% if tareas %}
+                <ul>
+                    {% for tarea in tareas %}
+                        <li>
+                            <strong>Tarea:</strong> {{ tarea.name }}<br>
+                            <strong>Duración Estimada:</strong> {{ tarea.estimated_duration }} horas<br>
+                            <strong>Fechas:</strong> {{ tarea.start_date|date:"d M Y" }} - {{ tarea.end_date|date:"d M Y" }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No se han registrado tareas para este proyecto.</p>
+            {% endif %}
+        </div>
+
+        <div class="section">
+            <h2>Equipo de Trabajo</h2>
+            {% if equipo %}
+                <ul>
+                    {% for miembro in equipo %}
+                        <li>
+                            <strong>Nombre:</strong> {{ miembro.name }}<br>
+                            <strong>Rol:</strong> {{ miembro.get_role_display }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No se han registrado miembros del equipo para este proyecto.</p>
+            {% endif %}
+        </div>
+
+
+        <div class="section">
+            <h2>Recursos</h2>
+            {% if recursos %}
+                <ul>
+                    {% for recurso in recursos %}
+                        <li>
+                            <strong>Nombre:</strong> {{ recurso.name }}<br>
+                            <strong>Tipo:</strong> {{ recurso.get_resource_type_display }}<br>
+                            <strong>Cantidad:</strong> {{ recurso.quantity_estimated }}<br>
+                            <strong>Costo:</strong> ${{ recurso.cost_estimated }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No se han registrado recursos para este proyecto.</p>
+            {% endif %}
+        </div>
+
+
+        <div class="section">
+            <h2>Restricciones</h2>
+            {% if restricciones %}
+                <ul>
+                    {% for restriccion in restricciones %}
+                        <li>
+                            <strong>Descripción:</strong> {{ restriccion.descripcion }}<br>
+                            <strong>Tipo de Riesgo:</strong> {{ restriccion.get_tipo_riesgo_display }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No se han registrado restricciones para este proyecto.</p>
+            {% endif %}
+        </div>
+
+     
+
+        <div class="section">
+            <h2>Riesgos</h2>
+            {% if riesgos %}
+                <ul>
+                    {% for riesgo in riesgos %}
+                        <li>
+                            <strong>Descripción:</strong> {{ riesgo.description }}<br>
+                            <strong>Tipo:</strong> {{ riesgo.get_risk_type_display }}<br>
+                            <strong>Severidad:</strong> {{ riesgo.get_severity_level_display }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No se han registrado riesgos para este proyecto.</p>
+            {% endif %}
+        </div>
+
+        
+    </div>
+</body>
+</html>

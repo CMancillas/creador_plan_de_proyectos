@@ -100,7 +100,7 @@
         <p><a href="{% url 'indice' project_id %}">Añadir información del proyecto</a></p>
    
         <!-- Botón para descargar el PDF, solo visible en pantalla -->
-        <p><a href="{% url 'descargar_resumen_pdf' project_id %}" class="btn-download no-print">Descargar Plan de Proyecto en PDF</a></p>
+        <p><a href="{% url 'descargar_plan_completo' project_id %}" class="btn-download no-print">Descargar Plan de Proyecto en PDF</a></p>
 
         <!-- Botón para eliminar el proyecto -->
         <p><a href="{% url 'delete_project_plan' project_id %}">Eliminar el proyecto</a></p>
