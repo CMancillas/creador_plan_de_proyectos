@@ -19,7 +19,7 @@ from django.http import HttpResponse
 # Importa render_to_string para convertir una plantilla HTML en una cadena de texto.
 from django.template.loader import render_to_string
 # Importa HTML de WeasyPrint, que convierte el HTML en un PDF.
-from weasyprint import HTML
+#from weasyprint import HTML
 
 # Create your views here.
 def register_view(request):
@@ -316,7 +316,7 @@ def define_resources(request, project_id):
             resource.save()  # Guarda el recurso
 
             messages.success(request, "El recurso ha sido agregado exitosamente.")
-            return redirect('define_resources', project_id=project.id)  # Redirige a la misma URL
+            return redirect('view_resources', project_id=project.id)  # Redirige a la misma URL
 
     else:
         form = ResourceForm()
