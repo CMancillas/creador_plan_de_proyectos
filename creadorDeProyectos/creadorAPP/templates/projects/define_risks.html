@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Definir Riesgos</title>
-  </head>
+
+{% extends 'base.html' %}
+
+{% block title %}Definir Riesgos{% endblock %}
+{% block content %}
+
   <body>
     <h2>Definir Riesgos para el Proyecto: {{ project_plan.name }}</h2>
     <form method="post">
@@ -16,4 +15,4 @@
      <p><a href="{% url 'view_risks' project_id=project_plan.id %}">Ver riesgos</a></p>     
     <p><a href="{% url 'indice' project_plan.id %}">Regresar</a></p>
   </body>
-</html>
+{% endblock %}

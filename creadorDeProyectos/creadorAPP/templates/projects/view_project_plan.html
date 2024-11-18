@@ -1,15 +1,14 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ver Plan de Proyecto</title>
-</head>
+
+{% extends 'base.html' %}
+
+{% block title %}Ver Plan de Proyecto{% endblock %}
+{% block content %}
 <body>
     <h1>Plan de Proyecto</h1>
 
     {% if project_plan %}
-        <h3>Título del Proyecto</h3>
+        <!-- Información básica del proyecto -->
+        <h2>Título del Proyecto</h2>
         <p>{{ project_plan.title }}</p>
 
         <h3>Descripción del Proyecto</h3>
@@ -30,32 +29,84 @@
         <h3>Presupuesto Total</h3>
         <p>{{ project_plan.presupuestoTotal }}</p>
 
+        <hr>
+
+        <!-- Ámbito del Proyecto -->
+        <h2>Ámbito del Proyecto</h2>
+        {% for item in ambito %}
+            <p>{{ item.descripcion_ambito }}</p>
+            <p>Características principales: {{ item.caracteristicas_principales }}</p>
+            <p>Limitaciones: {{ item.limitaciones }}</p>
+        {% empty %}
+            <p>No se ha definido el ámbito del proyecto.</p>
+        {% endfor %}
+
+        <!-- Tareas del Proyecto -->
+        <h2>Tareas</h2>
+        {% for task in tasks %}
+            <h4>{{ task.name }}</h4>
+            <p>Duración estimada: {{ task.estimated_duration }}</p>
+            <p>Fecha de inicio: {{ task.start_date|date:"d M Y" }}</p>
+            <p>Fecha de fin: {{ task.end_date|date:"d M Y" }}</p>
+        {% empty %}
+            <p>No hay tareas definidas para este proyecto.</p>
+        {% endfor %}
+
+        <!-- Equipo de Trabajo -->
+        <h2>Equipo de Trabajo</h2>
+        {% for member in team %}
+            <h4>{{ member.name }}</h4>
+            <p>Rol: {{ member.role }}</p>
+        {% empty %}
+            <p>No hay miembros asignados al equipo de trabajo.</p>
+        {% endfor %}
+
+        <!-- Recursos del Proyecto -->
+        <h2>Recursos</h2>
+        {% for resource in resources %}
+            <h4>{{ resource.name }}</h4>
+            <p>Tipo: {{ resource.resource_type }}</p>
+            <p>Cantidad: {{ resource.quantity_estimated }}</p>
+        {% empty %}
+            <p>No hay recursos asignados a este proyecto.</p>
+        {% endfor %}
+
+        <!-- Restricciones del Proyecto -->
+        <h2>Restricciones</h2>
+        {% for restriction in restrictions %}
+            <p>{{ restriction.descripcion }}</p>
+        {% empty %}
+            <p>No hay restricciones definidas para este proyecto.</p>
+        {% endfor %}
+
+        <!-- Riesgos del Proyecto -->
+        <h2>Riesgos</h2>
+        {% for risk in risks %}
+            <h4>{{ risk.risk_identifier }}</h4>
+            <p>Descripción: {{ risk.description }}</p>
+            <p>Tipo de Riesgo: {{ risk.risk_type }}</p>
+            <p>Probabilidad: {{ risk.probability }}</p>
+            <p>Impacto: {{ risk.severity_level }}</p>
+        {% empty %}
+            <p>No hay riesgos definidos para este proyecto.</p>
+        {% endfor %}
+
+        <!-- Opciones de navegación -->
+        <hr>
+        <p><a href="{% url 'edit_project_plan' project_id=project_plan.id %}">Editar Información General del Plan de Proyecto</a></p>
         
-        <p><a href="{% url 'edit_project_plan' project_id=project_plan.id %}"
-            >Editar Plan de Proyecto</a
-          ></p>
-  
-    
-    <p><a href="{% url 'ver_ambito_proyecto' project_id=project_plan.id %}">Ver Ámbito del Proyecto</a></p>
-    <p><a href="{% url 'task_list' project_id=project_plan.id %}">Ver tareas</a></p>
-    <p><a href="{% url 'view_work_team' project_id=project_plan.id %}">Ver equipo</a></p> 
-    <p><a href="{% url 'view_resources' project_id=project_plan.id %}">Ver recursos</a></p>
-    <p><a href="{% url 'view_risks' project_id=project_plan.id %}">Ver riesgos/restricciones</a></p>     
+        <hr>
+        <!--PRUEBA (INDICE)-->
+        <p><a href="{% url 'indice' project_id=project_plan.id %}">Añadir información del proyecto</a></p>
    
+        <!-- Botón para descargar el PDF, solo visible en pantalla -->
+        <p><a href="{% url 'descargar_resumen_pdf' project_id=project_plan.id %}" class="btn-download no-print">Descargar Plan de Proyecto en PDF</a></p>
 
-    <hr>
-    <!--PRUEBA (INDICE)-->
-    <p><a href="{% url 'indice' project_id=project_plan.id %}">Añadir información del proyecto</a></p>
-   
-    <!-- Botón para descargar el PDF, solo visible en pantalla -->
-    <a href="{% url 'descargar_resumen_pdf' project_id=project_plan.id %}" class="btn-download no-print">Descargar Plan de Proyecto en PDF</a>
+        <!-- Botón para eliminar el proyecto -->
+        <p><a href="{% url 'delete_project_plan' project_id=project_plan.id %}">Eliminar el proyecto</a></p>
 
-   
-    <!---Enlace para volver a la pagina de incio -->
-    <p><a href="{% url 'home' %}">Volver a la página de incio</a></p>
-
-{% else %}
-<p>No se ha definido el plan de proyecto aún.</p>
-{% endif %}    
+    {% else %}
+        <p>No se ha definido el plan de proyecto aún.</p>
+    {% endif %}
 </body>
-</html>
+{% endblock %}

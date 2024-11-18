@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Eliminar Miembro</title>
-</head>
+
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Miembro{% endblock %}
+{% block content %}
 <body>
     <h1>Eliminar Miembro</h1>
     <p>¿Estás seguro de que deseas eliminar a {{ team_member.name }} del equipo?</p>
@@ -15,4 +14,4 @@
 
     <a href="{% url 'view_work_team' project_id=project_plan.id %}">Volver</a>
 </body>
-</html>
+{% endblock %}
