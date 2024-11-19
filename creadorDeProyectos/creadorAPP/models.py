@@ -34,25 +34,30 @@ class ProjectPlan(models.Model):
 class Task(models.Model):
     project = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE, related_name='tasks')
     name = models.CharField(max_length=255)
+    description = models.CharField(
+        max_length=255, 
+        blank=True, 
+        null=True, 
+    )
     estimated_duration = models.PositiveIntegerField(help_text="Duración estimada en horas")
     created_at = models.DateTimeField(auto_now_add=True)
     start_date = models.DateField(null=True, blank=True)  # Campo para la fecha de inicio
     end_date = models.DateField(null=True, blank=True)    # Campo para la fecha de fin
 
     def __str__(self):
-        return f"Tarea: {self.name} - Almacenada exitosamente."
+        return f"Tarea: {self.name}"
   
 class Restriccion(models.Model):
     RISK_TYPES = [
-        ('technical', 'Técnico'),
-        ('organizational', 'Organizativo'),
-        ('financial', 'Financiero'),
+       ('Técnico', 'Técnico'),
+        ('Organizativo', 'Organizativo'),
+        ('Financiero', 'Financiero'),
     ]
 
     proyecto = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE, related_name='restricciones')
     descripcion = models.TextField(help_text="Descripción de la restricción.")
     tipo_riesgo = models.CharField(
-        max_length=20, 
+        max_length=30, 
         choices=RISK_TYPES, 
         verbose_name="Tipo de Riesgo",
         null=True, 
@@ -79,11 +84,11 @@ class AmbitoProyecto(models.Model):
 
 class WorkTeamMember(models.Model):
     ROLE_CHOICES = [
-        ('manager', 'Gestor del proyecto'),
-        ('developer', 'Desarrollador'),
-        ('analyst', 'Analista'),
-        ('tester', 'QA Tester'),
-        ('other', 'Otro'),
+         ('Gestor del proyecto', 'Gestor del proyecto'),
+        ('Desarrollador', 'Desarrollador'),
+        ('Analista', 'Analista'),
+        ('QA Tester', 'QA Tester'),
+        ('Otro', 'Otro'),
     ]
 
     project = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE, related_name = 'team_members')
@@ -96,15 +101,15 @@ class WorkTeamMember(models.Model):
 
 class Resource(models.Model):
     RESOURCE_TYPE_CHOICES = [
-        ('human', 'Recursos Humanos'),
-        ('tools', 'Herramientas y Software'),
-        ('infrastructure', 'Infraestructura y Servicios'),
-        ('budget', 'Presupuesto'),
-        ('documentation', 'Documentación y Procedimientos'),
+    ('Recursos Humanos', 'Recursos Humanos'),
+    ('Herramientas y Software', 'Herramientas y Software'),
+    ('Infraestructura y Servicios', 'Infraestructura y Servicios'),
+    ('Presupuesto', 'Presupuesto'),
+    ('Documentación y Procedimientos', 'Documentación y Procedimientos'),
     ]
 
     project = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE, related_name='resources')
-    resource_type = models.CharField(max_length=15, choices=RESOURCE_TYPE_CHOICES, verbose_name="Tipo de Recurso")
+    resource_type = models.CharField(max_length=30, choices=RESOURCE_TYPE_CHOICES, verbose_name="Tipo de Recurso")
     name = models.CharField(max_length=255, verbose_name="Nombre del Recurso")
     description = models.TextField(blank=True, null=True, verbose_name="Descripción")
     quantity_estimated = models.PositiveIntegerField(blank=True, null=True, verbose_name="Cantidad Estimada")
@@ -117,32 +122,44 @@ class Resource(models.Model):
 
 class ProjectRisks(models.Model):
     RISK_TYPES = [
-        ('technical', 'Técnico'),
-        ('organizational', 'Organizativo'),
-        ('financial', 'Financiero'),
+        ('Técnico', 'Técnico'),
+        ('Organizativo', 'Organizativo'),
+        ('Financiero', 'Financiero'),
     ]
     MITIGATION_STRATEGIES = [
-        ('avoid', 'Evitar'),
+        ('Evitar', 'Evitar'),
         ('Aceptar', 'Aceptar'),
-        ('transfer', 'Transferir'),
-        ('control', 'Controlar'),
+        ('Transferir', 'Transferir'),
+        ('Controlar', 'Controlar'),
     ]
     project_plan = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE, related_name='risks')
     risk_identifier = models.CharField(max_length=50, unique=True)
     description = models.TextField()
-    risk_type = models.CharField(max_length=20, choices=RISK_TYPES)
+    risk_type = models.CharField(max_length=30, choices=RISK_TYPES)
     identification_date = models.DateField(auto_now_add=True)
-    probability = models.CharField(max_length=10, choices=[
-        ('low', 'Baja'),
-        ('meduim', 'Media'),
-        ('high', 'Alta'),
+    probability = models.CharField(max_length=30, choices=[
+        ('Baja', 'Baja'),
+        ('Media', 'Media'),
+        ('Alta', 'Alta'),
     ])
-    severity_level = models.CharField(max_length=10, choices=[
-        ('low', 'Bajo'),
-        ('medium', 'Medio'),
-        ('high', 'Alto'),
+    severity_level = models.CharField(max_length=30, choices=[
+        ('Bajo', 'Bajo'),
+        ('Medio', 'Medio'),
+        ('Alto', 'Alto'),
     ])
-    mitigation_strategy = models.CharField(max_length=10, choices=MITIGATION_STRATEGIES)
+    mitigation_strategy = models.CharField(max_length=30, choices=MITIGATION_STRATEGIES)
     def __str__(self):
         return f"{self.risk_identifier}: {self.description}"
+     
+class EsfuerzoProyecto(models.Model):
+    proyecto = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE)  # Enlace al proyecto
+    esfuerzo_estimado = models.DecimalField(max_digits=6, decimal_places=2)  # Esfuerzo estimado en horas
+    esfuerzo_real = models.DecimalField(max_digits=6, decimal_places=2, default=0)  # Esfuerzo real en horas
+
+    def diferencia_esfuerzo(self):
+        return self.esfuerzo_estimado - self.esfuerzo_real  # Devuelve la diferencia entre estimado y real
+
+    def __str__(self):
+        return f"Esfuerzo del proyecto {self.proyecto.nombre}"
+    
 

@@ -11,8 +11,8 @@ from django.views import View
 # Import the User class (model)
 from django.contrib.auth.models import User
 # Import the RegisterForm from forms.py
-from .forms import RegisterForm, AmbitoProyectoForm, ProjectPlanForm, TaskForm, RestriccionForm,  ResourceForm, ProjectRisksForm, WorkTeamMemberForm
-from .models import AmbitoProyecto, Task, ProjectPlan, Resource, ProjectRisks, WorkTeamMember, Restriccion
+from .forms import RegisterForm, AmbitoProyectoForm, ProjectPlanForm, TaskForm, RestriccionForm,  ResourceForm, ProjectRisksForm, WorkTeamMemberForm, EsfuerzoProyectoForm
+from .models import AmbitoProyecto, Task, ProjectPlan, Resource, ProjectRisks, WorkTeamMember, Restriccion, EsfuerzoProyecto
 from django.contrib import messages
 # Importa HttpResponse de Django para enviar una respuesta HTTP al navegador.
 from django.http import HttpResponse
@@ -20,6 +20,7 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 # Importa HTML de WeasyPrint, que convierte el HTML en un PDF.
 from weasyprint import HTML
+from datetime import timedelta
 
 # Create your views here.
 def register_view(request):
@@ -528,3 +529,53 @@ def descargar_plan_completo_pdf(request, project_id):
 
     # Retorna la respuesta con el PDF, permitiendo que el navegador descargue el archivo.
     return response
+
+
+def ver_cronograma(request, project_id):
+    project = ProjectPlan.objects.get(id=project_id)
+    tasks = project.tasks.order_by('start_date')
+
+    # Generar el rango de fechas del proyecto
+    date_range = []
+    current_date = project.startDate
+    while current_date <= project.endDate:
+        date_range.append(current_date)
+        current_date += timedelta(days=1)
+
+    return render(request, 'cronograma/ver_cronograma.html', {
+        'project': project,
+        'tasks': tasks,
+        'date_range': date_range,
+        'project_id': project_id,
+    })
+def agregar_esfuerzo(request, project_id):
+    proyecto = get_object_or_404(ProjectPlan, id=project_id)
+    
+    esfuerzo_proyecto, created = EsfuerzoProyecto.objects.get_or_create(proyecto=proyecto)
+
+    if request.method == 'POST':
+        form = EsfuerzoProyectoForm(request.POST, instance=esfuerzo_proyecto)
+        if form.is_valid():
+            form.save()
+            return redirect('consultar_esfuerzo', project_id=project_id)
+    else:
+        form = EsfuerzoProyectoForm(instance=esfuerzo_proyecto)
+
+    return render(request, 'esfuerzo/agregar_esfuerzo.html', {
+        'form': form,
+        'project_id': project_id
+    })
+
+def consultar_esfuerzo(request, project_id):
+    proyecto = get_object_or_404(ProjectPlan, id=project_id)
+    esfuerzo_proyecto, created = EsfuerzoProyecto.objects.get_or_create(
+        proyecto=proyecto,
+        defaults={'esfuerzo_estimado': 0, 'esfuerzo_real': 0}
+    )
+
+    return render(request, 'esfuerzo/consultar_esfuerzo.html', {
+        'proyecto': proyecto,
+        'esfuerzo_proyecto': esfuerzo_proyecto,
+        'diferencia': esfuerzo_proyecto.diferencia_esfuerzo(),
+        'project_id': project_id
+    })

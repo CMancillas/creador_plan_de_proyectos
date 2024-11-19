@@ -7,6 +7,7 @@ from .models import Restriccion
 from .models import Resource
 from .models import ProjectRisks
 from .models import WorkTeamMember
+from .models import EsfuerzoProyecto
 
 class RegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -96,8 +97,9 @@ class ProjectPlanForm(forms.ModelForm):
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ['name', 'estimated_duration', 'start_date', 'end_date']
+        fields = ['name', 'description','estimated_duration', 'start_date', 'end_date']
         widgets = {
+            'description': forms.TextInput(attrs={'maxlength': 255, 'placeholder': 'Descripción corta'}),
             'start_date': forms.DateInput(attrs={'type': 'date'}),
             'end_date': forms.DateInput(attrs={'type': 'date'}),
         }   
@@ -160,4 +162,12 @@ class WorkTeamMemberForm(forms.ModelForm):
             'name': 'Nombre del miembro del equipo',
             'role': 'Rol del miembro del equipo',
         }
+
+
+class EsfuerzoProyectoForm(forms.ModelForm):
+    class Meta:
+        model = EsfuerzoProyecto
+        fields = ['esfuerzo_estimado', 'esfuerzo_real']
+
+
 
