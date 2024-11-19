@@ -33,10 +33,6 @@
         <p><strong>Presupuesto Total:</strong> {{ proyecto.presupuestoTotal }}</p>
     </div>
 
-
-        <!-- Botón para descargar el PDF, solo visible en pantalla -->
-        <a href="{% url 'descargar_resumen_pdf' proyecto.id %}" class="btn-download no-print">Descargar Resumen en PDF</a>
-
         <!---Enlace para volver al indice del proyecto -->
         <p><a href="{% url 'indice' proyecto.id %}">Volver al Indice de Proyecto</a></p>
 
