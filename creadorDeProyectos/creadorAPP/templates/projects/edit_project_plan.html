@@ -37,24 +37,6 @@
         maxlength="50"
       /><br /><br />
 
-      <label for="id_employeeName">Nombre del Empleado:</label><br />
-      <input
-        type="text"
-        id="id_employeeName"
-        name="employeeName"
-        value="{{ form.employeeName.value|default_if_none:'' }}"
-        maxlength="50"
-      /><br /><br />
-
-      <label for="id_employeeRole">Rol del Empleado:</label><br />
-      <input
-        type="text"
-        id="id_employeeRole"
-        name="employeeRole"
-        value="{{ form.employeeRole.value|default_if_none:'' }}"
-        maxlength="50"
-      /><br /><br />
-
       <label for="id_startDate">Fecha de Inicio:</label><br />
       <input
         type="date"

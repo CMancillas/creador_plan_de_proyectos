@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riesgos del Proyecto</title>
+</head>
+<body>
+    <h2>Riesgos para el Proyecto: {{ project_plan.name }}</h2>
+
+    {% if risks %}
+        <ul>
+            {% for risk in risks %}
+                <li>
+                    <strong>Identificador de Riesgo:</strong> {{ risk.risk_identifier }}<br>
+                    <strong>Descripción:</strong> {{ risk.description }}<br>
+                    <strong>Tipo de Riesgo:</strong> {{ risk.get_risk_type_display }}<br>
+                    <strong>Nivel de Severidad:</strong> {{ risk.get_severity_level_display }}<br>
+                    
+                    <!-- Planes de Mitigación -->
+                    <h4>Planes de Mitigación</h4>
+                    <ul>
+                        <li><strong>Evitar:</strong> {{ risk.mitigation_strategy_avoid }}</li>
+                        <li><strong>Controlar:</strong> {{ risk.mitigation_strategy_control }}</li>
+                        <li><strong>Transferir:</strong> {{ risk.mitigation_strategy_transfer }}</li>
+                        <li><strong>Aceptar:</strong> {{ risk.mitigation_strategy_accept }}</li>
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No se han registrado riesgos para este proyecto.</p>
+    {% endif %}
+
+    <h3>Restricciones del Proyecto</h3>
+    {% if project_plan.restricciones.exists %}
+        <ul>
+            {% for restriccion in project_plan.restricciones.all %}
+                <li>
+                    <strong>Restricción:</strong> {{ restriccion.descripcion }}<br>
+                    <strong>Riesgo Identificado:</strong> {{ restriccion.riesgo_identificado }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No se han registrado restricciones para este proyecto.</p>
+    {% endif %}
+
+    <p><a href="{% url 'define_risks' project_plan.id %}">Agregar o Modificar Riesgos</a></p>
+    <p><a href="{% url 'indice' project_plan.id %}">Volver a la página de inicio</a></p>
+</body>
+</html>

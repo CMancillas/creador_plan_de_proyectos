@@ -7,7 +7,10 @@
     <h1>Lista de tareas</h1>
     <ul>
         {% for task in tasks %}
-            <li>{{ task.name }} Duracion: {{task.estimated_duration}}</li>
+        <li>{{ task.name }}</li> 
+        <p>Duracion: {{task.estimated_duration}}</p>
+        <p>{{task.description}}</p>
+        
             <p><a href="{% url 'edit_task' project_id task.id %}">Editar Tarea</a><p></p>
             <p><a href="{% url 'delete_task' project_id task.id %}">Eliminar Tarea</a><p></p>
             

@@ -35,5 +35,7 @@ urlpatterns = [
     path('search-results/', views.search_results, name='search_results'),
     path('search/', views.search, name='search'),
     path('project-plan/<int:project_id>/descargar-plan-completo/', views.descargar_plan_completo_pdf, name='descargar_plan_completo'),
-
+    path('project-plan/<int:project_id>/cronograma/', views.ver_cronograma, name='ver_cronograma'),
+    path('project-plan/<int:project_id>/agregar_esfuerzo/', views.agregar_esfuerzo, name='agregar_esfuerzo'),
+    path('project-plan/<int:project_id>/esfuerzo/', views.consultar_esfuerzo, name='consultar_esfuerzo'),
 ]
