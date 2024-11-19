@@ -6,15 +6,14 @@
     <h1>Riesgos del Proyecto</h1>
 
     {% if project_risks %}
-        <table border="1">
+        <table class="table">
             <thead>
                 <tr>
                     <th>Identificador del Riesgo</th>
                     <th>Descripción</th>
                     <th>Tipo de Riesgo</th>
                     <th>Impacto en el Proyecto</th>
-                    <th>Estrategia de mitigacion</th>
-                
+                    <th>Estrategia de Mitigación</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,23 +32,25 @@
         <p>No hay riesgos del proyecto registrados aún.</p>
     {% endif %}
 
-    <p><a href="{% url 'define_risks' project_id %}">Agregar Nuevo Riesgo</a></p>
-    
+    <p>
+        <a href="{% url 'define_risks' project_id %}" class="btn btn-primary">
+            Agregar Nuevo Riesgo
+        </a>
+    </p>
 
     <h1>Restricciones Creadas</h1>
 
     {% if restricciones %}
-        <ul>
+        <ul class="list-group">
             {% for restriccion in restricciones %}
-                <li>
-                <strong>Descripción:</strong> {{ restriccion.descripcion }}<br>
-                <strong>Tipo de Riesgo:</strong> 
-                
-                {% if restriccion.tipo_riesgo %}
-                    {{ restriccion.get_tipo_riesgo_display }}
-                {% else %}
-                    <em>No especificado</em> 
-                {% endif %}
+                <li class="list-group-item">
+                    <strong>Descripción:</strong> {{ restriccion.descripcion }}<br>
+                    <strong>Tipo de Riesgo:</strong>
+                    {% if restriccion.tipo_riesgo %}
+                        {{ restriccion.get_tipo_riesgo_display }}
+                    {% else %}
+                        <em>No especificado</em>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>
@@ -57,8 +58,16 @@
         <p>No hay restricciones creadas aún.</p>
     {% endif %}
 
-    <p><a href="{% url 'agregar_restriccion' project_id %}">Agregar Nueva Restricción</a></p>
+    <p>
+        <a href="{% url 'agregar_restriccion' project_id %}" class="btn btn-primary">
+            Agregar Nueva Restricción
+        </a>
+    </p>
 
-    <p><a href="{% url 'view_project_plan' project_id %}">Regresar</a></p>
+    <p>
+        <a href="{% url 'view_project_plan' project_id %}" class="btn btn-secondary">
+            Regresar
+        </a>
+    </p>
 </body>
 {% endblock %}

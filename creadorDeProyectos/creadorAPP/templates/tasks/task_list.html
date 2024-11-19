@@ -1,24 +1,45 @@
-
 {% extends 'base.html' %}
 
 {% block title %}Tareas del Proyecto{% endblock %}
 {% block content %}
 <body>
-    <h1>Lista de tareas</h1>
-    <ul>
-        {% for task in tasks %}
-        <li>{{ task.name }}</li> 
-        <p>Duracion: {{task.estimated_duration}}</p>
-        <p>{{task.description}}</p>
-        
-            <p><a href="{% url 'edit_task' project_id task.id %}">Editar Tarea</a><p></p>
-            <p><a href="{% url 'delete_task' project_id task.id %}">Eliminar Tarea</a><p></p>
-            
-        {% endfor %}  <!-- El bloque for debe cerrarse con endfor -->
-    </ul>
-        
-        <p><a href="{% url 'add_task' project_id %}">Agregar Tarea</a><p>
-        
-        <p><a href="{% url 'view_project_plan' project_id %}">Regresar a proyecto</a></p>
+  <h1 class="mt-4">Lista de Tareas</h1>
+
+  {% if tasks %}
+  <div class="list-group mb-4">
+    {% for task in tasks %}
+    <div class="list-group-item">
+      <h5>{{ task.name }}</h5>
+      <p><strong>Duración:</strong> {{ task.estimated_duration }} horas</p>
+      <p><strong>Descripción:</strong> {{ task.description }}</p>
+      <div class="mt-2">
+        <a
+          href="{% url 'edit_task' project_id task.id %}"
+          class="btn btn-primary btn-sm"
+        >
+          Editar Tarea
+        </a>
+        <a
+          href="{% url 'delete_task' project_id task.id %}"
+          class="btn btn-danger btn-sm"
+        >
+          Eliminar Tarea
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="alert alert-warning">No hay tareas definidas para este proyecto.</p>
+  {% endif %}
+
+  <div class="mb-3">
+    <a href="{% url 'add_task' project_id %}" class="btn btn-success">
+      Agregar Tarea
+    </a>
+    <a href="{% url 'view_project_plan' project_id %}" class="btn btn-secondary">
+      Regresar al Proyecto
+    </a>
+  </div>
 </body>
 {% endblock %}

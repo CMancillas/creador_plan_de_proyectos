@@ -1,21 +1,48 @@
-
 {% extends 'base.html' %}
 
-{% block title %}Equipo de trabajo{% endblock %}
+{% block title %}Equipo de Trabajo{% endblock %}
 {% block content %}
 <body>
-    <h1>Equipo de Trabajo para el Proyecto: {{ project_plan.title }}</h1>
+  <h1 class="mt-4">Equipo de Trabajo para el Proyecto: <span class="text-primary">{{ project_plan.title }}</span></h1>
 
-    <h2>Miembros del Equipo</h2>
-    <ul>
+  <h2 class="mt-4">Miembros del Equipo</h2>
+
+  {% if team_members %}
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead class="table-light">
+        <tr>
+          <th>Nombre</th>
+          <th>Rol</th>
+        </tr>
+      </thead>
+      <tbody>
         {% for member in team_members %}
-            <li>{{ member.name }} - {{ member.get_role_display }}</li>
-        {% empty %}
-            <p>No hay miembros en el equipo actualmente.</p>
+        <tr>
+          <td>{{ member.name }}</td>
+          <td>{{ member.get_role_display }}</td>
+        </tr>
         {% endfor %}
-    </ul>
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="alert alert-warning">No hay miembros en el equipo actualmente.</p>
+  {% endif %}
 
-    <a href="{% url 'define_work_team' project_id=project_plan.id %}">Añadir o Editar Miembros</a>
-    </p><a href="{% url 'view_project_plan' project_id=project_plan.id %}">Regresar a proyecto</a></p>
+  <div class="mt-4">
+    <a
+      href="{% url 'define_work_team' project_id=project_plan.id %}"
+      class="btn btn-success"
+    >
+      Añadir o Editar Miembros
+    </a>
+    <a
+      href="{% url 'view_project_plan' project_id=project_plan.id %}"
+      class="btn btn-secondary"
+    >
+      Regresar al Proyecto
+    </a>
+  </div>
 </body>
 {% endblock %}

@@ -1,46 +1,42 @@
-
 {% extends 'base.html' %}
 
 {% block title %}Resumen del Proyecto{% endblock %}
 {% block content %}
-
-    <style>
-        body { font-family: Arial, sans-serif; }
-        h1, h2 { color: #333; }
-        .section { margin-bottom: 20px; }
-        .btn-download { margin-top: 20px; padding: 10px 20px; background-color: #28a745; color: #fff; border: none; cursor: pointer; }
-        
-        /* Ocultar el botón al generar el PDF */ 
-        .no-print { display: none; }
-
-        /* Mostrar el botón solo en pantalla */
-        @media screen {
-            .no-print { display: inline; }
-        }
-    
-    </style>
-
 <body>
-    <h1>Resumen del Proyecto "{{ proyecto.title }}"</h1>
+  <div class="container mt-4">
+    <h1 class="mb-4">Resumen del Proyecto: <span class="text-primary">{{ proyecto.title }}</span></h1>
 
-    <div class="section">
-        <h2>Información General</h2>
+    <!-- Información General -->
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">Información General</div>
+      <div class="card-body">
         <p><strong>Descripción:</strong> {{ proyecto.description }}</p>
         <p><strong>Objetivo:</strong> {{ proyecto.objetive }}</p>
         <p><strong>Cliente:</strong> {{ proyecto.clientName }}</p>
         <p><strong>Fecha de Inicio:</strong> {{ proyecto.startDate|date:"d M Y" }}</p>
         <p><strong>Fecha de Fin:</strong> {{ proyecto.endDate|date:"d M Y" }}</p>
-        <p><strong>Presupuesto Total:</strong> {{ proyecto.presupuestoTotal }}</p>
+        <p><strong>Presupuesto Total:</strong> ${{ proyecto.presupuestoTotal }}</p>
+      </div>
     </div>
 
-        <!---Enlace para volver al indice del proyecto -->
-        <p><a href="{% url 'indice' proyecto.id %}">Volver al Indice de Proyecto</a></p>
-
-        <!---Enlace para volver al plan de proyecto -->
-        <p><a href="{% url 'view_project_plan' proyecto.id %}">Volver al Plan de Proyecto</a></p>
-
-        <!---Enlace para volver a la pagina de incio -->
-        <p><a href="{% url 'home' %}">Volver a la página de incio</a></p>
-
+    <!-- Botones de navegación -->
+    <div class="d-flex justify-content-between mt-4">
+      <a
+        href="{% url 'indice' proyecto.id %}"
+        class="btn btn-outline-secondary"
+      >
+        Volver al Índice del Proyecto
+      </a>
+      <a
+        href="{% url 'view_project_plan' proyecto.id %}"
+        class="btn btn-outline-primary"
+      >
+        Volver al Plan de Proyecto
+      </a>
+      <a href="{% url 'home' %}" class="btn btn-outline-success">
+        Volver a la Página de Inicio
+      </a>
+    </div>
+  </div>
 </body>
 {% endblock %}

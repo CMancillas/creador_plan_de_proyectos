@@ -1,112 +1,122 @@
-
 {% extends 'base.html' %}
 
 {% block title %}Ver Plan de Proyecto{% endblock %}
 {% block content %}
-<body>
-    <h1>Plan de Proyecto</h1>
+<div class="container mt-4">
+  <h1 class="mb-4 text-dark">Plan de Proyecto</h1>
 
-    {% if project_plan %}
-        <!-- Información básica del proyecto -->
-        <h2>Título del Proyecto</h2>
-        <p>{{ project_plan.title }}</p>
+  {% if project_plan %}
+  <!-- Información Básica -->
+  <div class="card mb-4 border-0 shadow-sm">
+    <div class="card-header bg-secondary text-white">Información Básica</div>
+    <div class="card-body">
+      <p><strong>Título del Proyecto:</strong> {{ project_plan.title }}</p>
+      <p><strong>Descripción:</strong> {{ project_plan.description }}</p>
+      <p><strong>Objetivo:</strong> {{ project_plan.objetive }}</p>
+      <p><strong>Cliente:</strong> {{ project_plan.clientName }}</p>
+      <p><strong>Fecha de Inicio:</strong> {{ project_plan.startDate|date:"d M Y" }}</p>
+      <p><strong>Fecha de Fin:</strong> {{ project_plan.endDate|date:"d M Y" }}</p>
+      <p><strong>Presupuesto Total:</strong> ${{ project_plan.presupuestoTotal }}</p>
+    </div>
+  </div>
 
-        <h3>Descripción del Proyecto</h3>
-        <p>{{ project_plan.description }}</p>
+  <!-- Ámbito del Proyecto -->
+  <div class="card mb-4 border-0 shadow-sm">
+    <div class="card-header bg-secondary text-white">Ámbito del Proyecto</div>
+    <div class="card-body">
+      {% for item in ambito %}
+      <p>{{ item.descripcion_ambito }}</p>
+      <p><strong>Características principales:</strong> {{ item.caracteristicas_principales }}</p>
+      <p><strong>Limitaciones:</strong> {{ item.limitaciones }}</p>
+      {% empty %}
+      <p>No se ha definido el ámbito del proyecto.</p>
+      {% endfor %}
+    </div>
+  </div>
 
-        <h3>Objetivo del Proyecto</h3>
-        <p>{{ project_plan.objetive }}</p>
+  <!-- Tareas -->
+  <div class="card mb-4 border-0 shadow-sm">
+    <div class="card-header bg-secondary text-white">Tareas del Proyecto</div>
+    <div class="card-body">
+      {% for task in tasks %}
+      <h5>{{ task.name }}</h5>
+      <p><strong>Duración Estimada:</strong> {{ task.estimated_duration }} horas</p>
+      <p><strong>Fecha de Inicio:</strong> {{ task.start_date|date:"d M Y" }}</p>
+      <p><strong>Fecha de Fin:</strong> {{ task.end_date|date:"d M Y" }}</p>
+      <hr />
+      {% empty %}
+      <p>No hay tareas definidas para este proyecto.</p>
+      {% endfor %}
+    </div>
+  </div>
 
-        <h3>Nombre del Cliente</h3>
-        <p>{{ project_plan.clientName }}</p>
+  <!-- Equipo de Trabajo -->
+  <div class="card mb-4 border-0 shadow-sm">
+    <div class="card-header bg-secondary text-white">Equipo de Trabajo</div>
+    <div class="card-body">
+      {% for member in team %}
+      <h5>{{ member.name }}</h5>
+      <p><strong>Rol:</strong> {{ member.role }}</p>
+      <hr />
+      {% empty %}
+      <p>No hay miembros asignados al equipo de trabajo.</p>
+      {% endfor %}
+    </div>
+  </div>
 
-        <h3>Fecha de Inicio</h3>
-        <p>{{ project_plan.startDate|date:"d M Y" }}</p>
+  <!-- Recursos -->
+  <div class="card mb-4 border-0 shadow-sm">
+    <div class="card-header bg-secondary text-white">Recursos del Proyecto</div>
+    <div class="card-body">
+      {% for resource in resources %}
+      <h5>{{ resource.name }}</h5>
+      <p><strong>Tipo:</strong> {{ resource.resource_type }}</p>
+      <p><strong>Cantidad:</strong> {{ resource.quantity_estimated }}</p>
+      <hr />
+      {% empty %}
+      <p>No hay recursos asignados a este proyecto.</p>
+      {% endfor %}
+    </div>
+  </div>
 
-        <h3>Fecha de Fin</h3>
-        <p>{{ project_plan.endDate|date:"d M Y" }}</p>
+  <!-- Restricciones -->
+  <div class="card mb-4 border-0 shadow-sm">
+    <div class="card-header bg-secondary text-white">Restricciones</div>
+    <div class="card-body">
+      {% for restriction in restrictions %}
+      <p>{{ restriction.descripcion }}</p>
+      <hr />
+      {% empty %}
+      <p>No hay restricciones definidas para este proyecto.</p>
+      {% endfor %}
+    </div>
+  </div>
 
-        <h3>Presupuesto Total</h3>
-        <p>{{ project_plan.presupuestoTotal }}</p>
+  <!-- Riesgos -->
+  <div class="card mb-4 border-0 shadow-sm">
+    <div class="card-header bg-secondary text-white">Riesgos del Proyecto</div>
+    <div class="card-body">
+      {% for risk in risks %}
+      <h5>{{ risk.risk_identifier }}</h5>
+      <p><strong>Descripción:</strong> {{ risk.description }}</p>
+      <p><strong>Tipo de Riesgo:</strong> {{ risk.risk_type }}</p>
+      <p><strong>Impacto:</strong> {{ risk.severity_level }}</p>
+      <hr />
+      {% empty %}
+      <p>No hay riesgos definidos para este proyecto.</p>
+      {% endfor %}
+    </div>
+  </div>
 
-        <hr>
+  <!-- Navegación -->
+  <div class="d-flex justify-content-end mt-4">
+    <a href="{% url 'edit_project_plan' project_id %}" class="btn btn-primary me-2">Editar Información</a>
+    <a href="{% url 'descargar_plan_completo' project_id %}" class="btn btn-success me-2">Descargar PDF</a>
+    <a href="{% url 'delete_project_plan' project_id %}" class="btn btn-danger">Eliminar Proyecto</a>
+  </div>
 
-        <!-- Ámbito del Proyecto -->
-        <h2>Ámbito del Proyecto</h2>
-        {% for item in ambito %}
-            <p>{{ item.descripcion_ambito }}</p>
-            <p>Características principales: {{ item.caracteristicas_principales }}</p>
-            <p>Limitaciones: {{ item.limitaciones }}</p>
-        {% empty %}
-            <p>No se ha definido el ámbito del proyecto.</p>
-        {% endfor %}
-
-        <!-- Tareas del Proyecto -->
-        <h2>Tareas</h2>
-        {% for task in tasks %}
-            <h4>{{ task.name }}</h4>
-            <p>Duración estimada: {{ task.estimated_duration }}</p>
-            <p>Fecha de inicio: {{ task.start_date|date:"d M Y" }}</p>
-            <p>Fecha de fin: {{ task.end_date|date:"d M Y" }}</p>
-        {% empty %}
-            <p>No hay tareas definidas para este proyecto.</p>
-        {% endfor %}
-
-        <!-- Equipo de Trabajo -->
-        <h2>Equipo de Trabajo</h2>
-        {% for member in team %}
-            <h4>{{ member.name }}</h4>
-            <p>Rol: {{ member.role }}</p>
-        {% empty %}
-            <p>No hay miembros asignados al equipo de trabajo.</p>
-        {% endfor %}
-
-        <!-- Recursos del Proyecto -->
-        <h2>Recursos</h2>
-        {% for resource in resources %}
-            <h4>{{ resource.name }}</h4>
-            <p>Tipo: {{ resource.resource_type }}</p>
-            <p>Cantidad: {{ resource.quantity_estimated }}</p>
-        {% empty %}
-            <p>No hay recursos asignados a este proyecto.</p>
-        {% endfor %}
-
-        <!-- Restricciones del Proyecto -->
-        <h2>Restricciones</h2>
-        {% for restriction in restrictions %}
-            <p>{{ restriction.descripcion }}</p>
-        {% empty %}
-            <p>No hay restricciones definidas para este proyecto.</p>
-        {% endfor %}
-
-        <!-- Riesgos del Proyecto -->
-        <h2>Riesgos</h2>
-        {% for risk in risks %}
-            <h4>{{ risk.risk_identifier }}</h4>
-            <p>Descripción: {{ risk.description }}</p>
-            <p>Tipo de Riesgo: {{ risk.risk_type }}</p>
-            <p>Probabilidad: {{ risk.probability }}</p>
-            <p>Impacto: {{ risk.severity_level }}</p>
-        {% empty %}
-            <p>No hay riesgos definidos para este proyecto.</p>
-        {% endfor %}
-
-        <!-- Opciones de navegación -->
-        <hr>
-        <p><a href="{% url 'edit_project_plan' project_id %}">Editar Información General del Plan de Proyecto</a></p>
-        
-        <hr>
-        <!--PRUEBA (INDICE)-->
-        <p><a href="{% url 'indice' project_id %}">Añadir información del proyecto</a></p>
-   
-        <!-- Botón para descargar el PDF, solo visible en pantalla -->
-        <p><a href="{% url 'descargar_plan_completo' project_id %}" class="btn-download no-print">Descargar Plan de Proyecto en PDF</a></p>
-
-        <!-- Botón para eliminar el proyecto -->
-        <p><a href="{% url 'delete_project_plan' project_id %}">Eliminar el proyecto</a></p>
-
-    {% else %}
-        <p>No se ha definido el plan de proyecto aún.</p>
-    {% endif %}
-</body>
+  {% else %}
+  <p>No se ha definido el plan de proyecto aún.</p>
+  {% endif %}
+</div>
 {% endblock %}

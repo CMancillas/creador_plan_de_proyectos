@@ -1,34 +1,56 @@
-
 {% extends 'base.html' %}
 
 {% block title %}Ver Ámbito del Proyecto{% endblock %}
 {% block content %}
 <body>
-    <h1>Ámbito del Proyecto</h1>
+  <h1 class="mt-4">Ámbito del Proyecto</h1>
 
-    {% if ambito_proyecto %}
-        <h3>Descripción del Ámbito</h3>
-        <p>{{ ambito_proyecto.descripcion_ambito }}</p>
+  {% if ambito_proyecto %}
+  <div class="mb-4">
+    <h3>Descripción del Ámbito</h3>
+    <p>{{ ambito_proyecto.descripcion_ambito }}</p>
+  </div>
 
-        <h3>Características Principales</h3>
-        <p>{{ ambito_proyecto.caracteristicas_principales }}</p>
+  <div class="mb-4">
+    <h3>Características Principales</h3>
+    <p>{{ ambito_proyecto.caracteristicas_principales }}</p>
+  </div>
 
-        <h3>Limitaciones</h3>
-        <p>{{ ambito_proyecto.limitaciones }}</p>
+  <div class="mb-4">
+    <h3>Limitaciones</h3>
+    <p>{{ ambito_proyecto.limitaciones }}</p>
+  </div>
 
-        <p>Última actualización: {{ ambito_proyecto.ultima_actualizacion|date:"d M Y H:i" }}</p>
+  <p>
+    Última actualización: 
+    <span class="text-muted">{{ ambito_proyecto.ultima_actualizacion|date:"d M Y H:i" }}</span>
+  </p>
+  {% else %}
+  <p class="alert alert-warning">No se ha definido el ámbito del proyecto aún.</p>
+  <a
+    href="{% url 'definir_ambito_proyecto' project_id=project_plan.id %}"
+    class="btn btn-success"
+  >
+    Definir el ámbito
+  </a>
+  {% endif %}
 
-        
-    {% else %}
-        <p>No se ha definido el ámbito del proyecto aún.</p>
-        <p><a href="{% url 'definir_ambito_proyecto' project_id=project_plan.id %}">Definir el ámbito</a></p>
-    {% endif %}
+  <hr />
 
+  <!-- Botón para editar el ámbito -->
+  <a
+    href="{% url 'editar_ambito_proyecto' project_id=project_plan.id %}"
+    class="btn btn-primary"
+  >
+    Editar ámbito del proyecto
+  </a>
 
-    <!---Enlace para editar el ámbito -->
-    <p><a href="{% url 'editar_ambito_proyecto' project_id=project_plan.id %}">Editar ámbito del proyecto</a></p>
-
-    <!---Enlace para volver a la pagina de incio -->
-    <p><a href="{% url 'view_project_plan' project_id=project_plan.id %}">Volver al Plan de Proyecto</a></p>
+  <!-- Botón para volver al plan del proyecto -->
+  <a
+    href="{% url 'view_project_plan' project_id=project_plan.id %}"
+    class="btn btn-secondary"
+  >
+    Volver al Plan del Proyecto
+  </a>
 </body>
 {% endblock %}
