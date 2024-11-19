@@ -153,7 +153,7 @@ class ProjectRisks(models.Model):
      
 class EsfuerzoProyecto(models.Model):
     proyecto = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE)  # Enlace al proyecto
-    esfuerzo_estimado = models.DecimalField(max_digits=6, decimal_places=2)  # Esfuerzo estimado en horas
+    esfuerzo_estimado = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0.0)
     esfuerzo_real = models.DecimalField(max_digits=6, decimal_places=2, default=0)  # Esfuerzo real en horas
 
     def diferencia_esfuerzo(self):
