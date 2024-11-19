@@ -145,5 +145,4 @@ class ProjectRisks(models.Model):
     mitigation_strategy = models.CharField(max_length=10, choices=MITIGATION_STRATEGIES)
     def __str__(self):
         return f"{self.risk_identifier}: {self.description}"
-    
 

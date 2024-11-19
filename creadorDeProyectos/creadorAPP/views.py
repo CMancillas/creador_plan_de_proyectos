@@ -316,7 +316,7 @@ def define_resources(request, project_id):
             resource.save()  # Guarda el recurso
 
             messages.success(request, "El recurso ha sido agregado exitosamente.")
-            return redirect('define_resources', project_id=project.id)  # Redirige a la misma URL
+            return redirect('view_resources', project_id=project.id)  # Redirige a la misma URL
 
     else:
         form = ResourceForm()
@@ -395,6 +395,20 @@ def define_work_team(request, project_id):
         form = WorkTeamMemberForm()
 
     return render(request, 'work_team/define_work_team.html', {'form': form, 'project': project, 'team_members': team_members, 'project_id': project_id})
+
+
+@login_required
+def view_project_risks(request, project_id):
+    project_plan = get_object_or_404(ProjectPlan, id=project_id)
+    risks = project_plan.risks.all()  # Obtener todos los riesgos asociados al proyecto
+
+    context = {
+        'project_plan': project_plan,
+        'risks': risks,
+    }
+    return render(request, 'projects/view_project_risks.html', context)
+
+
 
 
 @login_required
