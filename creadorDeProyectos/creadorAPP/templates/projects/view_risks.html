@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Lista de Riesgos del Proyecto</title>
-</head>
+{% extends 'base.html' %}
+
+{% block title %}Riesgos y Restricciones{% endblock %}
+{% block content %}
 <body>
     <h1>Riesgos del Proyecto</h1>
 
@@ -15,6 +13,7 @@
                     <th>Descripción</th>
                     <th>Tipo de Riesgo</th>
                     <th>Impacto en el Proyecto</th>
+                    <th>Estrategia de mitigacion</th>
                 
                 </tr>
             </thead>
@@ -25,7 +24,7 @@
                         <td>{{ risk.description }}</td>
                         <td>{{ risk.risk_type }}</td>
                         <td>{{ risk.severity_level }}</td>
-                        
+                        <td>{{ risk.mitigation_strategy }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -62,4 +61,4 @@
 
     <p><a href="{% url 'view_project_plan' project_id %}">Regresar</a></p>
 </body>
-</html>
+{% endblock %}

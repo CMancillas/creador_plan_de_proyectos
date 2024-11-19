@@ -32,5 +32,8 @@ urlpatterns = [
     path('project-plan/<int:project_id>/descargar-resumen/', views.descargar_resumen_pdf, name='descargar_resumen_pdf'),
     path('project-plan/<int:project_id>/ver-restriccion/', views.ver_restricciones, name='ver_restriccion'),
     path('project-plan/<int:project_id>/view-risks/', views.view_risks, name='view_risks'),
+    path('search-results/', views.search_results, name='search_results'),
+    path('search/', views.search, name='search'),
+    path('project-plan/<int:project_id>/descargar-plan-completo/', views.descargar_plan_completo_pdf, name='descargar_plan_completo'),
 
 ]

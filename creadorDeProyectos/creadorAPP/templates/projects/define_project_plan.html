@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Definir Plan de Proyecto</title>
-</head>
+
+{% extends 'view_home.html' %}
+
+{% block title %}Definir Plan de Proyecto{% endblock %}
+{% block content %}
 <body>
     <h1>Definir Plan de Proyecto</h1>
 
@@ -41,7 +39,6 @@
     <p><a href="{% url 'view_project_plan' project_plan.id %}">Ver Plan de Proyecto</a></p>
     {% endif %}
       
-    <!---Enlace para volver a la pagina de incio (PRUEBA)-->
-    <p><a href="{% url 'home' %}">Volver a la página de incio</a></p>
+
 </body>
-</html>
+{% endblock %}

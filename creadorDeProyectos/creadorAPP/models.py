@@ -121,7 +121,12 @@ class ProjectRisks(models.Model):
         ('organizational', 'Organizativo'),
         ('financial', 'Financiero'),
     ]
-
+    MITIGATION_STRATEGIES = [
+        ('avoid', 'Evitar'),
+        ('Aceptar', 'Aceptar'),
+        ('transfer', 'Transferir'),
+        ('control', 'Controlar'),
+    ]
     project_plan = models.ForeignKey(ProjectPlan, on_delete=models.CASCADE, related_name='risks')
     risk_identifier = models.CharField(max_length=50, unique=True)
     description = models.TextField()
@@ -137,8 +142,7 @@ class ProjectRisks(models.Model):
         ('medium', 'Medio'),
         ('high', 'Alto'),
     ])
-
+    mitigation_strategy = models.CharField(max_length=10, choices=MITIGATION_STRATEGIES)
     def __str__(self):
         return f"{self.risk_identifier}: {self.description}"
-    
 

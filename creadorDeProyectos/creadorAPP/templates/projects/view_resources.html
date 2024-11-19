@@ -1,45 +1,58 @@
-<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Recursos del Proyecto</title>
-  </head>
-  <body>
-    <h1>Recursos del proyecto: {{ project_plan.title }}</h1>
+{% extends 'base.html' %} {% block title %}Recursos del Proyecto{% endblock %}
+{% block content %}
+<body>
+  <h1>Recursos del proyecto: {{ project_plan.title }}</h1>
 
-    {% if resources %}
-    <table>
-      <thead>
-        <tr>
-          <th>Tipo de Recurso</th>
-          <th>Nombre</th>
-          <th>Descripción</th>
-          <th>Cantidad Estimada</th>
-          <th>Costo Estimado</th>
-          <th>Fecha de Creación</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for resource in resources %}
-        <tr>
-          <td>{{ resource.get_resource_type_display }}</td>
-          <td>{{ resource.name }}</td>
-          <td>{{ resource.description }}</td>
-          <td>{{ resource.quantity_estimated }}</td>
-          <td>{{ resource.cost_estimated }}</td>
-          <td>{{ resource.created_at|date:"d/m/Y H:i" }}</td>
-          <a href="{% url 'edit_resource' project_id=project_plan.id resource_id=resource.id %}">Editar</a>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% else %}
-    <p>No se han definido recursos para este proyecto.</p>
+  {% if resources %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Tipo de Recurso</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Cantidad Estimada</th>
+        <th>Costo Estimado</th>
+        <th>Fecha de Creación</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for resource in resources %}
+      <tr>
+        <td>{{ resource.get_resource_type_display }}</td>
+        <td>{{ resource.name }}</td>
+        <td>{{ resource.description }}</td>
+        <td>{{ resource.quantity_estimated }}</td>
+        <td>{{ resource.cost_estimated }}</td>
+        <td>{{ resource.created_at|date:"d/m/Y H:i" }}</td>
+        <td>
+          <a
+            href="{% url 'edit_resource' project_id=project_plan.id resource_id=resource.id %}"
+            class="btn btn-primary btn-sm"
+            >Editar</a
+          >
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>No se han definido recursos para este proyecto.</p>
+  {% endif %}
 
-    {% endif %}
-    <p><a href="{% url 'define_resources' project_id=project_plan.id  %}">Definir Recursos</a></p>
-    <a href="{% url 'view_project_plan' project_plan.id %}"
-      >Volver al Plan del Proyecto</a
+  <p>
+    <a
+      href="{% url 'define_resources' project_id=project_plan.id %}"
+      class="btn btn-primary"
     >
-  </body>
-</html>
+      Definir Recursos
+    </a>
+  </p>
+  <a
+    href="{% url 'view_project_plan' project_plan.id %}"
+    class="btn btn-secondary"
+  >
+    Volver al Plan del Proyecto
+  </a>
+</body>
+{% endblock %}
