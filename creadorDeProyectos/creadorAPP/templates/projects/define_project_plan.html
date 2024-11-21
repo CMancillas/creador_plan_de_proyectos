@@ -1,44 +1,60 @@
-
 {% extends 'view_home.html' %}
 
 {% block title %}Definir Plan de Proyecto{% endblock %}
 {% block content %}
-<body>
-    <h1>Definir Plan de Proyecto</h1>
+<div class="container my-4">
+    <h1 class="text-primary mb-4">Definir Plan de Proyecto</h1>
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label for="id_title" class="form-label">Título del Proyecto:</label>
+                    <input type="text" id="id_title" name="title" value="{{ form.title.value }}" maxlength="100" class="form-control">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_description" class="form-label">Descripción del Proyecto:</label>
+                    <textarea id="id_description" name="description" rows="4" class="form-control">{{ form.description.value }}</textarea>
+                </div>
 
-    <form method="POST">
-        {% csrf_token %}
-        
-        <label for="id_title">Título del Proyecto:</label><br>
-        <input type="text" id="id_title" name="title" value="{{ form.title.value }}" maxlength="100"><br><br>
-        
-        <label for="id_description">Descripción del Proyecto:</label><br>
-        <textarea id="id_description" name="description" rows="4" cols="50">{{ form.description.value }}</textarea><br><br>
+                <div class="mb-3">
+                    <label for="id_objetive" class="form-label">Objetivo del Proyecto:</label>
+                    <textarea id="id_objetive" name="objetive" rows="4" class="form-control">{{ form.objetive.value }}</textarea>
+                </div>
 
-        <label for="id_objetive">Objetivo del Proyecto:</label><br>
-        <textarea id="id_objetive" name="objetive" rows="4" cols="50">{{ form.objetive.value }}</textarea><br><br>
+                <div class="mb-3">
+                    <label for="id_clientName" class="form-label">Nombre del Cliente:</label>
+                    <input type="text" id="id_clientName" name="clientName" value="{{ form.clientName.value }}" maxlength="50" class="form-control">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_startDate" class="form-label">Fecha de Inicio:</label>
+                    <input type="date" id="id_startDate" name="startDate" value="{{ form.startDate.value }}" class="form-control">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_endDate" class="form-label">Fecha de Fin:</label>
+                    <input type="date" id="id_endDate" name="endDate" value="{{ form.endDate.value }}" class="form-control">
+                </div>
 
-        <label for="id_clientName">Nombre del Cliente:</label><br>
-        <input type="text" id="id_clientName" name="clientName" value="{{ form.clientName.value }}" maxlength="50"><br><br>
-        
-        <label for="id_startDate">Fecha de Inicio:</label><br>
-        <input type="date" id="id_startDate" name="startDate" value="{{ form.startDate.value }}"><br><br>
-        
-        <label for="id_endDate">Fecha de Fin:</label><br>
-        <input type="date" id="id_endDate" name="endDate" value="{{ form.endDate.value }}"><br><br>
+                <div class="mb-3">
+                    <label for="id_presupuestoTotal" class="form-label">Presupuesto Total (USD):</label>
+                    <input type="number" id="id_presupuestoTotal" name="presupuestoTotal" step="0.01" value="{{ form.presupuestoTotal.value }}" class="form-control">
+                </div>
 
-        <label for="id_presupuestoTotal">Presupuesto Total (USD):</label><br>
-<input type="number" id="id_presupuestoTotal" name="presupuestoTotal" step="0.01" value="{{ form.presupuestoTotal.value }}"><br><br>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Guardar Plan de Proyecto</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-        <button type="submit">Guardar Plan de Proyecto</button>
-    </form>
-
-   
-    <!-- El enlace "Ver Plan de Proyecto" solo se mostrará cuando el proyecto exista y tenga un ID válido.-->
     {% if project_plan and project_plan.id %}
-    <p><a href="{% url 'view_project_plan' project_plan.id %}">Ver Plan de Proyecto</a></p>
+        <div class="mt-4">
+            <a href="{% url 'view_project_plan' project_plan.id %}" class="btn btn-secondary">Ver Plan de Proyecto</a>
+        </div>
     {% endif %}
-      
-
-</body>
+</div>
 {% endblock %}

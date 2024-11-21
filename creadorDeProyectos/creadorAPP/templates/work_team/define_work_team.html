@@ -1,31 +1,45 @@
-
 {% extends 'base.html' %}
 
 {% block title %}Definir Equipo de Trabajo{% endblock %}
 {% block content %}
-<body>
-    <h1>Equipo de Trabajo para el Proyecto: {{ project_plan.title }}</h1>
+<div class="container my-4">
+    <h1 class="text-primary">Equipo de Trabajo para el Proyecto: <span class="text-dark">{{ project_plan.title }}</span></h1>
 
-    <h2>Añadir Nuevo Miembro</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Añadir Miembro</button>
-    </form>
+    <div class="card shadow-sm border-0 my-4">
+        <div class="card-body">
+            <h2 class="h4 text-secondary mb-3">Añadir Nuevo Miembro</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Añadir Miembro</button>
+            </form>
+        </div>
+    </div>
 
-    <h3>Miembros Actuales</h3>
-    <ul>
-        {% for member in team_members %}
-            <li>
-                {{ member.name }} - {{ member.get_role_display }}
-                <a href="{% url 'edit_work_team_member' project_id=project.id member_id=member.id %}">Editar</a> |
-                <a href="{% url 'delete_work_team_member' project_id=project.id member_id=member.id %}">Eliminar</a>
-            </li>
-        {% empty %}
-            <p>No hay miembros en el equipo actualmente.</p>
-        {% endfor %}
-    </ul>
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <h3 class="h5 text-secondary mb-3">Miembros Actuales</h3>
+            {% if team_members %}
+                <ul class="list-group">
+                    {% for member in team_members %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>{{ member.name }}</strong><br>
+                                <small class="text-muted">{{ member.get_role_display }}</small>
+                            </div>
+                            <div>
+                                <a href="{% url 'edit_work_team_member' project_id=project.id member_id=member.id %}" class="btn btn-warning btn-sm">Editar</a>
+                                <a href="{% url 'delete_work_team_member' project_id=project.id member_id=member.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">No hay miembros en el equipo actualmente.</p>
+            {% endif %}
+        </div>
+    </div>
 
-    <a href="{% url 'view_work_team' project_id=project.id %}">Ver Equipo Completo</a>
-</body>
+    <a href="{% url 'view_work_team' project_id=project.id %}" class="btn btn-secondary mt-3">Ver Equipo Completo</a>
+</div>
 {% endblock %}

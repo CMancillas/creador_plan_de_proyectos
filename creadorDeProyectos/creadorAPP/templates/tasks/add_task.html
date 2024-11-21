@@ -1,19 +1,23 @@
-
 {% extends 'base.html' %}
 
 {% block title %}Agregar Tarea{% endblock %}
 {% block content %}
-<body>
-    <h2>Agregar Nueva Tarea</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Guardar</button>
-    </form>
-    <!----PRUEBA-->
-    <p><a href="{% url 'task_list' project.id %}">Lista de Tareas</a></p>
-    <!---Enlace para volver a la pagina de incio (PRUEBA)-->
-    <p><a href="{% url 'home' %}">Volver a la página de incio</a></p>
-    <!----->
-</body>
+<div class="container my-4">
+    <h2 class="text-primary">Agregar Nueva Tarea</h2>
+
+    <div class="card shadow-sm border-0 my-4">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="d-flex justify-content-between mt-3">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a href="{% url 'task_list' project.id %}" class="btn btn-secondary">Lista de Tareas</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <a href="{% url 'home' %}" class="btn btn-outline-secondary mt-3">Volver a la página de inicio</a>
+</div>
 {% endblock %}

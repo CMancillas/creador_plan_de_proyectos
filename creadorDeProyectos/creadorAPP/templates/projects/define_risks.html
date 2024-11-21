@@ -2,16 +2,22 @@
 
 {% block title %}Definir Riesgos{% endblock %}
 {% block content %}
+<div class="container my-4">
+    <h1 class="text-primary">Definir Riesgos para el Proyecto: <span class="text-dark">{{ project_plan.title }}</span></h1>
 
-  <body>
-    <h2>Definir Riesgos para el Proyecto: {{ project_plan.name }}</h2>
-    <form method="post">
-      {% csrf_token %} {{ form.as_p }}
-      <button type="submit">Guardar Riesgo</button>
-    </form>
+    <div class="card shadow-sm border-0 my-4">
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Guardar Riesgo</button>
+                <a href="{% url 'view_risks' project_id=project_plan.id %}" class="btn btn-secondary">Ver Riesgos</a>
+            </form>
+        </div>
+    </div>
 
-     
-     <p><a href="{% url 'view_risks' project_id=project_plan.id %}">Ver riesgos</a></p>     
-    <p><a href="{% url 'indice' project_plan.id %}">Regresar</a></p>
-  </body>
+    <a href="{% url 'indice' project_plan.id %}" class="btn btn-outline-primary mt-3">
+        <i class="bi bi-arrow-left"></i> Regresar
+    </a>
+</div>
 {% endblock %}

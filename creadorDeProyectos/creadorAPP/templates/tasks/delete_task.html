@@ -1,14 +1,20 @@
-
 {% extends 'base.html' %}
 
 {% block title %}Eliminar Tarea{% endblock %}
 {% block content %}
-<body>
-    <h2>¿Estás seguro de que quieres eliminar la tarea "{{ task.name }}"?</h2>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit">Eliminar</button>
-        <a href="{% url 'task_list' project_id %}">Cancelar</a>
-    </form>
-</body>
+<div class="container my-4">
+    <h2 class="text-danger">Eliminar Tarea</h2>
+    <p class="text-dark">¿Estás seguro de que quieres eliminar la tarea "<strong>{{ task.name }}</strong>"?</p>
+    <div class="card shadow-sm border-0 my-4">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <a href="{% url 'task_list' project_id %}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

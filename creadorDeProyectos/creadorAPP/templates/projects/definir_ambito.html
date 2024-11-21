@@ -1,27 +1,35 @@
-
 {% extends 'base.html' %}
 
 {% block title %}Definir Ámbito del Proyecto{% endblock %}
 {% block content %}
-<body>
-    <h1>Definir Ámbito del Proyecto</h1>
+<div class="container my-4">
+    <h1 class="text-primary">Definir Ámbito del Proyecto</h1>
 
-    <form method="POST">
-        {% csrf_token %}
-        <label for="id_descripcion_ambito">Descripción del Ámbito:</label><br>
-        <textarea id="id_descripcion_ambito" name="descripcion_ambito" rows="4" cols="50">{{ form.descripcion_ambito.value }}</textarea><br><br>
+    <div class="card shadow-sm border-0 my-4">
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_descripcion_ambito" class="form-label">Descripción del Ámbito:</label>
+                    <textarea id="id_descripcion_ambito" name="descripcion_ambito" rows="4" class="form-control">{{ form.descripcion_ambito.value }}</textarea>
+                </div>
 
-        <label for="id_caracteristicas_principales">Características Principales:</label><br>
-        <textarea id="id_caracteristicas_principales" name="caracteristicas_principales" rows="4" cols="50">{{ form.caracteristicas_principales.value }}</textarea><br><br>
+                <div class="mb-3">
+                    <label for="id_caracteristicas_principales" class="form-label">Características Principales:</label>
+                    <textarea id="id_caracteristicas_principales" name="caracteristicas_principales" rows="4" class="form-control">{{ form.caracteristicas_principales.value }}</textarea>
+                </div>
 
-        <label for="id_limitaciones">Limitaciones:</label><br>
-        <textarea id="id_limitaciones" name="limitaciones" rows="4" cols="50">{{ form.limitaciones.value }}</textarea><br><br>
+                <div class="mb-3">
+                    <label for="id_limitaciones" class="form-label">Limitaciones:</label>
+                    <textarea id="id_limitaciones" name="limitaciones" rows="4" class="form-control">{{ form.limitaciones.value }}</textarea>
+                </div>
 
-        <button type="submit">Guardar Ámbito del Proyecto</button>
-    </form>
-
-    <p><a href="{% url 'ver_ambito_proyecto' project_id=project_plan.id %}">Ver Ámbito del Proyecto</a></p>
-   
-</body>
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary">Guardar Ámbito del Proyecto</button>
+                    <a href="{% url 'ver_ambito_proyecto' project_id=project_plan.id %}" class="btn btn-secondary">Ver Ámbito del Proyecto</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
-

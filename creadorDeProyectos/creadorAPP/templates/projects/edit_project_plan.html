@@ -1,70 +1,98 @@
-
 {% extends 'base.html' %}
 
 {% block title %}Editar Plan de Proyecto{% endblock %}
 {% block content %}
-  <body>
-    <h1>Editar Plan de Proyecto</h1>
+<div class="container my-4">
+    <h1 class="text-primary">Editar Plan de Proyecto</h1>
 
-    <form method="POST">
-      {% csrf_token %}
+    <div class="card shadow-sm border-0 my-4">
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_title" class="form-label">Título del Proyecto:</label>
+                    <input
+                        type="text"
+                        id="id_title"
+                        name="title"
+                        value="{{ form.title.value|default_if_none:'' }}"
+                        maxlength="100"
+                        class="form-control"
+                    />
+                </div>
 
-      <label for="id_title">Título del Proyecto:</label><br />
-      <input
-        type="text"
-        id="id_title"
-        name="title"
-        value="{{ form.title.value|default_if_none:'' }}"
-        maxlength="100"
-      /><br /><br />
+                <div class="mb-3">
+                    <label for="id_description" class="form-label">Descripción del Proyecto:</label>
+                    <textarea
+                        id="id_description"
+                        name="description"
+                        rows="4"
+                        class="form-control"
+                    >{{ form.description.value|default_if_none:'' }}</textarea>
+                </div>
 
-      <label for="id_description">Descripción del Proyecto:</label><br />
-      <textarea id="id_description" name="description" rows="4" cols="50">
-{{ form.description.value|default_if_none:'' }}</textarea
-      ><br /><br />
+                <div class="mb-3">
+                    <label for="id_objetive" class="form-label">Objetivo del Proyecto:</label>
+                    <textarea
+                        id="id_objetive"
+                        name="objetive"
+                        rows="4"
+                        class="form-control"
+                    >{{ form.objetive.value|default_if_none:'' }}</textarea>
+                </div>
 
-      <label for="id_objetive">Objetivo del Proyecto:</label><br />
-      <textarea id="id_objetive" name="objetive" rows="4" cols="50">
-{{ form.objetive.value|default_if_none:'' }}</textarea
-      ><br /><br />
+                <div class="mb-3">
+                    <label for="id_clientName" class="form-label">Nombre del Cliente:</label>
+                    <input
+                        type="text"
+                        id="id_clientName"
+                        name="clientName"
+                        value="{{ form.clientName.value|default_if_none:'' }}"
+                        maxlength="50"
+                        class="form-control"
+                    />
+                </div>
 
-      <label for="id_clientName">Nombre del Cliente:</label><br />
-      <input
-        type="text"
-        id="id_clientName"
-        name="clientName"
-        value="{{ form.clientName.value|default_if_none:'' }}"
-        maxlength="50"
-      /><br /><br />
+                <div class="mb-3">
+                    <label for="id_startDate" class="form-label">Fecha de Inicio:</label>
+                    <input
+                        type="date"
+                        id="id_startDate"
+                        name="startDate"
+                        value="{{ form.startDate.value|default_if_none:'' }}"
+                        class="form-control"
+                    />
+                </div>
 
-      <label for="id_startDate">Fecha de Inicio:</label><br />
-      <input
-        type="date"
-        id="id_startDate"
-        name="startDate"
-        value="{{ form.startDate.value|default_if_none:'' }}"
-      /><br /><br />
+                <div class="mb-3">
+                    <label for="id_endDate" class="form-label">Fecha de Fin:</label>
+                    <input
+                        type="date"
+                        id="id_endDate"
+                        name="endDate"
+                        value="{{ form.endDate.value|default_if_none:'' }}"
+                        class="form-control"
+                    />
+                </div>
 
-      <label for="id_endDate">Fecha de Fin:</label><br />
-      <input
-        type="date"
-        id="id_endDate"
-        name="endDate"
-        value="{{ form.endDate.value|default_if_none:'' }}"
-      /><br /><br />
+                <div class="mb-3">
+                    <label for="id_presupuestoTotal" class="form-label">Presupuesto Total (USD):</label>
+                    <input
+                        type="number"
+                        id="id_presupuestoTotal"
+                        name="presupuestoTotal"
+                        step="0.01"
+                        value="{{ form.presupuestoTotal.value }}"
+                        class="form-control"
+                    />
+                </div>
 
-      <label for="id_presupuestoTotal">Presupuesto Total (USD):</label><br>
-<input type="number" id="id_presupuestoTotal" name="presupuestoTotal" step="0.01" value="{{ form.presupuestoTotal.value }}"><br><br>
-
-
-      <button type="submit">Guardar Cambios</button>
-    </form>
-
-    <!-- Enlace para volver a la vista del proyecto -->
-    <p>
-      <a href="{% url 'view_project_plan' project_id=project.id %}"
-        >Volver a la Vista del Proyecto</a
-      >
-    </p>
-  </body>
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary me-2">Guardar Cambios</button>
+                    <a href="{% url 'view_project_plan' project_id=project.id %}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

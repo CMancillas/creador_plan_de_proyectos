@@ -1,21 +1,31 @@
-
 {% extends 'view_home.html' %}
 
 {% block title %}Home{% endblock %}
 {% block content %}
-    <div class="container">
-        <h2>Home</h2>
-        <p>Bienvenido, {{request.user.username}}!</p>
-        <ul>
-            {% for project in recent_projects %}
-                <li>{{ project.title }} - Creado el: {{ project.startDate }}
-                <a href="{% url 'view_project_plan' project.id %}">Ver más</a> 
-                <a href="{% url 'indice' project.id %}">Agregar información</a> </li>
-                </li>
-            {% empty %}
-                <li>No tienes proyectos recientes.</li>
-            {% endfor %}
-        </ul>
+<div class="container my-4">
+    <h1 class="text-primary">Home</h1>
+    <p class="fs-5">Bienvenido, <strong>{{ request.user.username }}</strong>!</p>
+    
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <h2 class="h4 text-secondary mb-3">Proyectos Recientes</h2>
+            <ul class="list-group">
+                {% for project in recent_projects %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ project.title }}</strong><br>
+                            <small class="text-muted">Creado el: {{ project.startDate }}</small>
+                        </div>
+                        <div>
+                            <a href="{% url 'view_project_plan' project.id %}" class="btn btn-primary btn-sm">Ver más</a>
+                            <a href="{% url 'indice' project.id %}" class="btn btn-secondary btn-sm">Agregar información</a>
+                        </div>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-muted">No tienes proyectos recientes.</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
-</body> 
+</div>
 {% endblock %}

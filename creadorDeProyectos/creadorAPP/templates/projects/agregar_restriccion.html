@@ -1,18 +1,21 @@
-
 {% extends 'base.html' %}
 
 {% block title %}Agregar Restricción{% endblock %}
 {% block content %}
-
-<body>
-    <h1>Agregar Restricción para el Proyecto "{{ proyecto.title }}"</h1>
+<div class="container mt-4">
+    <h1 class="text-primary">Agregar Restricción para el Proyecto: <span class="text-dark">{{ proyecto.title }}</span></h1>
     
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Guardar Restricción</button>
-    </form>
-
-    <p><a href="{% url 'view_project_plan' proyecto.id %}">Volver al plan del proyecto</a></p>
-</body>
+    <div class="card shadow-sm border-0 my-4">
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="d-flex justify-content-end mt-3">
+                    <button type="submit" class="btn btn-primary">Guardar Restricción</button>
+                    <a href="{% url 'view_project_plan' proyecto.id %}" class="btn btn-secondary ms-2">Volver al plan del proyecto</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

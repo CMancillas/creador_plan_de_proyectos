@@ -1,14 +1,21 @@
-
 {% extends 'base.html' %}
 
 {% block title %}Editar Tarea{% endblock %}
 {% block content %}
-<body>
-    <h2>Editar Tarea "{{ task.name }}"</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Guardar Cambios</button>
-    </form>
-</body>
+<div class="container my-4">
+    <h2 class="text-primary">Editar Tarea: <span class="text-dark">"{{ task.name }}"</span></h2>
+
+    <div class="card shadow-sm border-0 my-4">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="d-flex justify-content-between mt-3">
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <a href="{% url 'task_list' project_id=task.project.id %}" class="btn btn-secondary">Volver a la Lista de Tareas</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,17 +1,20 @@
-
 {% extends 'base.html' %}
 
 {% block title %}Editar Miembro{% endblock %}
 {% block content %}
-<body>
-    <h1>Editar Rol de {{ team_member.name }}</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Guardar Cambios</button>
-    </form>
+<div class="container my-4">
+    <h1 class="text-primary">Editar Rol de <span class="text-dark">{{ team_member.name }}</span></h1>
 
-    <a href="{% url 'view_work_team' project_id=project_plan.id %}">Regresar a la Vista del Equipo</a>
-</body>
+    <div class="card shadow-sm border-0 my-4">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <a href="{% url 'view_work_team' project_id=project_plan.id %}" class="btn btn-secondary mt-3">Regresar a la Vista del Equipo</a>
+</div>
 {% endblock %}
-
