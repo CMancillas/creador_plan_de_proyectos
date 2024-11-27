@@ -5,6 +5,7 @@
 <div class="container mt-4">
   <h1 class="mb-4 text-dark">Plan de Proyecto</h1>
 
+
   {% if project_plan %}
   <!-- Información Básica -->
   <div class="card mb-4 border-0 shadow-sm">
@@ -83,19 +84,6 @@
     </div>
   </div>
 
-  <!-- Restricciones -->
-  <div class="card mb-4 border-0 shadow-sm">
-    <div class="card-header bg-secondary text-white">Restricciones</div>
-    <div class="card-body">
-      {% for restriction in restrictions %}
-      <p>{{ restriction.descripcion }}</p>
-      <hr />
-      {% empty %}
-      <p>No hay restricciones definidas para este proyecto.</p>
-      <a href="{% url 'agregar_restriccion' project_id=project_plan.id %}" class="btn btn-primary">Agregar Restricción</a>
-      {% endfor %}
-    </div>
-  </div>
 
   <!-- Riesgos -->
   <div class="card mb-4 border-0 shadow-sm">
@@ -114,12 +102,35 @@
     </div>
   </div>
 
+  <!-- Restricciones -->
+  <div class="card mb-4 border-0 shadow-sm">
+    <div class="card-header bg-secondary text-white">Restricciones</div>
+    <div class="card-body">
+      {% for restriction in restrictions %}
+      <p>{{ restriction.descripcion }}</p>
+      <hr />
+      {% empty %}
+      <p>No hay restricciones definidas para este proyecto.</p>
+      <a href="{% url 'agregar_restriccion' project_id=project_plan.id %}" class="btn btn-primary">Agregar Restricción</a>
+      {% endfor %}
+    </div>
+  </div>
+
   <!-- Navegación -->
   <div class="d-flex justify-content-end mt-4">
     <a href="{% url 'edit_project_plan' project_id %}" class="btn btn-primary me-2">Editar Información</a>
-    <a href="{% url 'descargar_plan_completo' project_id %}" class="btn btn-success me-2">Descargar PDF</a>
+
+    {% if project_plan.title and project_plan.description and project_plan.objetive and ambito and tasks and team and resources and risks and restrictions %}
+      <a href="{% url 'descargar_plan_completo' project_id %}" class="btn btn-success me-2">Descargar PDF</a>
+    {% else %}
+      <button class="btn btn-secondary me-2" disabled>Completa el plan para descargar el PDF</button>
+    {% endif %}
+
+
     <a href="{% url 'delete_project_plan' project_id %}" class="btn btn-danger">Eliminar Proyecto</a>
   </div>
+
+
 
   {% else %}
   <p>No se ha definido el plan de proyecto aún.</p>

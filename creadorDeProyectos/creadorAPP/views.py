@@ -489,23 +489,20 @@ def search(request):
 @login_required
 def descargar_plan_completo_pdf(request, project_id):
     # Se obtiene el objeto ProjectPlan con su id correspondiente.
-    # Si no existe, se devuelve una página de error 404.
     proyecto = get_object_or_404(ProjectPlan, id=project_id)
     
     # Se obtienen todas las restricciones asociadas al proyecto.
     restricciones = proyecto.restricciones.all()
-    
     # Se obtienen todas las tareas asociadas al proyecto.
-    tareas = proyecto.tasks.all()    
-
+    tareas = proyecto.tasks.all()
     # Se obtienen todos los riesgos asociados al proyecto.
     riesgos = proyecto.risks.all()
-    
     # Se obtienen los miembros del equipo.
     equipo = proyecto.team_members.all()
-
     # Se obtienen los recursos del proyecto.
     recursos = proyecto.resources.all()
+    # Se obtienen los ambitos del proyecto.
+    ambitos = proyecto.ambiito.all()
 
     # Renderiza la plantilla HTML en una cadena de texto.
     html_string = render_to_string('projects/plan_completo_proyecto.html', {
@@ -515,21 +512,18 @@ def descargar_plan_completo_pdf(request, project_id):
         'riesgos': riesgos,
         'equipo': equipo,
         'recursos': recursos,
+        'ambitos': ambitos,
         'project_id': project_id,
     })
 
     # Crea la respuesta HTTP como un archivo PDF.
     response = HttpResponse(content_type='application/pdf')
-    
-    # Configura la respuesta para que el PDF se descargue con un nombre de archivo basado en el título del proyecto.
     response['Content-Disposition'] = f'attachment; filename="Plan_Completo_{proyecto.title}.pdf"'
 
     # Usa WeasyPrint para convertir el HTML en un PDF y escribirlo en la respuesta.
     HTML(string=html_string).write_pdf(response)
 
-    # Retorna la respuesta con el PDF, permitiendo que el navegador descargue el archivo.
     return response
-
 
 def ver_cronograma(request, project_id):
     project = ProjectPlan.objects.get(id=project_id)
