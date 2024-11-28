@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ProjectPlan, Restriccion, Task, AmbitoProyecto, WorkTeamMember, Resource, ProjectRisks, EsfuerzoProyecto
+from .models import ProjectPlan, Restriccion, Task, AmbitoProyecto, WorkTeamMember, Resource, ProjectRisks
 
 # Register your models here.
 
@@ -13,4 +13,3 @@ admin.site.register(AmbitoProyecto)
 admin.site.register(WorkTeamMember)
 admin.site.register(Resource)
 admin.site.register(ProjectRisks)
-admin.site.register(EsfuerzoProyecto)

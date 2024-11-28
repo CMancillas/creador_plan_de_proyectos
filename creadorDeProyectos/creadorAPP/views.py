@@ -10,9 +10,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 # Import the User class (model)
 from django.contrib.auth.models import User
+from django.db.models import Sum
 # Import the RegisterForm from forms.py
-from .forms import RegisterForm, AmbitoProyectoForm, ProjectPlanForm, TaskForm, RestriccionForm,  ResourceForm, ProjectRisksForm, WorkTeamMemberForm, EsfuerzoProyectoForm
-from .models import AmbitoProyecto, Task, ProjectPlan, Resource, ProjectRisks, WorkTeamMember, Restriccion, EsfuerzoProyecto
+from .forms import RegisterForm, AmbitoProyectoForm, ProjectPlanForm, TaskForm, RestriccionForm,  ResourceForm, ProjectRisksForm, WorkTeamMemberForm
+from .models import AmbitoProyecto, Task, ProjectPlan, Resource, ProjectRisks, WorkTeamMember, Restriccion
 from django.contrib import messages
 # Importa HttpResponse de Django para enviar una respuesta HTTP al navegador.
 from django.http import HttpResponse
@@ -216,7 +217,9 @@ def delete_task(request, task_id, project_id):
 def task_list(request, project_id):
     
     tasks = Task.objects.filter(project = project_id)  # Consulta todas las tareas asociadas al proyecto
-    return render(request, 'tasks/task_list.html', {'tasks': tasks, 'project_id':project_id})  # Renderiza la plantilla 'task_list.html'
+    estimacion = tasks.aggregate(Sum('estimated_duration'))['estimated_duration__sum'] or 0
+
+    return render(request, 'tasks/task_list.html', {'tasks': tasks, 'project_id':project_id, 'estimacion': estimacion })  # Renderiza la plantilla 'task_list.html'
 
 @login_required
 def agregar_restriccion(request, project_id):
@@ -236,7 +239,7 @@ def agregar_restriccion(request, project_id):
             # Mensaje de éxito para el administrador
             messages.success(request, "La restricción ha sido agregada exitosamente.")
             # Redirigir a la vista del proyecto para revisar la restricción
-            return redirect('view_project_plan', project_id=proyecto.id)
+            return redirect('view_risks', project_id=proyecto.id)
     else: 
         #  Inicializar el formulario vacío si la solicitud no es POST
         form = RestriccionForm()
@@ -370,7 +373,7 @@ def define_risks(request, project_id):
             risk.project_plan = project_plan  # Asocia el riesgo con el proyecto actual
             risk.save()
             messages.success(request, "El riesgo ha sido registrado exitosamente.")
-            return redirect('define_risks', project_id=project_id)  # Redirige a la misma URL para seguir añadiendo riesgos
+            return redirect('view_risks', project_id=project_id)  # Redirige a la misma URL para seguir añadiendo riesgos
         else:
             return render(request, 'projects/define_risks.html', {'form': form, 'project_plan': project_plan, 'project_id': project_id})
     else:
@@ -541,35 +544,4 @@ def ver_cronograma(request, project_id):
         'tasks': tasks,
         'date_range': date_range,
         'project_id': project_id,
-    })
-def agregar_esfuerzo(request, project_id):
-    proyecto = get_object_or_404(ProjectPlan, id=project_id)
-    
-    esfuerzo_proyecto, created = EsfuerzoProyecto.objects.get_or_create(proyecto=proyecto)
-
-    if request.method == 'POST':
-        form = EsfuerzoProyectoForm(request.POST, instance=esfuerzo_proyecto)
-        if form.is_valid():
-            form.save()
-            return redirect('consultar_esfuerzo', project_id=project_id)
-    else:
-        form = EsfuerzoProyectoForm(instance=esfuerzo_proyecto)
-
-    return render(request, 'esfuerzo/agregar_esfuerzo.html', {
-        'form': form,
-        'project_id': project_id
-    })
-
-def consultar_esfuerzo(request, project_id):
-    proyecto = get_object_or_404(ProjectPlan, id=project_id)
-    esfuerzo_proyecto, created = EsfuerzoProyecto.objects.get_or_create(
-        proyecto=proyecto,
-        defaults={'esfuerzo_estimado': 0, 'esfuerzo_real': 0}
-    )
-
-    return render(request, 'esfuerzo/consultar_esfuerzo.html', {
-        'proyecto': proyecto,
-        'esfuerzo_proyecto': esfuerzo_proyecto,
-        'diferencia': esfuerzo_proyecto.diferencia_esfuerzo(),
-        'project_id': project_id
     })

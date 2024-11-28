@@ -7,7 +7,7 @@ from .models import Restriccion
 from .models import Resource
 from .models import ProjectRisks
 from .models import WorkTeamMember
-from .models import EsfuerzoProyecto
+
 
 class RegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -84,6 +84,22 @@ class ProjectPlanForm(forms.ModelForm):
         startDate = cleaned_data.get('startDate')
         endDate = cleaned_data.get('endDate')
         presupuestoTotal = cleaned_data.get('presupuestoTotal')
+        title = cleaned_data.get('title')
+        description = cleaned_data.get('description')
+        objetive = cleaned_data.get('objetive')
+        clientName = cleaned_data.get('clientName')
+
+        if not title:
+            self.add_error('title', "Este campo es obligatorio.")
+
+        if not description:
+            self.add_error('description', "Este campo es obligatorio.")
+
+        if not objetive:
+            self.add_error('objetive', "Este campo es obligatorio.")
+
+        if not clientName:
+            self.add_error('clientName', "Este campo es obligatorio.")        
 
         if startDate and endDate and startDate > endDate:
             self.add_error('endDate', "La fecha de fin no puede ser anterior a la fecha de inicio.")
@@ -99,10 +115,31 @@ class TaskForm(forms.ModelForm):
         model = Task
         fields = ['name', 'description','estimated_duration', 'start_date', 'end_date']
         widgets = {
-            'description': forms.TextInput(attrs={'maxlength': 255, 'placeholder': 'Descripción corta'}),
+            'description': forms.TextInput(attrs={'maxlength': 255}),
             'start_date': forms.DateInput(attrs={'type': 'date'}),
             'end_date': forms.DateInput(attrs={'type': 'date'}),
-        }   
+        }
+    def clean (self):
+        cleaned_data = super().clean()
+        name = cleaned_data.get('name')
+        description = cleaned_data.get('description')
+        estimated_duration = cleaned_data.get('estimated_duration')
+        start_date = cleaned_data.get('start_date')
+        end_date = cleaned_data.get('end_date')
+
+        if not name:
+            self.add_error('name', "Este campo es obligatorio.")
+        
+        if not description:
+            self.add_error('description', "Este campo es obligatorio.")
+        
+        if not estimated_duration:
+            self.add_error('estimated_duration', "Este campo es obligatorio.")
+        
+        if start_date and end_date and start_date > end_date:
+            self.add_error('end_date', "La fecha de fin no puede ser anterior a la fecha de inicio.")
+        
+        return cleaned_data   
 
 class RestriccionForm(forms.ModelForm):
     class Meta: 
@@ -162,12 +199,5 @@ class WorkTeamMemberForm(forms.ModelForm):
             'name': 'Nombre del miembro del equipo',
             'role': 'Rol del miembro del equipo',
         }
-
-
-class EsfuerzoProyectoForm(forms.ModelForm):
-    class Meta:
-        model = EsfuerzoProyecto
-        fields = ['esfuerzo_estimado', 'esfuerzo_real']
-
 
 
